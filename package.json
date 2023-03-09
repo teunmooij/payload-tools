@@ -1,0 +1,50 @@
+{
+  "name": "typescript-module-template",
+  "version": "1.0.0",
+  "description": "description of the module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rimraf dist && tsc --sourceMap false",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --quiet --fix",
+    "test": "jest -c jest.config.ts",
+    "test:coverage": "jest -c jest.config.ts --verbose --collectCoverage",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.4",
+    "@typescript-eslint/eslint-plugin": "^5.30.3",
+    "@typescript-eslint/parser": "^5.30.3",
+    "eslint": "^8.20.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-sort-class-members": "^1.14.1",
+    "husky": "^8.0.1",
+    "jest": "^29.3.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
+  },
+  "lint-staged": {
+    "**/*.{js,ts}": "eslint --cache --fix",
+    "**/*.{js,ts,md}": "prettier --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teunmooij/typescript-module-template.git"
+  },
+  "keywords": [],
+  "author": "Teun Mooij",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/teunmooij/typescript-module-template/issues"
+  },
+  "homepage": "https://github.com/teunmooij/typescript-module-template#readme"
+}
