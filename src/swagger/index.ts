@@ -1,0 +1,1 @@
+export { createDocument } from './swagger';
