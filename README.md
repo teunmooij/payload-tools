@@ -1,19 +1,32 @@
-# [module-name]
+# payload swagger
 
-Short description of the module
+Swagger plugin for payload cms:
+
+- generate openAPI 3 documentation from your payload config
+- includes Swagger UI
+
+Version 0.x releases should be considered `beta`. Semantic version is not guaranteed until version 1.
 
 ## Installation
 
+With yarn:
+
 ```shell
-$ npm install <module-name>
+yarn add payload-swagger
+```
+
+With npm:
+
+```shell
+npm install payload-swagger
 ```
 
 ## Usage
 
-Explanation of how the module can be used
+...
 
-## Version history
+<!-- ## Version history
 
 ### v1.0
 
-- Initial version
+- Initial version -->
