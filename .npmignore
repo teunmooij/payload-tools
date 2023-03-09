@@ -1,5 +1,6 @@
 src/
 test/
+testbed/
 .husky/
 
 .eslintrc.js

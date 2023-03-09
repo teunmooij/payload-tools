@@ -5,21 +5,22 @@
   "main": "dist/server.js",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts NODE_ENV=test nodemon",
+    "link-ps": "cd .. && npm link",
+    "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts NODE_ENV=test ts-node src/server.ts",
+    "start": "npm install && npm run link-ps && npm link payload-swagger && npm run dev",
     "generate:types": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types"
   },
   "dependencies": {
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "mongodb-memory-server": "^8.12.0",
     "payload": "^1.6.19"
   },
   "devDependencies": {
-    "@types/express": "^4.17.9",
+    "@types/express": "^4.17.17",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "nodemon": "^2.0.6",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.8.4"
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
   }
 }

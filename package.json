@@ -1,8 +1,10 @@
 {
-  "name": "typescript-module-template",
-  "version": "1.0.0",
-  "description": "description of the module",
+  "name": "payload-swagger",
+  "version": "0.0.1",
+  "description": "Swagger plugin for payload cms",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "build": "rimraf dist && tsc --sourceMap false",
     "lint": "eslint src/**/*.ts",
@@ -10,7 +12,7 @@
     "test": "jest -c jest.config.ts",
     "test:coverage": "jest -c jest.config.ts --verbose --collectCoverage",
     "typecheck": "tsc --noEmit",
-    "prepare": "husky install"
+    "testbed": "npm run clean && tsc -p tsconfig.json && cd ./testbed && npm run start"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
@@ -40,7 +42,11 @@
     "type": "git",
     "url": "git+https://github.com/teunmooij/typescript-module-template.git"
   },
-  "keywords": [],
+  "keywords": [
+    "swagger",
+    "payload",
+    "OpenAPI"
+  ],
   "author": "Teun Mooij",
   "license": "MIT",
   "bugs": {
