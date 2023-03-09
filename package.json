@@ -4,7 +4,6 @@
   "description": "Swagger plugin for payload cms",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "scripts": {
     "build": "rimraf dist && tsc --sourceMap false",
     "lint": "eslint src/**/*.ts",
@@ -12,7 +11,7 @@
     "test": "jest -c jest.config.ts",
     "test:coverage": "jest -c jest.config.ts --verbose --collectCoverage",
     "typecheck": "tsc --noEmit",
-    "testbed": "npm run clean && tsc -p tsconfig.json && cd ./testbed && npm run start"
+    "testbed": "rimraf dist && tsc -p tsconfig.json && cd ./testbed && npm run start"
   },
   "peerDependencies": {
     "payload": "^1.6.19"

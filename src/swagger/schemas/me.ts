@@ -1,4 +1,4 @@
-import { SchemaObject } from 'openapi3-ts';
+import type { SchemaObject } from 'openapi3-ts';
 
 const me: SchemaObject = {
   title: 'Me',
@@ -6,7 +6,7 @@ const me: SchemaObject = {
   additionalProperties: false,
   properties: {
     user: {
-      '$ref': '#/definitions/users',
+      '$ref': '#/components/schemas/users',
     },
     token: {
       type: 'string',

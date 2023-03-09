@@ -1,7 +1,7 @@
 import { SanitizedConfig } from 'payload/config';
 import { SanitizedCollectionConfig } from 'payload/types';
 import { entityToJSONSchema } from 'payload/utilities';
-import { OpenAPIObject, PathObject, SchemaObject } from 'openapi3-ts';
+import type { OpenAPIObject, PathObject, SchemaObject } from 'openapi3-ts';
 
 import schemas from './schemas';
 
@@ -32,7 +32,7 @@ const getPaginatedDocumentSchema = (slug: string) => ({
     docs: {
       type: 'array',
       items: {
-        '$ref': `#/definitions/${slug}`,
+        '$ref': `#/components/schemas/${slug}`,
       },
     },
     totalDocs: { type: 'number' },
@@ -62,7 +62,7 @@ export const createDocument = (payloadConfig: SanitizedConfig) => {
             responses: {
               '200': {
                 description: 'successful operation',
-                schema: { '$ref': '#/definitions/me' },
+                schema: { '$ref': '#/components/schemas/me' },
               },
             },
           },
@@ -82,14 +82,14 @@ export const createDocument = (payloadConfig: SanitizedConfig) => {
                 required: true,
                 description: "The user's credentials",
                 schema: {
-                  '$ref': '#/definitions/login',
+                  '$ref': '#/components/schemas/login',
                 },
               },
             ],
             responses: {
               '200': {
                 description: 'successful operation',
-                schema: { '$ref': '#/definitions/me' },
+                schema: { '$ref': '#/components/schemas/me' },
               },
             },
           },
@@ -122,7 +122,7 @@ export const createDocument = (payloadConfig: SanitizedConfig) => {
             responses: {
               '200': {
                 description: 'successful operation',
-                schema: { '$ref': '#/definitions/me' },
+                schema: { '$ref': '#/components/schemas/me' },
               },
             },
           },
@@ -142,7 +142,7 @@ export const createDocument = (payloadConfig: SanitizedConfig) => {
               '200': {
                 description: 'successful operation',
                 schema: {
-                  '$ref': '#/definitions/access',
+                  '$ref': '#/components/schemas/access',
                 },
               },
             },
@@ -223,7 +223,7 @@ export const createDocument = (payloadConfig: SanitizedConfig) => {
           '200': {
             description: 'successful operation',
             schema: {
-              '$ref': `#/definitions/${collection.slug}`,
+              '$ref': `#/components/schemas/${collection.slug}`,
             },
           },
           '404': {
@@ -267,7 +267,7 @@ export const createDocument = (payloadConfig: SanitizedConfig) => {
   );
 
   const x: OpenAPIObject = {
-    openapi: '3.1.0',
+    openapi: '3.0.0',
     info: {
       description: 'My payload service',
       version: '1.0.0',

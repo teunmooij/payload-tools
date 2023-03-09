@@ -1,4 +1,4 @@
-import { SchemaObject } from 'openapi3-ts';
+import type { SchemaObject } from 'openapi3-ts';
 
 const access: SchemaObject = {
   'title': 'Access',
