@@ -1,0 +1,34 @@
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Visual Studio 2015 cache/options directory
+/.vs
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+node_modules/
+
+# Optional eslint cache
+.eslintcache
+
+# dotenv environment variable files
+.env
+
+# Nuxt.js build / generate output
+.nuxt
+dist/
+build/
+
+### VisualStudioCode ###
+.vscode/*
