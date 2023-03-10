@@ -4,6 +4,7 @@ import { entityToJSONSchema } from 'payload/utilities';
 import type { OpenAPIObject, PathObject, SchemaObject } from 'openapi3-ts';
 
 import schemas from './schemas';
+import { getInfo } from './info';
 
 const getDescription = (collection: SanitizedCollectionConfig) => {
   const description = collection.admin?.description;
@@ -48,7 +49,9 @@ const getPaginatedDocumentSchema = (slug: string) => ({
   required: ['docs', 'totalDocs', 'limit', 'totalPages', 'page', 'pagingCounter', 'hasPrevPage', 'hasNextPage'],
 });
 
-export const createDocument = (payloadConfig: SanitizedConfig) => {
+export const createDocument = async (payloadConfig: SanitizedConfig): Promise<OpenAPIObject> => {
+  const info = await getInfo();
+
   const authPaths = payloadConfig.collections
     .filter(collection => collection.auth)
     .reduce(
@@ -267,12 +270,8 @@ export const createDocument = (payloadConfig: SanitizedConfig) => {
   );
 
   const x: OpenAPIObject = {
-    openapi: '3.0.0',
-    info: {
-      description: 'My payload service',
-      version: '1.0.0',
-      title: 'Service <name-of-service>',
-    },
+    openapi: '3.0.3',
+    info,
     externalDocs: {
       description: 'Payload REST API documentation',
       url: 'https://payloadcms.com/docs/rest-api/overview',

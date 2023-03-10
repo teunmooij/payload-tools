@@ -8,12 +8,9 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [
-    TodoLists,
-    Users,
-  ],
+  collections: [TodoLists, Users],
   typescript: {
-    outputFile: path.resolve(__dirname, 'payload-types.ts')
+    outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),

@@ -5,9 +5,9 @@ import { createDocument } from './swagger';
 
 export { createDocument } from './swagger';
 
-export default (app: Express, config: SanitizedConfig) => {
-  const document = createDocument(config);
+export default async (app: Express, config: SanitizedConfig) => {
+  const document = await createDocument(config);
 
   app.use('/api-specs', (req, res) => res.json(document));
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, { swaggerUrl: '/api-specs', explorer: true }));
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, { swaggerUrl: '/api-specs' }));
 };
