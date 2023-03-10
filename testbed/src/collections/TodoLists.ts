@@ -29,10 +29,10 @@ const Todo: CollectionConfig = {
           name: 'complete',
           type: 'checkbox',
           defaultValue: false,
-        }
-      ]
+        },
+      ],
     },
   ],
-}
+};
 
 export default Todo;
