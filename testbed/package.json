@@ -4,9 +4,6 @@
   "version": "1.2.3",
   "main": "dist/server.js",
   "license": "MIT",
-  "swagger": {
-    "termsOfService": "be kind to our service and the service will be kind to you"
-  },
   "scripts": {
     "link-ps": "cd .. && npm link",
     "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts NODE_ENV=test ts-node src/server.ts",

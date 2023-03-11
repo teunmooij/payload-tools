@@ -1,10 +1,10 @@
 import type { Express } from 'express';
 import { SanitizedConfig } from 'payload/config';
 import swaggerUi from 'swagger-ui-express';
-import { createDocument } from './swagger';
+import { createDocument } from './open-api';
 import { serveFile } from './utils/serve-file';
 
-export { createDocument } from './swagger';
+export { createDocument } from './open-api';
 
 export default async (app: Express, config: SanitizedConfig) => {
   const document = await createDocument(config);
