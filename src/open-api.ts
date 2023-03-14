@@ -7,28 +7,7 @@ import { DeepPartial } from 'ts-essentials';
 import { SanitizedConfig } from 'payload/config';
 import { analyzePayload } from './payload-config';
 
-const baseConfig: OpenAPIObject = {
-  openapi: '3.0.3',
-  info: {
-    title: 'Payload CMS',
-    version: '1.0.0',
-  },
-  servers: [{ url: '/api' }],
-  paths: {},
-  components: {
-    securitySchemes: {
-      basicAuth: {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'jwt',
-      },
-    },
-  },
-  externalDocs: {
-    description: 'Payload REST API documentation',
-    url: 'https://payloadcms.com/docs/rest-api/overview',
-  },
-};
+import baseConfig from './base-config';
 
 interface PackageInfo {
   name?: string;

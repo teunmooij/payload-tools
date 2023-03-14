@@ -3,7 +3,7 @@ import { SanitizedCollectionConfig } from 'payload/types';
 import { entityToJSONSchema } from 'payload/utilities';
 import type { OpenAPIObject, PathObject, SchemaObject } from 'openapi3-ts';
 
-import schemas from './schemas';
+import { createRequestBody, createResponse, me } from './schemas';
 
 const getDescription = (collection: SanitizedCollectionConfig) => {
   const description = collection.admin?.description;
@@ -58,12 +58,8 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
             summary: 'Current user data',
             description: 'Data about the current user',
             tags: ['auth'],
-            produces: ['application/json'],
             responses: {
-              '200': {
-                description: 'successful operation',
-                schema: { '$ref': '#/components/schemas/me' },
-              },
+              '200': createResponse('successful operation', `${collection.slug}-me`),
             },
           },
         };
@@ -73,24 +69,10 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
             summary: 'Login',
             description: 'Login',
             tags: ['auth'],
-            consumes: ['application/json'],
-            produces: ['application/json'],
-            parameters: [
-              {
-                in: 'body',
-                name: 'body',
-                required: true,
-                description: "The user's credentials",
-                schema: {
-                  '$ref': '#/components/schemas/login',
-                },
-              },
-            ],
+            requestBody: createRequestBody('login'),
             responses: {
-              '200': {
-                description: 'successful operation',
-                schema: { '$ref': '#/components/schemas/me' },
-              },
+              '200': createResponse('successful operation', `${collection.slug}-me`),
+              '401': createResponse('unauthorized', 'errorMessage'),
             },
           },
         };
@@ -100,30 +82,24 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
             summary: 'Logout',
             description: 'Logout',
             tags: ['auth'],
-            produces: ['application/json'],
             responses: {
-              '200': {
-                description: 'successful operation',
-                schema: {
-                  type: 'object',
-                  properties: { message: { type: 'string' } },
-                },
-              },
+              '200': createResponse('successful operation', {
+                type: 'object',
+                properties: { message: { type: 'string' } },
+              }),
+              '400': createResponse('no user', 'errorMessage'),
             },
           },
         };
 
-        dict[`/${collection.slug}/refresh`] = {
+        dict[`/${collection.slug}/refresh-token`] = {
           post: {
             summary: 'Refresh JWT',
             description: 'Refresh the JWT token',
             tags: ['auth'],
-            produces: ['application/json'],
             responses: {
-              '200': {
-                description: 'successful operation',
-                schema: { '$ref': '#/components/schemas/me' },
-              },
+              '200': createResponse('successful operation', `${collection.slug}-me`),
+              '404': createResponse('not found', 'errorMessage'),
             },
           },
         };
@@ -136,15 +112,9 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
             summary: "Current user's resource access",
             description: "Lists the user's access per resource",
             tags: ['auth'],
-            produces: ['application/json'],
             security: [{ basicAuth: [] }],
             responses: {
-              '200': {
-                description: 'successful operation',
-                schema: {
-                  '$ref': '#/components/schemas/access',
-                },
-              },
+              '200': createResponse('successful operation', 'access'),
             },
           },
         },
@@ -258,18 +228,18 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
     return dict;
   }, authPaths);
 
-  const collectionDefinitions = payloadConfig.collections.reduce(
-    (dict, collection) => {
-      dict[collection.slug] = entityToJSONSchema(payloadConfig, collection) as SchemaObject;
-      return dict;
-    },
-    { ...schemas },
-  );
+  const schemas = payloadConfig.collections.reduce((dict, collection) => {
+    dict[collection.slug] = entityToJSONSchema(payloadConfig, collection) as SchemaObject;
+    if (collection.auth) {
+      dict[`${collection.slug}-me`] = me(collection.slug);
+    }
+    return dict;
+  }, {} as Record<string, SchemaObject>);
 
   return {
     paths,
     components: {
-      schemas: collectionDefinitions,
+      schemas,
     },
   };
 };

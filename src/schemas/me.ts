@@ -1,12 +1,13 @@
 import type { SchemaObject } from 'openapi3-ts';
 
-const me: SchemaObject = {
+const me = (slug: string): SchemaObject => ({
   title: 'Me',
   type: 'object',
   additionalProperties: false,
   properties: {
     user: {
-      '$ref': '#/components/schemas/users',
+      '$ref': `#/components/schemas/${slug}`,
+      nullable: true,
     },
     token: {
       type: 'string',
@@ -15,7 +16,7 @@ const me: SchemaObject = {
       type: 'number',
     },
   },
-  'required': ['user', 'token', 'exp'],
-};
+  'required': ['user'],
+});
 
 export default me;
