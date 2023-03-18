@@ -26,7 +26,7 @@ const getSecurity = (collection: SanitizedCollectionConfig, operation: keyof San
   return [{ basicAuth: [] }];
 };
 
-const getPaginatedDocumentSchema = (slug: string) => ({
+const createPaginatedDocumentSchema = (slug: string): SchemaObject => ({
   type: 'object',
   properties: {
     docs: {
@@ -46,6 +46,17 @@ const getPaginatedDocumentSchema = (slug: string) => ({
     nextPage: { type: 'number' },
   },
   required: ['docs', 'totalDocs', 'limit', 'totalPages', 'page', 'pagingCounter', 'hasPrevPage', 'hasNextPage'],
+});
+
+const createUpsertConfirmationSchema = (slug: string): SchemaObject => ({
+  type: 'object',
+  properties: {
+    doc: {
+      '$ref': `#/components/schemas/${slug}`,
+    },
+    message: { type: 'string' },
+  },
+  required: ['doc', 'message'],
 });
 
 export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIObject> => {
@@ -158,18 +169,18 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
         security: getSecurity(collection, 'read'),
         parameters: [...findParams],
         responses: {
-          '200': {
-            description: 'successful operation',
-            schema: getPaginatedDocumentSchema(collection.slug),
-          },
+          '200': createResponse('successful operation', createPaginatedDocumentSchema(collection.slug)),
         },
       },
       post: {
         summary: `Create a new ${collection.slug}`,
         description: `Create a new ${collection.slug}`,
         tags: [collection.slug],
-        produces: ['application/json'],
         security: getSecurity(collection, 'create'),
+        requestBody: createRequestBody(collection.slug),
+        responses: {
+          '200': createUpsertConfirmationSchema(collection.slug),
+        },
       },
     };
     dict[`/${collection.slug}/{id}`] = {
@@ -177,7 +188,6 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
         summary: `Get a single ${collection.slug} by its id`,
         description: `Get a single ${collection.slug} by its id`,
         tags: [collection.slug],
-        produces: ['application/json'],
         security: getSecurity(collection, 'read'),
         parameters: [
           {
@@ -190,15 +200,8 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
           ...findParams,
         ],
         responses: {
-          '200': {
-            description: 'successful operation',
-            schema: {
-              '$ref': `#/components/schemas/${collection.slug}`,
-            },
-          },
-          '404': {
-            description: 'not found',
-          },
+          '200': createResponse('successful operation', collection.slug),
+          '404': createResponse('not found', 'errorMessage'),
         },
       },
       patch: {
@@ -207,6 +210,20 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
         tags: [collection.slug],
         produces: ['application/json'],
         security: getSecurity(collection, 'update'),
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: `id of the ${collection.slug}`,
+            required: true,
+            type: 'string',
+          },
+        ],
+        requestBody: createRequestBody(collection.slug),
+        responses: {
+          '200': createUpsertConfirmationSchema(collection.slug),
+          '404': createResponse('not found', 'errorMessage'),
+        },
       },
       delete: {
         summary: `Deletes an existing ${collection.slug}`,
@@ -223,6 +240,10 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
             type: 'string',
           },
         ],
+        responses: {
+          '200': createUpsertConfirmationSchema(collection.slug),
+          '404': createResponse('not found', 'errorMessage'),
+        },
       },
     };
     return dict;
