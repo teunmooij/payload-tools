@@ -19,7 +19,6 @@ const baseConfig: OpenAPIObject = {
     title: 'Payload CMS',
     version: '1.0.0',
   },
-  servers: [{ url: '/api' }],
   paths: {},
   components: {
     securitySchemes: {

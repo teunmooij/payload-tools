@@ -258,6 +258,7 @@ export const analyzePayload = (payloadConfig: SanitizedConfig): Partial<OpenAPIO
   }, {} as Record<string, SchemaObject>);
 
   return {
+    servers: [{ url: payloadConfig.routes.api || '/api' }],
     paths,
     components: {
       schemas,
