@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import payload from 'payload';
-import initSwagger from 'payload-swagger';
+// import initSwagger from 'payload-swagger';
 
 dotenv.config();
 const app = express();
@@ -23,7 +23,7 @@ const start = async () => {
   });
 
   // Add your own express routes here
-  initSwagger(app, payload.config);
+  // initSwagger(app, payload.config);
 
   app.listen(3000);
 };
