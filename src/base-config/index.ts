@@ -1,8 +1,11 @@
 import type { OpenAPIObject, ResponseObject, SchemaObject } from 'openapi3-ts';
-import access from '../base-config/access';
-import login from './login';
-import error, { errorMessage } from '../base-config/error-response';
 import { SanitizedConfig } from 'payload/config';
+
+import access from './access';
+import login from './login';
+import error, { errorMessage } from './error-response';
+
+export * from './parameters';
 
 const schemas: Record<string, SchemaObject> = {
   login,

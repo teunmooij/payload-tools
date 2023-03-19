@@ -1,6 +1,6 @@
 {
   "name": "payload-swagger",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Swagger plugin for payload cms",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -50,7 +50,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/teunmooij/typescript-module-template.git"
+    "url": "git+https://github.com/teunmooij/payload-swagger.git"
   },
   "keywords": [
     "swagger",
@@ -62,7 +62,7 @@
   "author": "Teun Mooij",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/teunmooij/typescript-module-template/issues"
+    "url": "https://github.com/teunmooij/payload-swagger/issues"
   },
-  "homepage": "https://github.com/teunmooij/typescript-module-template#readme"
+  "homepage": "https://github.com/teunmooij/payload-swagger#readme"
 }

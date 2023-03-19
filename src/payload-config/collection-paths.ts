@@ -1,48 +1,10 @@
 import { PathObject } from 'openapi3-ts';
 import { SanitizedCollectionConfig } from 'payload/types';
+import { basicParameters, findParameters } from '../base-config';
 import { createPaginatedDocumentSchema, createRequestBody, createResponse, createUpsertConfirmationSchema } from '../schemas';
+import { getDescription } from '../utils';
 import { getRouteAccess } from './route-access';
 
-const findParams = [
-  {
-    name: 'sort',
-    in: 'query',
-    description: 'sort by field',
-    type: 'string',
-  },
-  {
-    name: 'where',
-    in: 'query',
-    description: 'pass a where query to constrain returned documents (complex type, see documentation)',
-  },
-  {
-    name: 'limit',
-    in: 'query',
-    description: 'limit the returned documents to a certain number',
-    type: 'number',
-  },
-  {
-    name: 'page',
-    in: 'query',
-    description: 'get a specific page of documents',
-    type: 'number',
-  },
-];
-
-const getDescription = (collection: SanitizedCollectionConfig) => {
-  const description = collection.admin?.description;
-  if (typeof description === 'string') return description;
-  if (typeof description === 'function') {
-    try {
-      const value = description();
-      if (typeof value === 'string') return value;
-    } catch {
-      // ignore
-    }
-  }
-
-  return collection.slug;
-};
 export const getCollectionPaths = async (
   collection: SanitizedCollectionConfig,
   disableAccessAnalysis: boolean,
@@ -56,7 +18,7 @@ export const getCollectionPaths = async (
         description,
         tags: [collection.slug],
         security: await getRouteAccess(collection, 'read', disableAccessAnalysis),
-        parameters: [...findParams],
+        parameters: [...basicParameters, ...findParameters],
         responses: {
           '200': createResponse('successful operation', createPaginatedDocumentSchema(collection.slug)),
         },
@@ -66,6 +28,7 @@ export const getCollectionPaths = async (
         description: `Create a new ${collection.slug}`,
         tags: [collection.slug],
         security: await getRouteAccess(collection, 'create', disableAccessAnalysis),
+        parameters: basicParameters,
         requestBody: createRequestBody(collection.slug),
         responses: {
           '200': createUpsertConfirmationSchema(collection.slug),
@@ -86,7 +49,8 @@ export const getCollectionPaths = async (
             required: true,
             type: 'string',
           },
-          ...findParams,
+          ...basicParameters,
+          ...findParameters,
         ],
         responses: {
           '200': createResponse('successful operation', collection.slug),
@@ -106,6 +70,7 @@ export const getCollectionPaths = async (
             required: true,
             type: 'string',
           },
+          ...basicParameters,
         ],
         requestBody: createRequestBody(collection.slug),
         responses: {
@@ -126,6 +91,7 @@ export const getCollectionPaths = async (
             required: true,
             type: 'string',
           },
+          ...basicParameters,
         ],
         responses: {
           '200': createUpsertConfirmationSchema(collection.slug),
