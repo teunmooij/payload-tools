@@ -7,7 +7,7 @@ export const createAccessPath = (): PathObject => ({
       summary: "Current user's resource access",
       description: "Lists the user's access per resource",
       tags: ['auth'],
-      security: [{ basicAuth: [] }],
+      security: [{ basicAuth: [], cookieAuth: [] }],
       responses: {
         '200': createResponse('successful operation', 'access'),
       },

@@ -8,7 +8,7 @@ import { serveFile } from './utils/serve-file';
 export { createDocument } from './open-api';
 
 export default async (app: Express, config: SanitizedConfig, options?: Options) => {
-  const document = await createDocument(config);
+  const document = await createDocument(config, options);
 
   app.use('/api-docs/specs', (req, res) => res.json(document));
   if (document.info.license?.url) {

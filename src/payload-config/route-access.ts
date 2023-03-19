@@ -19,11 +19,11 @@ export const getRouteAccess = async (
 
   if (!access) {
     // default: any logged in user
-    return [{ basicAuth: [] }];
+    return [{ basicAuth: [], cookieAuth: [] }];
   }
 
   if (disableAccessAnalysis || (await allowsAnonymous(access))) return undefined;
 
   // If anonymous is not allow, we'll asume there's basic security
-  return [{ basicAuth: [] }];
+  return [{ basicAuth: [], cookieAuth: [] }];
 };

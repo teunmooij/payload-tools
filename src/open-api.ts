@@ -7,7 +7,7 @@ import { DeepPartial } from 'ts-essentials';
 import { SanitizedConfig } from 'payload/config';
 import { analyzePayload } from './payload-config';
 
-import baseConfig from './base-config';
+import createBaseConfig from './base-config';
 import { Options } from './types';
 
 interface PackageInfo {
@@ -31,7 +31,7 @@ const readJsonFile = async <T = any>(relativePath: string): Promise<Partial<T>> 
 };
 
 const merge = (...args: DeepPartial<OpenAPIObject>[]) =>
-  mergewith(baseConfig, ...args, (first: any, second: any) => {
+  mergewith(createBaseConfig, ...args, (first: any, second: any) => {
     if (Array.isArray(first)) return first.concat(second);
     return undefined;
   });
@@ -57,5 +57,5 @@ export const createDocument = async (payloadConfig: SanitizedConfig, options: Op
     license: licenseInfo,
   };
 
-  return merge(baseConfig, { info }, payloadInfo, openapi, openApiInfo);
+  return merge(createBaseConfig(payloadConfig), { info }, payloadInfo, openapi, openApiInfo);
 };

@@ -2,6 +2,7 @@ import type { OpenAPIObject, ResponseObject, SchemaObject } from 'openapi3-ts';
 import access from '../base-config/access';
 import login from './login';
 import error, { errorMessage } from '../base-config/error-response';
+import { SanitizedConfig } from 'payload/config';
 
 const schemas: Record<string, SchemaObject> = {
   login,
@@ -13,7 +14,7 @@ const responses: Record<string, ResponseObject> = {
   error,
 };
 
-const baseConfig: OpenAPIObject = {
+const createBaseConfig = (payloadConfig: SanitizedConfig): OpenAPIObject => ({
   openapi: '3.0.3',
   info: {
     title: 'Payload CMS',
@@ -27,6 +28,11 @@ const baseConfig: OpenAPIObject = {
         scheme: 'bearer',
         bearerFormat: 'jwt',
       },
+      cookieAuth: {
+        in: 'cookie',
+        type: 'apiKey',
+        name: `${payloadConfig.cookiePrefix || 'payload'}-token`,
+      },
     },
     schemas,
     responses,
@@ -35,6 +41,6 @@ const baseConfig: OpenAPIObject = {
     description: 'Payload REST API documentation',
     url: 'https://payloadcms.com/docs/rest-api/overview',
   },
-};
+});
 
-export default baseConfig;
+export default createBaseConfig;
