@@ -8,6 +8,9 @@ import { serveFile } from './utils/serve-file';
 
 export { createDocument } from './open-api';
 
+/**
+ * Add swagger routes to a payload server
+ */
 const loadSwagger = async (app: Express, config: SanitizedConfig, options?: Options) => {
   const document = await createDocument(config, options);
 
@@ -19,6 +22,9 @@ const loadSwagger = async (app: Express, config: SanitizedConfig, options?: Opti
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, { swaggerUrl: '/api-docs/specs' }));
 };
 
+/**
+ * Payload swagger plugin
+ */
 export const swagger =
   (options?: Options) =>
   (config: Config): Config => ({
@@ -34,8 +40,8 @@ export const swagger =
               fs: false,
               async_hooks: false,
               net: false,
-              stream: require.resolve('stream-browserify/'),
-              url: require.resolve('url/'),
+              stream: require.resolve('stream-browserify'),
+              url: require.resolve('url'),
               util: false,
               zlib: false,
               ...webpackConfig.resolve?.fallback,
@@ -62,3 +68,5 @@ export const swagger =
   });
 
 export default loadSwagger;
+
+export { Options };
