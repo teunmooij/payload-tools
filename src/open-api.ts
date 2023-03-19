@@ -36,6 +36,9 @@ const merge = (...args: DeepPartial<OpenAPIObject>[]) =>
     return undefined;
   });
 
+/**
+ * Creates an openapi document for the given payload configuration
+ */
 export const createDocument = async (payloadConfig: SanitizedConfig, options: Options = {}): Promise<OpenAPIObject> => {
   const { name, version, description, license, openapi = {} } = await readJsonFile<PackageInfo>('package.json');
   const hasLicenseFile = license && fs.existsSync(path.join(process.cwd(), 'LICENSE'));

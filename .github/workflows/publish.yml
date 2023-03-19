@@ -1,11 +1,9 @@
-# to enable: add NPM_token secret and activate main branch
 name: Build and publish
 
 on:
   push:
     branches:
-      # - main
-      - some-non-existing-branch
+      - main
 
 jobs:
   build_and_publish:
