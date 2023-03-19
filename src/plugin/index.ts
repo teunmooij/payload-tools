@@ -2,6 +2,7 @@ import { Payload } from 'payload';
 import { Config } from 'payload/config';
 import { loadSwagger } from '../swagger';
 import { Options } from '../types';
+import path from 'path';
 
 /**
  * Payload swagger plugin
@@ -19,13 +20,11 @@ export const swagger =
             ...webpackConfig.resolve,
             fallback: {
               fs: false,
-              async_hooks: false,
-              net: false,
-              stream: require.resolve('stream-browserify'),
-              url: require.resolve('url'),
-              util: false,
-              zlib: false,
               ...webpackConfig.resolve?.fallback,
+            },
+            alias: {
+              ...webpackConfig.resolve?.alias,
+              [path.resolve(__dirname, '../swagger')]: path.resolve(__dirname, 'dummy-module'),
             },
           },
         } as any;
