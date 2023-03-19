@@ -1,5 +1,5 @@
 import { SecurityRequirementObject } from 'openapi3-ts';
-import { Access, SanitizedCollectionConfig } from 'payload/types';
+import { Access, SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
 
 const allowsAnonymous = async (access: Access): Promise<boolean> => {
   try {
@@ -11,11 +11,11 @@ const allowsAnonymous = async (access: Access): Promise<boolean> => {
 };
 
 export const getRouteAccess = async (
-  collection: SanitizedCollectionConfig,
+  collection: SanitizedCollectionConfig | SanitizedGlobalConfig,
   operation: keyof SanitizedCollectionConfig['access'],
   disableAccessAnalysis: boolean,
 ): Promise<SecurityRequirementObject[] | undefined> => {
-  const access = collection.access[operation];
+  const access = (collection.access as any)[operation] as Access | undefined;
 
   if (!access) {
     // default: any logged in user

@@ -2,22 +2,9 @@ import { PathObject } from 'openapi3-ts';
 import { SanitizedCollectionConfig } from 'payload/types';
 import { basicParameters, findParameters } from '../base-config';
 import { createPaginatedDocumentSchema, createRequestBody, createResponse, createUpsertConfirmationSchema } from '../schemas';
+import { getDescription } from '../utils';
 import { getRouteAccess } from './route-access';
 
-const getDescription = (collection: SanitizedCollectionConfig) => {
-  const description = collection.admin?.description;
-  if (typeof description === 'string') return description;
-  if (typeof description === 'function') {
-    try {
-      const value = description();
-      if (typeof value === 'string') return value;
-    } catch {
-      // ignore
-    }
-  }
-
-  return collection.slug;
-};
 export const getCollectionPaths = async (
   collection: SanitizedCollectionConfig,
   disableAccessAnalysis: boolean,
