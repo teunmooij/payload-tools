@@ -31,7 +31,7 @@ const readJsonFile = async <T = any>(relativePath: string): Promise<Partial<T>> 
 };
 
 const merge = (...args: DeepPartial<OpenAPIObject>[]) =>
-  mergewith(createBaseConfig, ...args, (first: any, second: any) => {
+  mergewith({}, ...args, (first: any, second: any) => {
     if (Array.isArray(first)) return first.concat(second);
     return undefined;
   });
