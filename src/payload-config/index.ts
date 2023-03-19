@@ -1,5 +1,5 @@
 import { SanitizedConfig } from 'payload/config';
-import { entityToJSONSchema } from 'payload/utilities';
+import { entityToJSONSchema } from '../utils/entity-to-json-schema';
 import type { OpenAPIObject, SchemaObject } from 'openapi3-ts';
 
 import { me } from '../schemas';
