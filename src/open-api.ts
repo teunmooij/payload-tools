@@ -8,6 +8,7 @@ import { SanitizedConfig } from 'payload/config';
 import { analyzePayload } from './payload-config';
 
 import baseConfig from './base-config';
+import { Options } from './types';
 
 interface PackageInfo {
   name?: string;
@@ -35,7 +36,7 @@ const merge = (...args: DeepPartial<OpenAPIObject>[]) =>
     return undefined;
   });
 
-export const createDocument = async (payloadConfig: SanitizedConfig): Promise<OpenAPIObject> => {
+export const createDocument = async (payloadConfig: SanitizedConfig, options: Options = {}): Promise<OpenAPIObject> => {
   const { name, version, description, license, openapi = {} } = await readJsonFile<PackageInfo>('package.json');
   const hasLicenseFile = license && fs.existsSync(path.join(process.cwd(), 'LICENSE'));
   const licenseInfo: LicenseObject | undefined = license
@@ -47,7 +48,7 @@ export const createDocument = async (payloadConfig: SanitizedConfig): Promise<Op
 
   const openApiInfo = await readJsonFile<DeepPartial<OpenAPIObject>>('.openapi');
 
-  const payloadInfo = analyzePayload(payloadConfig);
+  const payloadInfo = await analyzePayload(payloadConfig, options);
 
   const info: Partial<InfoObject> = {
     title: name,

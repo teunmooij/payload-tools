@@ -7,9 +7,7 @@ const Todo: CollectionConfig = {
     useAsTitle: 'listName',
   },
   access: {
-    create: () => true,
     read: () => true,
-    update: () => true,
     delete: () => true,
   },
   fields: [
