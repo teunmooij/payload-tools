@@ -1,6 +1,6 @@
 {
   "name": "payload-swagger",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Swagger plugin for payload cms",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

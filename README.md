@@ -1,3 +1,6 @@
+[![snyk](https://snyk.io/test/github/teunmooij/payload-swagger/badge.svg)](https://snyk.io/test/github/teunmooij/payload-swagger)
+[![npm version](https://badge.fury.io/js/payload-swagger.svg)](https://badge.fury.io/js/payload-swagger)
+
 # payload swagger
 
 Swagger plugin for payload cms:
