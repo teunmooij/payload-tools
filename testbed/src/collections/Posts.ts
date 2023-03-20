@@ -86,6 +86,31 @@ const Posts: CollectionConfig = {
       defaultValue: () => new Date(),
     },
   ],
+  endpoints: [
+    {
+      path: '/category/:category',
+      method: 'get',
+      handler: async (req, res) => {
+        const { docs } = await req.payload.find<any>({
+          collection: 'categories',
+          where: { name: { equals: req.params.category } },
+        });
+        if (!docs.length) {
+          return res.status(404).json({ errors: [{ message: 'Category not found', given: req.params.category }] });
+        }
+
+        const { limit, page, sort } = req.query;
+        const posts = await req.payload.find<any>({
+          collection: 'posts',
+          where: { category: { equals: (docs[0] as any).id } },
+          limit: limit && Number(limit),
+          page: page && Number(page),
+          sort: sort && String(sort),
+        });
+        res.json(posts);
+      },
+    },
+  ],
 };
 
 export default Posts;

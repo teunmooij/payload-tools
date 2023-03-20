@@ -42,7 +42,7 @@ await payload.init({
   // rest of init options
 });
 
-initSwagger(app, payload.config, {
+initSwagger(payload, {
   /* see options section */
 });
 ```
@@ -113,8 +113,12 @@ interface Options {
 }
 ```
 
-<!-- ## Version history
+## Version history
 
-### v1.0
+### 0.1.x
+- Added custom endpoints
+- Refactored `initSwagger` parameters
 
-- Initial version -->
+### 0.0.x
+
+- Initial version
