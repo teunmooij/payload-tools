@@ -35,11 +35,7 @@ export const swagger =
       },
     },
     onInit: async (payload: Payload) => {
-      if (payload.express) {
-        await loadSwagger(payload.express, payload.config, options);
-      } else {
-        payload.logger.warn('Unable to load swagger: express not available');
-      }
+      await loadSwagger(payload, options);
 
       if (config.onInit) {
         return config.onInit(payload);

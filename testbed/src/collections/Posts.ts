@@ -103,9 +103,9 @@ const Posts: CollectionConfig = {
         const posts = await req.payload.find<any>({
           collection: 'posts',
           where: { category: { equals: (docs[0] as any).id } },
-          limit,
-          page,
-          sort,
+          limit: limit && Number(limit),
+          page: page && Number(page),
+          sort: sort && String(sort),
         });
         res.json(posts);
       },
