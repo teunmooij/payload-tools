@@ -1,6 +1,5 @@
 import fsAsync from 'fs/promises';
 import fs from 'fs';
-import mergewith from 'lodash.mergewith';
 import { InfoObject, LicenseObject, OpenAPIObject } from 'openapi3-ts';
 import path from 'path';
 import { DeepPartial } from 'ts-essentials';
@@ -8,6 +7,7 @@ import { SanitizedConfig } from 'payload/config';
 import { analyzePayload } from './payload-config';
 
 import createBaseConfig from './base-config';
+import { merge } from './utils';
 import { Options } from './types';
 
 interface PackageInfo {
@@ -29,12 +29,6 @@ const readJsonFile = async <T = any>(relativePath: string): Promise<Partial<T>> 
     return {};
   }
 };
-
-const merge = (...args: DeepPartial<OpenAPIObject>[]) =>
-  mergewith({}, ...args, (first: any, second: any) => {
-    if (Array.isArray(first)) return first.concat(second);
-    return undefined;
-  });
 
 /**
  * Creates an openapi document for the given payload configuration
@@ -60,5 +54,11 @@ export const createDocument = async (payloadConfig: SanitizedConfig, options: Op
     license: licenseInfo,
   };
 
-  return merge(createBaseConfig(payloadConfig), { info }, payloadInfo, openapi, openApiInfo);
+  return merge<OpenAPIObject>(
+    createBaseConfig(payloadConfig),
+    { info },
+    payloadInfo,
+    openapi as OpenAPIObject, // todo: fix DeepPartial indexer issue
+    openApiInfo as OpenAPIObject, // todo: fix DeepPartial indexer issue
+  );
 };

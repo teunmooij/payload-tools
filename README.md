@@ -113,8 +113,11 @@ interface Options {
 }
 ```
 
-<!-- ## Version history
+## Version history
 
-### v1.0
+### 0.1.x
+- Added custom endpoints
 
-- Initial version -->
+### 0.0.x
+
+- Initial version
