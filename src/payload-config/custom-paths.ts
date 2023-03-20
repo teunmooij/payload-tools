@@ -1,4 +1,5 @@
 import type { OperationObject, PathItemObject, PathObject, SchemaObject } from 'openapi3-ts';
+import path from 'path';
 import { Endpoint, SanitizedConfig } from 'payload/config';
 import { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
 import { createResponse } from '../schemas';
@@ -49,8 +50,8 @@ export const getCustomPaths = (config: Config, type: ConfigType): PathObject => 
 
   for (const endpoint of config.endpoints) {
     // extract parameteres
-    const path = `${basePath}/${endpoint.path}`;
-    if (!paths[path]) paths[path] = {};
+    const route = path.join(basePath, endpoint.path);
+    if (!paths[route]) paths[route] = {};
 
     // determine summary, description, response
     const responseSchema: SchemaObject | string = {
@@ -69,7 +70,7 @@ export const getCustomPaths = (config: Config, type: ConfigType): PathObject => 
       operation.servers = [{ url: '' }];
     }
 
-    setOperation(paths[path], operation, endpoint.method);
+    setOperation(paths[route], operation, endpoint.method);
   }
 
   return paths;

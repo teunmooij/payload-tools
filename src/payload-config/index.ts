@@ -8,6 +8,7 @@ import { getCollectionPaths } from './collection-paths';
 import { getGlobalPaths } from './global-paths';
 import { Options } from '../types';
 import { entityToJSONSchema } from '../utils';
+import { getCustomPaths } from './custom-paths';
 
 const isAuthCollection = (collection: any) => !!collection.auth;
 
@@ -34,6 +35,8 @@ export const analyzePayload = async (
     }),
   );
 
+  const customPaths = getCustomPaths(payloadConfig, 'payload');
+
   const schemas = [...payloadConfig.globals, ...payloadConfig.collections].reduce((dict, collection) => {
     dict[collection.slug] = entityToJSONSchema(payloadConfig, collection) as SchemaObject;
     if (isAuthCollection(collection)) {
@@ -44,7 +47,7 @@ export const analyzePayload = async (
 
   return {
     servers: [{ url: payloadConfig.routes.api || '/api' }],
-    paths: Object.assign({}, ...authPaths, accessPath, ...globalPaths, ...collectionPaths),
+    paths: Object.assign({}, ...authPaths, accessPath, ...globalPaths, ...collectionPaths, customPaths),
     components: {
       schemas,
     },
