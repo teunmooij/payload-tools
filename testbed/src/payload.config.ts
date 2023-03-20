@@ -97,6 +97,18 @@ export default buildConfig({
     locales: ['en', 'es', 'de'],
   },
 
+  endpoints: [
+    {
+      path: '/echo/:value',
+      method: 'get',
+      handler: (req, res) => {
+        const { value } = req.params;
+        res.json(value);
+      },
+      root: true,
+    },
+  ],
+
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },

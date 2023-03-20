@@ -11,6 +11,7 @@ export const getCollectionPaths = async (
   disableAccessAnalysis: boolean,
 ): Promise<PathObject> => {
   const description = getDescription(collection);
+  const singleItem = collection.labels?.singular || collection.slug;
 
   return Object.assign(
     {
@@ -26,8 +27,8 @@ export const getCollectionPaths = async (
           },
         },
         post: {
-          summary: `Create a new ${collection.slug}`,
-          description: `Create a new ${collection.slug}`,
+          summary: `Create a new ${singleItem}`,
+          description: `Create a new ${singleItem}`,
           tags: [collection.slug],
           security: await getRouteAccess(collection, 'create', disableAccessAnalysis),
           parameters: basicParameters,
@@ -39,17 +40,17 @@ export const getCollectionPaths = async (
       },
       [`/${collection.slug}/{id}`]: {
         get: {
-          summary: `Get a single ${collection.slug} by its id`,
-          description: `Get a single ${collection.slug} by its id`,
+          summary: `Get a single ${singleItem} by its id`,
+          description: `Get a single ${singleItem} by its id`,
           tags: [collection.slug],
           security: await getRouteAccess(collection, 'read', disableAccessAnalysis),
           parameters: [
             {
               name: 'id',
               in: 'path',
-              description: `id of the ${collection.slug}`,
+              description: `id of the ${singleItem}`,
               required: true,
-              type: 'string',
+              schema: { type: 'string' },
             },
             ...basicParameters,
             ...findParameters,
@@ -60,17 +61,17 @@ export const getCollectionPaths = async (
           },
         },
         patch: {
-          summary: `Updates a ${collection.slug}`,
-          description: `Updates a ${collection.slug}`,
+          summary: `Updates a ${singleItem}`,
+          description: `Updates a ${singleItem}`,
           tags: [collection.slug],
           security: await getRouteAccess(collection, 'update', disableAccessAnalysis),
           parameters: [
             {
               name: 'id',
               in: 'path',
-              description: `id of the ${collection.slug}`,
+              description: `id of the ${singleItem}`,
               required: true,
-              type: 'string',
+              schema: { type: 'string' },
             },
             ...basicParameters,
           ],
@@ -81,15 +82,15 @@ export const getCollectionPaths = async (
           },
         },
         delete: {
-          summary: `Deletes an existing ${collection.slug}`,
-          description: `Deletes an existing ${collection.slug}`,
+          summary: `Deletes an existing ${singleItem}`,
+          description: `Deletes an existing ${singleItem}`,
           tags: [collection.slug],
           security: await getRouteAccess(collection, 'delete', disableAccessAnalysis),
           parameters: [
             {
               name: 'id',
               in: 'path',
-              description: `id of the ${collection.slug}`,
+              description: `id of the ${singleItem}`,
               required: true,
               type: 'string',
             },

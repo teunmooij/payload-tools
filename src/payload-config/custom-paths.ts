@@ -1,5 +1,5 @@
-import type { OperationObject, PathItemObject, PathObject, SchemaObject } from 'openapi3-ts';
-import path from 'path';
+import type { OperationObject, ParameterObject, PathItemObject, PathObject, SchemaObject } from 'openapi3-ts';
+import nodePath from 'path';
 import { Endpoint, SanitizedConfig } from 'payload/config';
 import { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
 import { createResponse } from '../schemas';
@@ -41,6 +41,42 @@ const setOperation = (pathItem: PathItemObject, operation: OperationObject, meth
   }
 };
 
+const isRelevant = (endpoint: Omit<Endpoint, 'root'>, configType: ConfigType) => {
+  switch (configType) {
+    case 'global':
+      if (endpoint.path === '/access' && endpoint.method === 'get') return false;
+      if (endpoint.path === '/' && ['get', 'post'].includes(endpoint.method)) return false;
+      break;
+    case 'collection':
+      if (endpoint.path === '/unlock' && endpoint.method === 'post') return false;
+  }
+
+  return true;
+};
+
+const getPath = (basePath: string, relativePath: string): { path: string; parameters?: ParameterObject[] } => {
+  const parameters: ParameterObject[] = [];
+  const sanitizedPath = relativePath
+    .split('/')
+    .map(part => {
+      const match = part.match(/^(?<param>:)?(?<name>.*)(?<optional>\?)?$/);
+      const { param, name, optional } = match!.groups!;
+      if (!param) return part;
+
+      parameters.push({
+        name,
+        in: 'path',
+        required: !optional,
+        schema: { type: 'string' },
+      });
+      return `{${name}}`;
+    })
+    .join('/');
+
+  const path = nodePath.join(basePath, sanitizedPath);
+  return { path, parameters };
+};
+
 export const getCustomPaths = (config: Config, type: ConfigType): PathObject => {
   if (!config.endpoints?.length) return {};
 
@@ -48,10 +84,9 @@ export const getCustomPaths = (config: Config, type: ConfigType): PathObject => 
   const basePath = getBasePath(config, type);
   const tags = getTags(config, type);
 
-  for (const endpoint of config.endpoints) {
-    // extract parameteres
-    const route = path.join(basePath, endpoint.path);
-    if (!paths[route]) paths[route] = {};
+  for (const endpoint of config.endpoints.filter(endpoint => isRelevant(endpoint, type))) {
+    const { path, parameters } = getPath(basePath, endpoint.path);
+    if (!paths[path]) paths[path] = {};
 
     // determine summary, description, response
     const responseSchema: SchemaObject | string = {
@@ -59,8 +94,10 @@ export const getCustomPaths = (config: Config, type: ConfigType): PathObject => 
     };
 
     const operation: OperationObject = {
-      tags,
+      summary: 'custom operation',
       description: 'custom operation',
+      tags,
+      parameters,
       responses: {
         '200': createResponse('succesful operation', responseSchema),
       },
@@ -70,7 +107,7 @@ export const getCustomPaths = (config: Config, type: ConfigType): PathObject => 
       operation.servers = [{ url: '' }];
     }
 
-    setOperation(paths[route], operation, endpoint.method);
+    setOperation(paths[path], operation, endpoint.method);
   }
 
   return paths;
