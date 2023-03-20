@@ -95,7 +95,9 @@ const Posts: CollectionConfig = {
           collection: 'categories',
           where: { name: { equals: req.params.category } },
         });
-        if (!docs.length) return res.status(404).json({ errors: [{ message: 'Category not found', given: req.params.category }] });
+        if (!docs.length) {
+          return res.status(404).json({ errors: [{ message: 'Category not found', given: req.params.category }] });
+        }
 
         const { limit, page, sort } = req.query;
         const posts = await req.payload.find<any>({
