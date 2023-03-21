@@ -2,10 +2,12 @@
   "name": "payload",
   "private": true,
   "scripts": {
+    "build": "npm run build --workspaces --if-present",
     "test": "npm test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "test:coverage": "npm run test:coverage --workspaces --if-present"
+    "test:coverage": "npm run test:coverage --workspaces --if-present",
+    "testbed": "npm run build && npm run dev -w packages/testbed"
   },
   "workspaces": [
     "packages/*"
