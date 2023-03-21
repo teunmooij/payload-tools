@@ -1,6 +1,4 @@
-src/
-test/
-testbed/
+workspaces/
 .husky/
 
 .eslintrc.js
