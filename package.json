@@ -2,7 +2,7 @@
   "name": "payload",
   "private": true,
   "workspaces": [
-    "workspaces/*"
+    "packages/*"
   ],
   "lint-staged": {
     "**/*.{js,ts}": "eslint --cache --fix",
