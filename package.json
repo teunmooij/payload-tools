@@ -1,0 +1,11 @@
+{
+  "name": "payload",
+  "private": true,
+  "workspaces": [
+    "workspaces/*"
+  ],
+  "lint-staged": {
+    "**/*.{js,ts}": "eslint --cache --fix",
+    "**/*.{js,ts,md}": "prettier --write"
+  }
+}

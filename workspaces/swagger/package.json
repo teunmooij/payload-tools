@@ -43,10 +43,6 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2"
   },
-  "lint-staged": {
-    "**/*.{js,ts}": "eslint --cache --fix",
-    "**/*.{js,ts,md}": "prettier --write"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/teunmooij/payload-swagger.git"
