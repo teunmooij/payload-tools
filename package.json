@@ -1,6 +1,12 @@
 {
   "name": "payload",
   "private": true,
+  "scripts": {
+    "test": "npm test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test:coverage": "npm run test:coverage --workspaces --if-present"
+  },
   "workspaces": [
     "packages/*"
   ],
