@@ -40,7 +40,7 @@ export default buildConfig({
         ...webpackConfig.resolve,
         alias: {
           ...webpackConfig.resolve?.alias,
-          react: path.resolve('../../../node_modules/react'),
+          react: path.resolve(__dirname, '../node_modules/react'),
         },
       },
     }),
