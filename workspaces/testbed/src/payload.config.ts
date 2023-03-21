@@ -33,6 +33,17 @@ export default buildConfig({
       beforeDashboard: [BeforeDashboard],
       afterDashboard: [AfterDashboard],
     },
+
+    webpack: webpackConfig => ({
+      ...webpackConfig,
+      resolve: {
+        ...webpackConfig.resolve,
+        alias: {
+          ...webpackConfig.resolve?.alias,
+          react: path.resolve('../../../node_modules/react'),
+        },
+      },
+    }),
   },
 
   // collections in Payload are synonymous with database tables, models or entities from other frameworks and systems
