@@ -6,7 +6,12 @@
 Swagger plugin for payload cms:
 
 - generate openAPI 3 documentation from your payload config
-- includes Swagger UI
+- adds routes for:
+  - openAPI document
+  - Swagger UI
+  - LICENSE file, if available
+
+If you only need the openAPI document, use [payload-openapi](https://www.npmjs.com/package/payload-openapi) instead.
 
 Version 0.x releases should be considered `beta`. Semantic version is not guaranteed until we reach version 1.
 
@@ -26,10 +31,6 @@ npm install payload-swagger
 
 ## Usage
 
-`payload-swagger` can be used as plugin or just to generate the openapi document.
-
-### As plugin
-
 ```typescript
 import { buildConfig } from 'payload/config';
 import path from 'path';
@@ -42,19 +43,6 @@ export default buildConfig({
     }),
   ],
   // The rest of your config goes here
-});
-```
-
-### Just create the openapi document
-
-`payload-swagger` creates openapi documents, version 3.0, as javascript object. If you need a yaml file, please use a library like `yaml` to convert it.
-
-```typescript
-import { createDocument } from 'payload-swagger';
-import payloadConfig from '...';
-
-const openapiDocument = createDocument(payloadConfig, {
-  /* see options section */
 });
 ```
 
@@ -95,6 +83,10 @@ interface Options {
 ```
 
 ## Version history
+
+### 0.3.x
+
+- moved openapi document creation into separate `payload-openapi` package
 
 ### 0.2.x
 
