@@ -7,16 +7,16 @@ on:
     paths:
       - "packages/swagger/**"
       # if payload-openapi is also updated, we need to wait for that build to complete
-      - "!packages/openapi/**"
-  workflow_run:
-    workflows:
-      - "Build and publish Openapi"
-    types:
-      - completed
-    branches:
-      - main
-    paths:
-      - "packages/swagger/**"
+  #     - "!packages/openapi/**"
+  # workflow_run:
+  #   workflows:
+  #     - "Build and publish Openapi"
+  #   types:
+  #     - completed
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "packages/swagger/**"
 
 jobs:
   build_and_publish:

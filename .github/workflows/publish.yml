@@ -25,6 +25,6 @@ jobs:
       - run: npm test
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v3
-      - run: npm run build -w ${{ inputs.workspace }}
+      - run: npm run build #-w ${{ inputs.workspace }}
       - run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
       - run: npm publish -w ${{ inputs.workspace }} --access public
