@@ -10,7 +10,7 @@
     "lint:fix": "eslint src/**/*.ts --quiet --fix",
     "test": "jest -c jest.config.ts",
     "test:coverage": "jest -c jest.config.ts --verbose --collectCoverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "npm run build"
   },
   "dependencies": {
     "lodash.mergewith": "^4.6.2"

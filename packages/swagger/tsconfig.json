@@ -1,21 +1,9 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "module": "commonjs",
-    "target": "es2015",
-    "allowJs": true,
-    "alwaysStrict": true,
-    "strict": true,
-    "preserveConstEnums": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "lib": ["es2015"],
-    "rootDir": "./src",
-    "declaration": true,
-    "skipLibCheck": true
+    "rootDir": "./src"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "test", "testbed", "./*.[js|ts]"]
+  "exclude": ["node_modules", "dist", "test", "./*.[js|ts]"]
 }
