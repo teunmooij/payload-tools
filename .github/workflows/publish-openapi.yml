@@ -1,0 +1,15 @@
+name: Build and publish Openapi
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/openapi/**"
+
+jobs:
+  build_and_publish:
+    uses: ./.github/workflows/publish.yml
+    with:
+      workspace: packages/openapi
+    secrets: ${{ secrets.NPM_TOKEN }}
