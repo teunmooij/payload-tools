@@ -1,0 +1,27 @@
+name: Build and publish Swagger
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/swagger/**"
+      # if payload-openapi is also updated, we need to wait for that build to complete
+      - "!packages/openapi/**"
+  workflow_run:
+    workflows:
+      - "Build and publish Openapi"
+    types:
+      - completed
+    branches:
+      - main
+    paths:
+      - "packages/swagger/**"
+
+jobs:
+  build_and_publish:
+    uses: ./.github/workflows/publish.yml
+    with:
+      workspace: packages/swagger
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,7 +1,7 @@
 {
-  "name": "payload-swagger",
-  "version": "0.3.0",
-  "description": "Swagger plugin for payload cms",
+  "name": "payload-openapi",
+  "version": "0.1.0",
+  "description": "Create openapi documentation for your payload cms",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -10,11 +10,10 @@
     "lint:fix": "eslint src/**/*.ts --quiet --fix",
     "test": "jest -c jest.config.ts",
     "test:coverage": "jest -c jest.config.ts --verbose --collectCoverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "npm run build"
   },
   "dependencies": {
-    "payload-openapi": "^0.1.0",
-    "swagger-ui-express": "^4.6.2"
+    "lodash.mergewith": "^4.6.2"
   },
   "peerDependencies": {
     "payload": "^1.6.22"
@@ -48,10 +47,8 @@
     "url": "git+https://github.com/teunmooij/payload.git"
   },
   "keywords": [
-    "swagger",
     "payload",
     "payloadcms",
-    "payload-plugin",
     "openAPI"
   ],
   "author": "Teun Mooij",
