@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - packages/swagger
+      - packages/swagger/**
 
 jobs:
   build_and_publish:
