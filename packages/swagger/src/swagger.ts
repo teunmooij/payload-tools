@@ -1,6 +1,6 @@
 import { Payload } from 'payload';
+import { createDocument } from 'payload-openapi';
 import swaggerUi from 'swagger-ui-express';
-import { createDocument } from './open-api';
 import { Options } from './types';
 import { serveFile } from './utils/serve-file';
 

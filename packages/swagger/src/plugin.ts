@@ -1,7 +1,7 @@
 import { Payload } from 'payload';
 import { Config } from 'payload/config';
-import { loadSwagger } from '../swagger';
-import { Options } from '../types';
+import { loadSwagger } from './swagger';
+import { Options } from './types';
 import path from 'path';
 
 /**
@@ -24,7 +24,7 @@ export const swagger =
             },
             alias: {
               ...webpackConfig.resolve?.alias,
-              [path.resolve(__dirname, '../swagger')]: path.resolve(__dirname, 'dummy-module'),
+              [path.resolve(__dirname, '../swagger')]: path.resolve(__dirname, 'utils/dummy-module'),
             },
           },
         } as any;
