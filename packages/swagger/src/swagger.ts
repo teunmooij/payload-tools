@@ -4,9 +4,6 @@ import { createDocument } from './open-api';
 import { Options } from './types';
 import { serveFile } from './utils/serve-file';
 
-/**
- * Add swagger routes to a payload server
- */
 export const loadSwagger = async (
   { express, config, logger }: Pick<Payload, 'express' | 'config' | 'logger'>,
   options?: Options,

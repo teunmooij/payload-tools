@@ -26,7 +26,7 @@ npm install payload-swagger
 
 ## Usage
 
-`payload-swagger` can be used either as plugin or just to generate the openapi document.
+`payload-swagger` can be used as plugin or just to generate the openapi document.
 
 ### As plugin
 

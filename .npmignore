@@ -1,7 +1,7 @@
 workspaces/
 .husky/
 
-.eslintrc.js
-.prettierrc.js
-jest.config.test
+.eslintrc.json
+.prettierrc.json
+jest.config.ts
 tsconfig.json
