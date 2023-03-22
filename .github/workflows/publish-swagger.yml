@@ -23,4 +23,5 @@ jobs:
     uses: ./.github/workflows/publish.yml
     with:
       workspace: packages/swagger
-    secrets: ${{ secrets.NPM_TOKEN }}
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
