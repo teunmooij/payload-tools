@@ -1,4 +1,4 @@
-import type { OpenAPIObject, ResponseObject, SchemaObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 import { SanitizedConfig } from 'payload/config';
 
 import access from './access';
@@ -7,17 +7,17 @@ import error, { errorMessage } from './error-response';
 
 export * from './parameters';
 
-const schemas: Record<string, SchemaObject> = {
+const schemas: Record<string, OpenAPIV3.SchemaObject> = {
   login,
   access,
   errorMessage,
 };
 
-const responses: Record<string, ResponseObject> = {
+const responses: Record<string, OpenAPIV3.ResponseObject> = {
   error,
 };
 
-const createBaseConfig = (payloadConfig: SanitizedConfig): OpenAPIObject => ({
+const createBaseConfig = (payloadConfig: SanitizedConfig): OpenAPIV3.Document => ({
   openapi: '3.0.3',
   info: {
     title: 'Payload CMS',

@@ -1,6 +1,6 @@
-import type { SchemaObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 
-const me = (slug: string): SchemaObject => ({
+const me = (slug: string): OpenAPIV3.SchemaObject => ({
   title: 'Me',
   type: 'object',
   additionalProperties: false,

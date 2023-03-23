@@ -1,7 +1,7 @@
-import { PathObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 import { createResponse } from '../schemas';
 
-export const createAccessPath = (): PathObject => ({
+export const createAccessPath = (): OpenAPIV3.PathsObject => ({
   '/access': {
     get: {
       summary: "Current user's resource access",

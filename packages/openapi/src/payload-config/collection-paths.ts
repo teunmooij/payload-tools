@@ -1,4 +1,4 @@
-import { PathObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 import { SanitizedCollectionConfig } from 'payload/types';
 import { basicParameters, findParameters } from '../base-config';
 import { createPaginatedDocumentSchema, createRequestBody, createResponse, createUpsertConfirmationSchema } from '../schemas';
@@ -9,7 +9,7 @@ import { getRouteAccess } from './route-access';
 export const getCollectionPaths = async (
   collection: SanitizedCollectionConfig,
   disableAccessAnalysis: boolean,
-): Promise<PathObject> => {
+): Promise<OpenAPIV3.PathsObject> => {
   const description = getDescription(collection);
   const singleItem = collection.labels?.singular || collection.slug;
 

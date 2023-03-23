@@ -1,8 +1,8 @@
-import { PathsObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 import { SanitizedCollectionConfig } from 'payload/types';
 import { createRequestBody, createResponse } from '../schemas';
 
-export const getAuthPaths = (collection: SanitizedCollectionConfig): PathsObject => {
+export const getAuthPaths = (collection: SanitizedCollectionConfig): OpenAPIV3.PathsObject => {
   if (!collection.auth) return {};
 
   return {

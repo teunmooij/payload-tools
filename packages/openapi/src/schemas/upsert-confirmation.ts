@@ -1,6 +1,6 @@
-import type { SchemaObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 
-export const createUpsertConfirmationSchema = (slug: string): SchemaObject => ({
+export const createUpsertConfirmationSchema = (slug: string): OpenAPIV3.SchemaObject => ({
   type: 'object',
   properties: {
     doc: {

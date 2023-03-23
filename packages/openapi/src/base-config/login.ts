@@ -1,6 +1,6 @@
-import type { SchemaObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 
-const login: SchemaObject = {
+const login: OpenAPIV3.SchemaObject = {
   title: 'Login request',
   type: 'object',
   additionalProperties: false,

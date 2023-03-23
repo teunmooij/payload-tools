@@ -1,6 +1,6 @@
-import type { ParameterObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 
-export const basicParameters: ParameterObject[] = [
+export const basicParameters: OpenAPIV3.ParameterObject[] = [
   {
     name: 'depth',
     in: 'query',
@@ -21,7 +21,7 @@ export const basicParameters: ParameterObject[] = [
   },
 ];
 
-export const findParameters = [
+export const findParameters: OpenAPIV3.ParameterObject[] = [
   {
     name: 'sort',
     in: 'query',

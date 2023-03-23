@@ -1,6 +1,6 @@
-import type { SchemaObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 
-const permission: SchemaObject = {
+const permission: OpenAPIV3.SchemaObject = {
   type: 'object',
   additionalProperties: false,
   properties: {
@@ -9,7 +9,7 @@ const permission: SchemaObject = {
   required: ['permission'],
 };
 
-const access: SchemaObject = {
+const access: OpenAPIV3.SchemaObject = {
   'title': 'Access',
   'type': 'object',
   'additionalProperties': false,

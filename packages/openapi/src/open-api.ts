@@ -1,6 +1,6 @@
 import fsAsync from 'fs/promises';
 import fs from 'fs';
-import { InfoObject, LicenseObject, OpenAPIObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 import path from 'path';
 import { DeepPartial } from 'ts-essentials';
 import { SanitizedConfig } from 'payload/config';
@@ -15,7 +15,7 @@ interface PackageInfo {
   description?: string;
   version?: string;
   license?: string;
-  openapi?: DeepPartial<OpenAPIObject>;
+  openapi?: DeepPartial<OpenAPIV3.Document>;
 }
 
 const readJsonFile = async <T = any>(relativePath: string): Promise<Partial<T>> => {
@@ -33,32 +33,32 @@ const readJsonFile = async <T = any>(relativePath: string): Promise<Partial<T>> 
 /**
  * Creates an openapi document for the given payload configuration
  */
-export const createDocument = async (payloadConfig: SanitizedConfig, options: Options = {}): Promise<OpenAPIObject> => {
+export const createDocument = async (payloadConfig: SanitizedConfig, options: Options = {}): Promise<OpenAPIV3.Document> => {
   const { name, version, description, license, openapi = {} } = await readJsonFile<PackageInfo>('package.json');
   const hasLicenseFile = license && fs.existsSync(path.join(process.cwd(), 'LICENSE'));
-  const licenseInfo: LicenseObject | undefined = license
+  const licenseInfo: OpenAPIV3.LicenseObject | undefined = license
     ? {
         name: license,
         url: hasLicenseFile ? '/api-docs/license' : undefined,
       }
     : undefined;
 
-  const openApiInfo = await readJsonFile<DeepPartial<OpenAPIObject>>('.openapi');
+  const openApiInfo = await readJsonFile<DeepPartial<OpenAPIV3.Document>>('.openapi');
 
   const payloadInfo = await analyzePayload(payloadConfig, options);
 
-  const info: Partial<InfoObject> = {
+  const info: Partial<OpenAPIV3.InfoObject> = {
     title: name,
     version: version,
     description,
     license: licenseInfo,
   };
 
-  return merge<OpenAPIObject>(
+  return merge<OpenAPIV3.Document>(
     createBaseConfig(payloadConfig),
     { info },
     payloadInfo,
-    openapi as OpenAPIObject, // todo: fix DeepPartial indexer issue
-    openApiInfo as OpenAPIObject, // todo: fix DeepPartial indexer issue
+    openapi as OpenAPIV3.Document, // todo: fix DeepPartial indexer issue
+    openApiInfo as OpenAPIV3.Document, // todo: fix DeepPartial indexer issue
   );
 };

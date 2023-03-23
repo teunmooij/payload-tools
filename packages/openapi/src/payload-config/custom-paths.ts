@@ -1,4 +1,4 @@
-import type { OperationObject, ParameterObject, PathItemObject, PathObject, SchemaObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 import nodePath from 'path';
 import { Endpoint, SanitizedConfig } from 'payload/config';
 import { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
@@ -20,10 +20,11 @@ const getTags = (config: Config, type: ConfigType) => {
   return [config.slug];
 };
 
-const operations: readonly (keyof PathItemObject)[] = ['get', 'head', 'post', 'put', 'patch', 'delete', 'options'] as const;
-const isOperation = (method: string): method is keyof PathItemObject => operations.includes(method as keyof PathItemObject);
+// We could use the enum here, but prefer to keep the openapi-types lib as devdependecy only
+const operations: readonly string[] = ['get', 'head', 'post', 'put', 'patch', 'delete', 'options'] as const;
+const isOperation = (method: string): method is OpenAPIV3.HttpMethods => operations.includes(method);
 
-const setOperation = (pathItem: PathItemObject, operation: OperationObject, methods: Endpoint['method']) => {
+const setOperation = (pathItem: OpenAPIV3.PathItemObject, operation: OpenAPIV3.OperationObject, methods: Endpoint['method']) => {
   const sanitizedMethod = methods.toLowerCase();
 
   if (sanitizedMethod === 'all') {
@@ -54,8 +55,8 @@ const isRelevant = (endpoint: Omit<Endpoint, 'root'>, configType: ConfigType) =>
   return true;
 };
 
-const getPath = (basePath: string, relativePath: string): { path: string; parameters?: ParameterObject[] } => {
-  const parameters: ParameterObject[] = [];
+const getPath = (basePath: string, relativePath: string): { path: string; parameters?: OpenAPIV3.ParameterObject[] } => {
+  const parameters: OpenAPIV3.ParameterObject[] = [];
   const sanitizedPath = relativePath
     .split('/')
     .map(part => {
@@ -77,10 +78,10 @@ const getPath = (basePath: string, relativePath: string): { path: string; parame
   return { path, parameters };
 };
 
-export const getCustomPaths = (config: Config, type: ConfigType): PathObject => {
+export const getCustomPaths = (config: Config, type: ConfigType): OpenAPIV3.PathsObject => {
   if (!config.endpoints?.length) return {};
 
-  const paths: PathObject = {};
+  const paths: OpenAPIV3.PathsObject = {};
   const basePath = getBasePath(config, type);
   const tags = getTags(config, type);
 
@@ -89,11 +90,11 @@ export const getCustomPaths = (config: Config, type: ConfigType): PathObject => 
     if (!paths[path]) paths[path] = {};
 
     // determine summary, description, response
-    const responseSchema: SchemaObject | string = {
+    const responseSchema: OpenAPIV3.SchemaObject | string = {
       type: 'object',
     };
 
-    const operation: OperationObject = {
+    const operation: OpenAPIV3.OperationObject = {
       summary: 'custom operation',
       description: 'custom operation',
       tags,
@@ -107,7 +108,7 @@ export const getCustomPaths = (config: Config, type: ConfigType): PathObject => 
       operation.servers = [{ url: '' }];
     }
 
-    setOperation(paths[path], operation, endpoint.method);
+    setOperation(paths[path]!, operation, endpoint.method);
   }
 
   return paths;

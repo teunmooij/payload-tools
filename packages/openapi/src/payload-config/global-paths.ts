@@ -1,4 +1,4 @@
-import { PathObject } from 'openapi3-ts';
+import type { OpenAPIV3 } from 'openapi-types';
 import { SanitizedGlobalConfig } from 'payload/types';
 import { basicParameters } from '../base-config';
 import { createRequestBody, createResponse, createUpsertConfirmationSchema } from '../schemas';
@@ -6,7 +6,10 @@ import { getDescription } from '../utils';
 import { getCustomPaths } from './custom-paths';
 import { getRouteAccess } from './route-access';
 
-export const getGlobalPaths = async (global: SanitizedGlobalConfig, disableAccessAnalysis: boolean): Promise<PathObject> => {
+export const getGlobalPaths = async (
+  global: SanitizedGlobalConfig,
+  disableAccessAnalysis: boolean,
+): Promise<OpenAPIV3.PathsObject> => {
   const description = getDescription(global);
 
   return Object.assign(
