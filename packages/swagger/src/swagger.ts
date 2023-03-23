@@ -6,7 +6,7 @@ import { serveFile } from './utils/serve-file';
 
 export const loadSwagger = async (
   { express, config, logger }: Pick<Payload, 'express' | 'config' | 'logger'>,
-  options?: Options,
+  options: Options = {},
 ) => {
   if (!express) {
     logger.warn('Unable to load swagger: express not available');
@@ -15,11 +15,20 @@ export const loadSwagger = async (
 
   const document = await createDocument(config, options);
 
-  express.use('/api-docs/specs', (req, res) => res.json(document));
+  const {
+    routes: {
+      swagger: swaggerRoute = '/api-docs',
+      specs: specsRoute = '/api-docs/specs',
+      license: licenseRoute = '/api-docs/license',
+    } = {},
+    ui: uiOptions,
+  } = options;
+
+  express.use(specsRoute, (req, res) => res.json(document));
   if (document.info.license?.url) {
-    express.get('/api-docs/license', serveFile('LICENSE'));
+    express.get(licenseRoute, serveFile('LICENSE'));
   }
 
-  express.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, { swaggerUrl: '/api-docs/specs' }));
-  logger.info('Swagger URL: /api-docs');
+  express.use(swaggerRoute, swaggerUi.serve, swaggerUi.setup(undefined, { ...uiOptions, swaggerUrl: specsRoute }));
+  logger.info(`Swagger URL: ${swaggerRoute}`);
 };
