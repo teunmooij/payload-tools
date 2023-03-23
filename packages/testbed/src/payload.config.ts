@@ -92,7 +92,11 @@ export default buildConfig({
     seo({
       collections: ['pages', 'posts'],
     }),
-    swagger(),
+    swagger({
+      ui: {
+        customSiteTitle: 'My awesome cms api',
+      },
+    }),
   ],
 
   // optional customization of routes
