@@ -16,7 +16,7 @@ export interface RawOptions {
   exclude?: {
     authPaths?: boolean;
     authCollection?: boolean;
-    accountManagement?: boolean;
+    passwordRecovery?: boolean;
     preferences?: boolean;
     custom?: boolean;
   };
@@ -31,6 +31,7 @@ export interface Options {
   include: {
     authPaths: boolean;
     authCollection: boolean;
+    passwordRecovery: boolean;
     preferences: boolean;
     custom: boolean;
   };
@@ -47,7 +48,8 @@ export const parseOptions = (options: RawOptions = {}, payloadConfig: SanitizedC
   include: {
     authPaths: !options.exclude?.authPaths,
     authCollection: !options.exclude?.authCollection,
-    preferences: typeof options.exclude?.preferences === 'boolean' && !options.exclude.preferences,
+    passwordRecovery: options.exclude?.passwordRecovery === false,
+    preferences: options.exclude?.preferences === false,
     custom: !options.exclude?.custom,
   },
 });

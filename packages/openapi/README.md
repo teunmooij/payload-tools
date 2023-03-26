@@ -73,7 +73,7 @@ interface Options {
   exclude?: {
     authPaths?: boolean;
     authCollection?: boolean;
-    accountManagement?: boolean;
+    passwordRecovery: boolean; // default true, set to `false` to include
     preferences?: boolean; // default true, set to `false` to include
     custom?: boolean;
   };
@@ -81,6 +81,10 @@ interface Options {
 ```
 
 ## Version history
+
+### 0.4.x
+
+- advanced auth endpoints: password reset, unlock, email verification
 
 ### 0.3.x
 

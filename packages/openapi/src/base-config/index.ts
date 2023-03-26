@@ -3,6 +3,7 @@ import type { OpenAPIV3 } from 'openapi-types';
 import access from './access';
 import login from './login';
 import error, { errorMessage } from './error-response';
+import confirm, { confirmationMessage } from './confirm';
 import { Options } from '../options';
 
 export * from './parameters';
@@ -11,10 +12,12 @@ const schemas: Record<string, OpenAPIV3.SchemaObject> = {
   login,
   access,
   errorMessage,
+  confirmationMessage,
 };
 
 const responses: Record<string, OpenAPIV3.ResponseObject> = {
   error,
+  confirm,
 };
 
 const createBaseConfig = (options: Options): OpenAPIV3.Document => ({

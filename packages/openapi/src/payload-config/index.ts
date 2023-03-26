@@ -16,7 +16,7 @@ const isAuthCollection = (collection: any) => !!collection.auth;
 export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Options): Promise<Partial<OpenAPIV3.Document>> => {
   const authPaths = payloadConfig.collections
     .filter(collection => options.include.authPaths && collection.auth)
-    .map(collection => getAuthPaths(collection));
+    .map(collection => getAuthPaths(collection, options));
 
   const accessPath = options.include.authPaths ? createAccessPath(options) : {};
   const preferencePaths = options.include.preferences ? createPreferencePaths(options) : {};

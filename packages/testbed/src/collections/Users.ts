@@ -23,6 +23,8 @@ const Users: CollectionConfig = {
   auth: {
     // useAPIKey will add a generated token visible to the user in the admin UI that can then be used to make API requests
     useAPIKey: true,
+    verify: false,
+    maxLoginAttempts: 3,
   },
   admin: {
     useAsTitle: 'email',
