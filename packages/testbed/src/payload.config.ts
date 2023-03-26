@@ -98,6 +98,7 @@ export default buildConfig({
       },
       exclude: {
         authPaths: false,
+        preferences: false,
       },
     }),
   ],

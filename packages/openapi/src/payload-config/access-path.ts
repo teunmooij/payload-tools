@@ -1,6 +1,7 @@
 import type { OpenAPIV3 } from 'openapi-types';
 import { Options } from '../options';
 import { createResponse } from '../schemas';
+import { getAuth } from './route-access';
 
 export const createAccessPath = (options: Options): OpenAPIV3.PathsObject => ({
   '/access': {
@@ -8,13 +9,7 @@ export const createAccessPath = (options: Options): OpenAPIV3.PathsObject => ({
       summary: "Current user's resource access",
       description: "Lists the user's access per resource",
       tags: ['auth'],
-      security: [
-        {
-          basicAuth: [],
-          cookieAuth: [],
-          ...(options.access.apiKey ? { apiKeyAuth: [] } : {}),
-        },
-      ],
+      security: [getAuth(options.access.apiKey)],
       responses: {
         '200': createResponse('successful operation', 'access'),
       },

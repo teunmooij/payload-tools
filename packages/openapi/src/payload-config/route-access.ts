@@ -11,7 +11,7 @@ const allowsAnonymous = async (access: Access): Promise<boolean> => {
   }
 };
 
-const getAuth = (includeApiKeyAuth: boolean) => ({
+export const getAuth = (includeApiKeyAuth: boolean) => ({
   basicAuth: [],
   cookieAuth: [],
   ...(includeApiKeyAuth ? { apiKeyAuth: [] } : {}),

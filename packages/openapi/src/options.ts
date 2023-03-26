@@ -47,7 +47,7 @@ export const parseOptions = (options: RawOptions = {}, payloadConfig: SanitizedC
   include: {
     authPaths: !options.exclude?.authPaths,
     authCollection: !options.exclude?.authCollection,
-    preferences: !options.exclude?.preferences,
+    preferences: typeof options.exclude?.preferences === 'boolean' && !options.exclude.preferences,
     custom: !options.exclude?.custom,
   },
 });
