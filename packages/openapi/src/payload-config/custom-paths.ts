@@ -50,6 +50,7 @@ const isRelevant = (endpoint: Omit<Endpoint, 'root'>, configType: ConfigType) =>
       break;
     case 'collection':
       if (endpoint.path === '/unlock' && endpoint.method === 'post') return false;
+      if (endpoint.path === '/verify/:token' && endpoint.method === 'post') return false;
   }
 
   return true;
