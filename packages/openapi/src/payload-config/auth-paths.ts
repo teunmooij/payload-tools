@@ -24,11 +24,7 @@ export const getAuthPaths = (collection: SanitizedCollectionConfig, options: Opt
               },
             ],
             responses: {
-              '200': createResponse('successful operation', {
-                type: 'object',
-                properties: { message: { type: 'string' } },
-                required: ['message'],
-              }),
+              '200': { '$ref': 'confirm' },
               '400': createResponse('invalid token', 'errorMessage'),
             },
           },
@@ -52,10 +48,56 @@ export const getAuthPaths = (collection: SanitizedCollectionConfig, options: Opt
               required: ['email'],
             }),
             responses: {
-              '200': createResponse('successful operation', {
+              '200': { '$ref': 'confirm' },
+            },
+          },
+        },
+      }
+    : {};
+
+  const passwordRecovery: OpenAPIV3.PathsObject = options.include.passwordRecovery
+    ? {
+        [`/${collection.slug}/forgot-password`]: {
+          post: {
+            summary: 'Start password reset',
+            description: 'Entry point for password reset workflow. Sends password reset email.',
+            tags: ['auth'],
+            requestBody: createRequestBody({
+              type: 'object',
+              properties: {
+                email: { type: 'string' },
+              },
+              required: ['email'],
+            }),
+            responses: {
+              '200': { '$ref': 'confirm' },
+            },
+          },
+        },
+        [`/${collection.slug}/reset-password`]: {
+          post: {
+            summary: 'Reset password',
+            description: 'Reset password',
+            tags: ['auth'],
+            requestBody: createRequestBody({
+              type: 'object',
+              properties: {
+                token: { type: 'string' },
+                password: { type: 'string' },
+              },
+              required: ['token', 'password'],
+            }),
+            responses: {
+              '200': createResponse('succesful operation', {
                 type: 'object',
-                properties: { message: { type: 'string' } },
-                required: ['message'],
+                properties: {
+                  message: { type: 'string' },
+                  token: { type: 'string' },
+                  user: {
+                    $ref: `#/components/schemas/${collection.slug}`,
+                  },
+                },
+                required: ['message', 'token', 'user'],
               }),
             },
           },
@@ -113,7 +155,6 @@ export const getAuthPaths = (collection: SanitizedCollectionConfig, options: Opt
     },
     ...emailVerification,
     ...unlock,
-    // pwd: /{collection-slug}/forgot-password
-    // pwd2: /{collection-slug}/reset-password
+    ...passwordRecovery,
   };
 };
