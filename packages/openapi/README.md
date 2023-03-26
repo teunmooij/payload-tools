@@ -82,6 +82,14 @@ interface Options {
 
 ## Version history
 
+### 0.3.x
+
+- preferences endpoints
+
+### 0.2.x
+
+- configuration options
+
 ### 0.1.x
 
 - Initial version, before it was part op `payload-swagger`
