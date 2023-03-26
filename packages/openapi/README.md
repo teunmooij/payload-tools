@@ -74,7 +74,7 @@ interface Options {
     authPaths?: boolean;
     authCollection?: boolean;
     accountManagement?: boolean;
-    preferences?: boolean;
+    preferences?: boolean; // default true, set to `false` to include
     custom?: boolean;
   };
 }

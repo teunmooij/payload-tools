@@ -9,6 +9,7 @@ import { getGlobalPaths } from './global-paths';
 import { Options } from '../options';
 import { entityToJSONSchema } from '../utils';
 import { getCustomPaths } from './custom-paths';
+import { createPreferencePaths } from './preference-paths';
 
 const isAuthCollection = (collection: any) => !!collection.auth;
 
@@ -18,6 +19,7 @@ export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Op
     .map(collection => getAuthPaths(collection));
 
   const accessPath = options.include.authPaths ? createAccessPath(options) : {};
+  const preferencePaths = options.include.preferences ? createPreferencePaths(options) : {};
 
   const collectionPaths = await Promise.all(
     payloadConfig.collections
@@ -36,7 +38,7 @@ export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Op
     return dict;
   }, {} as Record<string, OpenAPIV3.SchemaObject>);
 
-  const paths = Object.assign({}, ...authPaths, accessPath, ...globalPaths, ...collectionPaths, customPaths);
+  const paths = Object.assign({}, ...authPaths, preferencePaths, accessPath, ...globalPaths, ...collectionPaths, customPaths);
 
   return {
     servers: [{ url: payloadConfig.routes.api || '/api' }],
