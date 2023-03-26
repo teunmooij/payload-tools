@@ -8,7 +8,7 @@ import { analyzePayload } from './payload-config';
 
 import createBaseConfig from './base-config';
 import { merge } from './utils';
-import { Options } from './types';
+import { parseOptions, RawOptions as Options } from './options';
 
 interface PackageInfo {
   name?: string;
@@ -34,6 +34,8 @@ const readJsonFile = async <T = any>(relativePath: string): Promise<Partial<T>> 
  * Creates an openapi document for the given payload configuration
  */
 export const createDocument = async (payloadConfig: SanitizedConfig, options: Options = {}): Promise<OpenAPIV3.Document> => {
+  const parsedOptions = parseOptions(options, payloadConfig);
+
   const { name, version, description, license, openapi = {} } = await readJsonFile<PackageInfo>('package.json');
   const hasLicenseFile = license && fs.existsSync(path.join(process.cwd(), 'LICENSE'));
   const licenseInfo: OpenAPIV3.LicenseObject | undefined = license
@@ -45,7 +47,7 @@ export const createDocument = async (payloadConfig: SanitizedConfig, options: Op
 
   const openApiInfo = await readJsonFile<DeepPartial<OpenAPIV3.Document>>('.openapi');
 
-  const payloadInfo = await analyzePayload(payloadConfig, options);
+  const payloadInfo = await analyzePayload(payloadConfig, parsedOptions);
 
   const info: Partial<OpenAPIV3.InfoObject> = {
     title: name,
@@ -55,7 +57,7 @@ export const createDocument = async (payloadConfig: SanitizedConfig, options: Op
   };
 
   return merge<OpenAPIV3.Document>(
-    createBaseConfig(payloadConfig),
+    createBaseConfig(parsedOptions),
     { info },
     payloadInfo,
     openapi as OpenAPIV3.Document, // todo: fix DeepPartial indexer issue

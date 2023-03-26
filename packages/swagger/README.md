@@ -13,8 +13,6 @@ Swagger plugin for payload cms:
 
 If you only need the openAPI document, use [payload-openapi](https://www.npmjs.com/package/payload-openapi) instead.
 
-Version 0.x releases should be considered `beta`. Semantic version is not guaranteed until we reach version 1.
-
 ## Installation
 
 With yarn:
@@ -79,6 +77,17 @@ interface Options {
    * or `true` to disable for all.
    */
   disableAccessAnalysis?: boolean | string[];
+
+  /**
+   * Exclude parts of the payload config from the openapi document
+   */
+  exclude?: {
+    authPaths?: boolean;
+    authCollection?: boolean;
+    accountManagement?: boolean;
+    preferences?: boolean;
+    custom?: boolean;
+  };
 
   /**
    * Customize the payload-swagger routes

@@ -96,6 +96,9 @@ export default buildConfig({
       ui: {
         customSiteTitle: 'My awesome cms api',
       },
+      exclude: {
+        authPaths: false,
+      },
     }),
   ],
 

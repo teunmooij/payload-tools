@@ -1,9 +1,9 @@
 import type { OpenAPIV3 } from 'openapi-types';
-import { SanitizedConfig } from 'payload/config';
 
 import access from './access';
 import login from './login';
 import error, { errorMessage } from './error-response';
+import { Options } from '../options';
 
 export * from './parameters';
 
@@ -17,7 +17,7 @@ const responses: Record<string, OpenAPIV3.ResponseObject> = {
   error,
 };
 
-const createBaseConfig = (payloadConfig: SanitizedConfig): OpenAPIV3.Document => ({
+const createBaseConfig = (options: Options): OpenAPIV3.Document => ({
   openapi: '3.0.3',
   info: {
     title: 'Payload CMS',
@@ -34,8 +34,17 @@ const createBaseConfig = (payloadConfig: SanitizedConfig): OpenAPIV3.Document =>
       cookieAuth: {
         in: 'cookie',
         type: 'apiKey',
-        name: `${payloadConfig.cookiePrefix || 'payload'}-token`,
+        name: options.access.cookieName,
       },
+      ...(options.access.apiKey
+        ? {
+            apiKeyAuth: {
+              in: 'header',
+              type: 'apiKey',
+              name: 'Authorization',
+            },
+          }
+        : {}),
     },
     schemas,
     responses,
