@@ -119,6 +119,10 @@ interface Options {
 
 ## Version history
 
+### 0.5.x
+
+- bulk endpoints (if payload version >=1.6.24)
+
 ### 0.4.x
 
 - all endpoints included

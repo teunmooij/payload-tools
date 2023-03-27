@@ -16,7 +16,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongodb-memory-server": "^8.12.0",
-    "payload": "^1.6.22",
+    "payload": "^1.6.26",
     "payload-swagger": "*",
     "react": "^18.2.0"
   },
