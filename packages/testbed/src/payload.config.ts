@@ -100,6 +100,7 @@ export default buildConfig({
         authPaths: false,
         preferences: false,
       },
+      payloadVersion: '1.6.26', // not needed for most scenario's
     }),
   ],
 

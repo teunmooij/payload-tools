@@ -34,7 +34,7 @@ const readJsonFile = async <T = any>(relativePath: string): Promise<Partial<T>> 
  * Creates an openapi document for the given payload configuration
  */
 export const createDocument = async (payloadConfig: SanitizedConfig, options: Options = {}): Promise<OpenAPIV3.Document> => {
-  const parsedOptions = parseOptions(options, payloadConfig);
+  const parsedOptions = await parseOptions(options, payloadConfig);
 
   const { name, version, description, license, openapi = {} } = await readJsonFile<PackageInfo>('package.json');
   const hasLicenseFile = license && fs.existsSync(path.join(process.cwd(), 'LICENSE'));
