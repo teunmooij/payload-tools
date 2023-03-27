@@ -82,6 +82,10 @@ interface Options {
 
 ## Version history
 
+### 0.5.x
+
+- bulk endpoints (if payload version >=1.6.24)
+
 ### 0.4.x
 
 - advanced auth endpoints: password reset, unlock, email verification
