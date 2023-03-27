@@ -13,6 +13,47 @@ export const getCollectionPaths = async (
 ): Promise<OpenAPIV3.PathsObject> => {
   const description = getDescription(collection);
   const singleItem = collection.labels?.singular || collection.slug;
+  const plural = collection.labels?.plural || collection.slug;
+
+  const bulkEndpoints: OpenAPIV3.PathItemObject = options.supports.bulkOperations
+    ? {
+        patch: {
+          summary: `Update multiple ${plural}`,
+          description: `Update all ${plural} matching the where query`,
+          tags: [collection.slug],
+          security: await getRouteAccess(collection, 'delete', options.access),
+          parameters: [...findParameters.map(param => ({ ...param, required: param.name === 'where' })), ...basicParameters],
+          requestBody: createRequestBody(collection.slug),
+          responses: {
+            '200': createResponse(' succesful operation', {
+              type: 'object',
+              properties: {
+                message: { type: 'string' },
+                errors: { type: 'array', items: { type: 'string' } },
+                docs: { type: 'array', items: { '$ref': `#/components/schemas/${collection.slug}` } },
+              },
+            }),
+          },
+        },
+        delete: {
+          summary: `Delete multiple ${plural}`,
+          description: `Delete all ${plural} matching the where query`,
+          tags: [collection.slug],
+          security: await getRouteAccess(collection, 'delete', options.access),
+          parameters: [...findParameters.map(param => ({ ...param, required: param.name === 'where' })), ...basicParameters],
+          responses: {
+            '200': createResponse(' succesful operation', {
+              type: 'object',
+              properties: {
+                message: { type: 'string' },
+                errors: { type: 'array', items: { type: 'string' } },
+                docs: { type: 'array', items: { '$ref': `#/components/schemas/${collection.slug}` } },
+              },
+            }),
+          },
+        },
+      }
+    : {};
 
   return Object.assign(
     {
@@ -38,6 +79,7 @@ export const getCollectionPaths = async (
             '200': createUpsertConfirmationSchema(collection.slug),
           },
         },
+        ...bulkEndpoints,
       },
       [`/${collection.slug}/{id}`]: {
         get: {

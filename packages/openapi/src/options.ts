@@ -67,11 +67,12 @@ const toVersion = (versionString: string | undefined): Version | undefined => {
 
 const supports = (initialVersion: Version | undefined, currentVersion: Version | undefined) => {
   if (!initialVersion || !currentVersion) return true;
+
   return (
-    initialVersion.major > currentVersion.major ||
-    (initialVersion.major === currentVersion.major &&
-      (initialVersion.minor > currentVersion.minor ||
-        (initialVersion.minor === currentVersion.minor && initialVersion.patch >= currentVersion.patch)))
+    currentVersion.major > initialVersion.major ||
+    (currentVersion.major === initialVersion.major &&
+      (currentVersion.minor > initialVersion.minor ||
+        (currentVersion.minor === initialVersion.minor && currentVersion.patch >= initialVersion.patch)))
   );
 };
 
