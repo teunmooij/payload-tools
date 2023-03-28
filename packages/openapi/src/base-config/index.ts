@@ -4,6 +4,7 @@ import access from './access';
 import login from './login';
 import error, { errorMessage } from './error-response';
 import confirm, { confirmationMessage } from './confirm';
+import where from './where';
 import { Options } from '../options';
 
 export * from './parameters';
@@ -13,6 +14,7 @@ const schemas: Record<string, OpenAPIV3.SchemaObject> = {
   access,
   errorMessage,
   confirmationMessage,
+  where,
 };
 
 const responses: Record<string, OpenAPIV3.ResponseObject> = {

@@ -82,7 +82,11 @@ interface Options {
 
 ## Version history
 
-### 0.5.x
+### 0.5.1
+
+- `where` type
+
+### 0.5.0
 
 - bulk endpoints (if payload version >=1.6.24)
 

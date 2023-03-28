@@ -32,6 +32,10 @@ export const findParameters: OpenAPIV3.ParameterObject[] = [
     name: 'where',
     in: 'query',
     description: 'pass a where query to constrain returned documents (complex type, see documentation)',
+    style: 'deepObject',
+    explode: true,
+    allowReserved: true,
+    schema: { '$ref': '#/components/schemas/where' },
   },
   {
     name: 'limit',
