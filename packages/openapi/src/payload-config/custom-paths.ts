@@ -79,8 +79,8 @@ const getPath = (basePath: string, relativePath: string): { path: string; parame
   return { path, parameters };
 };
 
-export const getCustomPaths = (config: Config, type: ConfigType): OpenAPIV3.PathsObject => {
-  if (!config.endpoints?.length) return {};
+export const getCustomPaths = (config: Config, type: ConfigType): Pick<OpenAPIV3.Document, 'paths' | 'components'> => {
+  if (!config.endpoints?.length) return { paths: {} };
 
   const paths: OpenAPIV3.PathsObject = {};
   const basePath = getBasePath(config, type);
@@ -112,5 +112,5 @@ export const getCustomPaths = (config: Config, type: ConfigType): OpenAPIV3.Path
     setOperation(paths[path]!, operation, endpoint.method);
   }
 
-  return paths;
+  return { paths };
 };

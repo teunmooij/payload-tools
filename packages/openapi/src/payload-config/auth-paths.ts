@@ -4,10 +4,63 @@ import { Options } from '../options';
 import { createRequestBody, createResponse } from '../schemas';
 import { getAuth } from './route-access';
 
-export const getAuthPaths = (collection: SanitizedCollectionConfig, options: Options): OpenAPIV3.PathsObject => {
-  if (!collection.auth) return {};
+export const getAuthPaths = (
+  collection: SanitizedCollectionConfig,
+  options: Options,
+): Pick<OpenAPIV3.Document, 'paths' | 'components'> => {
+  if (!collection.auth || !options.include.authPaths) return { paths: {} };
 
-  const emailVerification: OpenAPIV3.PathsObject = collection.auth.verify
+  const basicPaths: OpenAPIV3.PathsObject = {
+    [`/${collection.slug}/me`]: {
+      get: {
+        summary: 'Current user data',
+        description: 'Data about the current user',
+        tags: ['auth'],
+        responses: {
+          '200': createResponse('successful operation', `${collection.slug}-me`),
+        },
+      },
+    },
+    [`/${collection.slug}/login`]: {
+      post: {
+        summary: 'Login',
+        description: 'Login',
+        tags: ['auth'],
+        requestBody: createRequestBody('login'),
+        responses: {
+          '200': createResponse('successful operation', `${collection.slug}-me`),
+          '401': createResponse('unauthorized', 'errorMessage'),
+        },
+      },
+    },
+    [`/${collection.slug}/logout`]: {
+      post: {
+        summary: 'Logout',
+        description: 'Logout',
+        tags: ['auth'],
+        responses: {
+          '200': createResponse('successful operation', {
+            type: 'object',
+            properties: { message: { type: 'string' } },
+          }),
+          '400': createResponse('no user', 'errorMessage'),
+        },
+      },
+    },
+    [`/${collection.slug}/refresh-token`]: {
+      post: {
+        summary: 'Refresh JWT',
+        description: 'Refresh the JWT token',
+        tags: ['auth'],
+        responses: {
+          '200': createResponse('successful operation', `${collection.slug}-me`),
+          '404': createResponse('not found', 'errorMessage'),
+        },
+      },
+    },
+  };
+
+  const emailVerificationPaths: OpenAPIV3.PathsObject = collection.auth.verify
     ? {
         [`/${collection.slug}/verify/{token}`]: {
           post: {
@@ -32,7 +85,7 @@ export const getAuthPaths = (collection: SanitizedCollectionConfig, options: Opt
       }
     : {};
 
-  const unlock: OpenAPIV3.PathsObject = collection.auth.maxLoginAttempts
+  const unlockPaths: OpenAPIV3.PathsObject = collection.auth.maxLoginAttempts
     ? {
         [`/${collection.slug}/unlock`]: {
           post: {
@@ -55,7 +108,7 @@ export const getAuthPaths = (collection: SanitizedCollectionConfig, options: Opt
       }
     : {};
 
-  const passwordRecovery: OpenAPIV3.PathsObject = options.include.passwordRecovery
+  const passwordRecoveryPaths: OpenAPIV3.PathsObject = options.include.passwordRecovery
     ? {
         [`/${collection.slug}/forgot-password`]: {
           post: {
@@ -106,55 +159,11 @@ export const getAuthPaths = (collection: SanitizedCollectionConfig, options: Opt
     : {};
 
   return {
-    [`/${collection.slug}/me`]: {
-      get: {
-        summary: 'Current user data',
-        description: 'Data about the current user',
-        tags: ['auth'],
-        responses: {
-          '200': createResponse('successful operation', `${collection.slug}-me`),
-        },
-      },
+    paths: {
+      ...basicPaths,
+      ...emailVerificationPaths,
+      ...unlockPaths,
+      ...passwordRecoveryPaths,
     },
-    [`/${collection.slug}/login`]: {
-      post: {
-        summary: 'Login',
-        description: 'Login',
-        tags: ['auth'],
-        requestBody: createRequestBody('login'),
-        responses: {
-          '200': createResponse('successful operation', `${collection.slug}-me`),
-          '401': createResponse('unauthorized', 'errorMessage'),
-        },
-      },
-    },
-    [`/${collection.slug}/logout`]: {
-      post: {
-        summary: 'Logout',
-        description: 'Logout',
-        tags: ['auth'],
-        responses: {
-          '200': createResponse('successful operation', {
-            type: 'object',
-            properties: { message: { type: 'string' } },
-          }),
-          '400': createResponse('no user', 'errorMessage'),
-        },
-      },
-    },
-    [`/${collection.slug}/refresh-token`]: {
-      post: {
-        summary: 'Refresh JWT',
-        description: 'Refresh the JWT token',
-        tags: ['auth'],
-        responses: {
-          '200': createResponse('successful operation', `${collection.slug}-me`),
-          '404': createResponse('not found', 'errorMessage'),
-        },
-      },
-    },
-    ...emailVerification,
-    ...unlock,
-    ...passwordRecovery,
   };
 };

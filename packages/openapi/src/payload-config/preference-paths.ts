@@ -77,10 +77,12 @@ const responseBody: OpenAPIV3.SchemaObject = {
   ],
 };
 
-export const createPreferencePaths = (options: Options): OpenAPIV3.PathsObject => {
+export const createPreferencePaths = (options: Options): Pick<OpenAPIV3.Document, 'paths' | 'components'> => {
+  if (!options.include.preferences) return { paths: {} };
+
   const security = [getAuth(options.access.apiKey)];
 
-  return {
+  const paths = {
     '/_preferences/{key}': {
       get: {
         summary: 'Get a preference by key',
@@ -115,4 +117,6 @@ export const createPreferencePaths = (options: Options): OpenAPIV3.PathsObject =
       },
     },
   };
+
+  return { paths };
 };

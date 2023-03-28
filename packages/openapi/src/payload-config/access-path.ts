@@ -3,16 +3,24 @@ import { Options } from '../options';
 import { createResponse } from '../schemas';
 import { getAuth } from './route-access';
 
-export const createAccessPath = (options: Options): OpenAPIV3.PathsObject => ({
-  '/access': {
-    get: {
-      summary: "Current user's resource access",
-      description: "Lists the user's access per resource",
-      tags: ['auth'],
-      security: [getAuth(options.access.apiKey)],
-      responses: {
-        '200': createResponse('successful operation', 'access'),
+export const createAccessPath = (options: Options): Pick<OpenAPIV3.Document, 'paths' | 'components'> => {
+  if (!options.include.authPaths) return { paths: {} };
+
+  const paths = {
+    '/access': {
+      get: {
+        summary: "Current user's resource access",
+        description: "Lists the user's access per resource",
+        tags: ['auth'],
+        security: [getAuth(options.access.apiKey)],
+        responses: {
+          '200': createResponse('successful operation', 'access'),
+        },
       },
     },
-  },
-});
+  };
+
+  return {
+    paths,
+  };
+};

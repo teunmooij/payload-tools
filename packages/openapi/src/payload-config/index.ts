@@ -14,21 +14,21 @@ import { createPreferencePaths } from './preference-paths';
 const isAuthCollection = (collection: any) => !!collection.auth;
 
 export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Options): Promise<Partial<OpenAPIV3.Document>> => {
-  const authPaths = payloadConfig.collections
+  const authDefinitions = payloadConfig.collections
     .filter(collection => options.include.authPaths && collection.auth)
     .map(collection => getAuthPaths(collection, options));
 
-  const accessPath = options.include.authPaths ? createAccessPath(options) : {};
-  const preferencePaths = options.include.preferences ? createPreferencePaths(options) : {};
+  const { paths: preferencePaths } = createPreferencePaths(options);
+  const { paths: accessPath } = createAccessPath(options);
 
-  const collectionPaths = await Promise.all(
+  const collectionDefinitions = await Promise.all(
     payloadConfig.collections
       .filter(collection => !collection.auth || options.include.authCollection)
       .map(collection => getCollectionPaths(collection, options)),
   );
-  const globalPaths = await Promise.all(payloadConfig.globals.map(global => getGlobalPaths(global, options)));
+  const globalDefinitions = await Promise.all(payloadConfig.globals.map(global => getGlobalPaths(global, options)));
 
-  const customPaths = options.include.custom ? getCustomPaths(payloadConfig, 'payload') : {};
+  const { paths: customPaths } = options.include.custom ? getCustomPaths(payloadConfig, 'payload') : { paths: {} };
 
   const schemas = [...payloadConfig.globals, ...payloadConfig.collections].reduce((dict, collection) => {
     dict[collection.slug] = entityToJSONSchema(payloadConfig, collection) as OpenAPIV3.SchemaObject;
@@ -38,7 +38,15 @@ export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Op
     return dict;
   }, {} as Record<string, OpenAPIV3.SchemaObject>);
 
-  const paths = Object.assign({}, ...authPaths, preferencePaths, accessPath, ...globalPaths, ...collectionPaths, customPaths);
+  const paths = Object.assign(
+    {},
+    ...authDefinitions.map(({ paths }) => paths),
+    preferencePaths,
+    accessPath,
+    ...globalDefinitions.map(({ paths }) => paths),
+    ...collectionDefinitions.map(({ paths }) => paths),
+    customPaths,
+  );
 
   return {
     servers: [{ url: payloadConfig.routes.api || '/api' }],

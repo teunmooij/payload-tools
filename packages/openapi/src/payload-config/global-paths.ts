@@ -7,35 +7,46 @@ import { getDescription } from '../utils';
 import { getCustomPaths } from './custom-paths';
 import { getRouteAccess } from './route-access';
 
-export const getGlobalPaths = async (global: SanitizedGlobalConfig, options: Options): Promise<OpenAPIV3.PathsObject> => {
+export const getGlobalPaths = async (
+  global: SanitizedGlobalConfig,
+  options: Options,
+): Promise<Pick<OpenAPIV3.Document, 'paths' | 'components'>> => {
   const description = getDescription(global);
 
-  return Object.assign(
-    {
-      [`/globals/${global.slug}`]: {
-        get: {
-          summary: description,
-          description,
-          tags: [`global ${global.slug}`],
-          security: await getRouteAccess(global, 'read', options.access),
-          parameters: basicParameters,
-          responses: {
-            '200': createResponse('successful operation', global.slug),
-          },
+  const defaultPaths: OpenAPIV3.PathsObject = {
+    [`/globals/${global.slug}`]: {
+      get: {
+        summary: description,
+        description,
+        tags: [`global ${global.slug}`],
+        security: await getRouteAccess(global, 'read', options.access),
+        parameters: basicParameters,
+        responses: {
+          '200': createResponse('successful operation', global.slug),
         },
-        post: {
-          summary: `Updates the ${global.slug}`,
-          description: `Updates the ${global.slug}`,
-          tags: [`global ${global.slug}`],
-          security: await getRouteAccess(global, 'update', options.access),
-          parameters: basicParameters,
-          requestBody: createRequestBody(global.slug),
-          responses: {
-            '200': createUpsertConfirmationSchema(global.slug),
-          },
+      },
+      post: {
+        summary: `Updates the ${global.slug}`,
+        description: `Updates the ${global.slug}`,
+        tags: [`global ${global.slug}`],
+        security: await getRouteAccess(global, 'update', options.access),
+        parameters: basicParameters,
+        requestBody: createRequestBody(global.slug),
+        responses: {
+          '200': createResponse('successful operation', createUpsertConfirmationSchema(global.slug)),
         },
       },
     },
-    getCustomPaths(global, 'global'),
-  );
+  };
+  const { paths: customPaths, components: customComponents } = getCustomPaths(global, 'global');
+
+  return {
+    paths: {
+      ...defaultPaths,
+      ...customPaths,
+    },
+    components: {
+      ...customComponents,
+    },
+  };
 };
