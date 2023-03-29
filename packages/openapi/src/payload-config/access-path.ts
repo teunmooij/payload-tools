@@ -3,8 +3,8 @@ import { Options } from '../options';
 import { createResponse } from '../schemas';
 import { getAuth } from './route-access';
 
-export const createAccessPath = (options: Options): Pick<OpenAPIV3.Document, 'paths' | 'components'> => {
-  if (!options.include.authPaths) return { paths: {} };
+export const createAccessPath = (options: Options): Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'> => {
+  if (!options.include.authPaths) return { paths: {}, components: {} };
 
   const paths = {
     '/access': {
@@ -22,5 +22,6 @@ export const createAccessPath = (options: Options): Pick<OpenAPIV3.Document, 'pa
 
   return {
     paths,
+    components: {},
   };
 };

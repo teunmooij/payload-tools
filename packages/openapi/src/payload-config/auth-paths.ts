@@ -7,8 +7,8 @@ import { getAuth } from './route-access';
 export const getAuthPaths = (
   collection: SanitizedCollectionConfig,
   options: Options,
-): Pick<OpenAPIV3.Document, 'paths' | 'components'> => {
-  if (!collection.auth || !options.include.authPaths) return { paths: {} };
+): Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'> => {
+  if (!collection.auth || !options.include.authPaths) return { paths: {}, components: {} };
 
   const basicPaths: OpenAPIV3.PathsObject = {
     [`/${collection.slug}/me`]: {
@@ -165,5 +165,6 @@ export const getAuthPaths = (
       ...unlockPaths,
       ...passwordRecoveryPaths,
     },
+    components: {},
   };
 };

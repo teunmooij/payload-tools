@@ -10,7 +10,7 @@ import { getRouteAccess } from './route-access';
 export const getCollectionPaths = async (
   collection: SanitizedCollectionConfig,
   options: Options,
-): Promise<Pick<OpenAPIV3.Document, 'paths' | 'components'>> => {
+): Promise<Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'>> => {
   const description = getDescription(collection);
   const singleItem = collection.labels?.singular || collection.slug;
   const plural = collection.labels?.plural || collection.slug;

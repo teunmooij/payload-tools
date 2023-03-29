@@ -10,7 +10,7 @@ import { getRouteAccess } from './route-access';
 export const getGlobalPaths = async (
   global: SanitizedGlobalConfig,
   options: Options,
-): Promise<Pick<OpenAPIV3.Document, 'paths' | 'components'>> => {
+): Promise<Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'>> => {
   const description = getDescription(global);
 
   const defaultPaths: OpenAPIV3.PathsObject = {
