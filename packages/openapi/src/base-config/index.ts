@@ -1,6 +1,5 @@
 import type { OpenAPIV3 } from 'openapi-types';
 
-import access from './access';
 import login from './login';
 import error, { errorMessage } from './error-response';
 import confirm, { confirmationMessage } from './confirm';
@@ -11,7 +10,6 @@ export * from './parameters';
 
 const schemas: Record<string, OpenAPIV3.SchemaObject> = {
   login,
-  access,
   errorMessage,
   confirmationMessage,
   where,

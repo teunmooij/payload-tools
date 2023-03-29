@@ -1,15 +1,15 @@
 import { SanitizedConfig } from 'payload/config';
 import type { OpenAPIV3 } from 'openapi-types';
 
-import { me } from '../schemas';
-import { createAccessPath } from './access-path';
+import { me, entityToJSONSchema } from '../schemas';
+import { createAccessRoute } from './access-routes';
 import { getAuthPaths } from './auth-paths';
 import { getCollectionPaths } from './collection-paths';
 import { getGlobalPaths } from './global-paths';
 import { Options } from '../options';
-import { entityToJSONSchema, merge } from '../utils';
 import { getCustomPaths } from './custom-paths';
 import { createPreferencePaths } from './preference-paths';
+import { merge } from '../utils';
 
 const isAuthCollection = (collection: any) => !!collection.auth;
 
@@ -19,7 +19,7 @@ export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Op
     .map(collection => getAuthPaths(collection, options));
 
   const { paths: preferencePaths, components: preferenceComponents } = createPreferencePaths(options);
-  const { paths: accessPath, components: accessComponents } = createAccessPath(options);
+  const { paths: accessPath, components: accessComponents } = createAccessRoute(options);
 
   const collectionDefinitions = await Promise.all(
     payloadConfig.collections

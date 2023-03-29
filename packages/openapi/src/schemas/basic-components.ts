@@ -23,3 +23,7 @@ export const createResponse = (description: string, content: string | OpenAPIV3.
   description,
   content: createContent(content),
 });
+
+export const createRef = (entity: string, type: 'schemas' | 'responses' | 'requestBodies' = 'schemas') => ({
+  '$ref': `#/components/${type}/${entity}`,
+});
