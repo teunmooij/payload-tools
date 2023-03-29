@@ -1,13 +1,20 @@
 import type { OpenAPIV3 } from 'openapi-types';
 import { SanitizedCollectionConfig } from 'payload/types';
-import { basicParameters, findParameters } from '../base-config';
-import { Options } from '../options';
-import { createPaginatedDocumentSchema, createRequestBody, createResponse, createUpsertConfirmationSchema } from '../schemas';
-import { getDescription } from '../utils';
-import { getCustomPaths } from './custom-paths';
-import { getRouteAccess } from './route-access';
+import { basicParameters, findParameters } from '../../../base-config';
+import { Options } from '../../../options';
+import {
+  createPaginatedDocumentSchema,
+  createRef,
+  createRequestBody,
+  createResponse,
+  createUpsertConfirmationSchema,
+} from '../../../schemas';
+import { getDescription, merge } from '../../../utils';
+import { getCustomPaths } from '../../custom-paths';
+import { getRouteAccess } from '../../route-access';
+import { getAuthRoutes } from './auth';
 
-export const getCollectionPaths = async (
+export const getCollectionRoutes = async (
   collection: SanitizedCollectionConfig,
   options: Options,
 ): Promise<Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'>> => {
@@ -99,7 +106,7 @@ export const getCollectionPaths = async (
         ],
         responses: {
           '200': createResponse('successful operation', collection.slug),
-          '404': createResponse('not found', 'errorMessage'),
+          '404': createRef('NotFoundError', 'responses'),
         },
       },
       patch: {
@@ -120,7 +127,7 @@ export const getCollectionPaths = async (
         requestBody: createRequestBody(collection.slug),
         responses: {
           '200': createResponse('successful operation', createUpsertConfirmationSchema(collection.slug)),
-          '404': createResponse('not found', 'errorMessage'),
+          '404': createRef('NotFoundError', 'responses'),
         },
       },
       delete: {
@@ -140,21 +147,21 @@ export const getCollectionPaths = async (
         ],
         responses: {
           '200': createResponse('successful operation', createUpsertConfirmationSchema(collection.slug)),
-          '404': createResponse('not found', 'errorMessage'),
+          '404': createRef('NotFoundError', 'responses'),
         },
       },
     },
   };
 
+  const { paths: authPaths, components: authComponents } = getAuthRoutes(collection, options);
   const { paths: customPaths, components: customComponents } = getCustomPaths(collection, 'collection');
 
   return {
     paths: {
       ...defaultPaths,
       ...customPaths,
+      ...authPaths,
     },
-    components: {
-      ...customComponents,
-    },
+    components: merge(authComponents, customComponents),
   };
 };

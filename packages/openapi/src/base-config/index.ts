@@ -1,23 +1,24 @@
 import type { OpenAPIV3 } from 'openapi-types';
 
-import login from './login';
-import error, { errorMessage } from './error-response';
-import confirm, { confirmationMessage } from './confirm';
+import { error } from './error';
+import { confirmation } from './confirm';
 import where from './where';
 import { Options } from '../options';
+import { createResponse } from '../schemas';
 
 export * from './parameters';
 
 const schemas: Record<string, OpenAPIV3.SchemaObject> = {
-  login,
-  errorMessage,
-  confirmationMessage,
+  error,
+  confirmation,
   where,
 };
 
 const responses: Record<string, OpenAPIV3.ResponseObject> = {
-  error,
-  confirm,
+  'InvalidRequestErrorResponse': createResponse('invalid request', 'error'),
+  'UnauthorizedErrorResponse': createResponse('unauthorized', 'error'),
+  'NotFoundErrorResponse': createResponse('not found', 'error'),
+  confirmationResponse: createResponse('confirmed', 'confirmation'),
 };
 
 const createBaseConfig = (options: Options): OpenAPIV3.Document => ({

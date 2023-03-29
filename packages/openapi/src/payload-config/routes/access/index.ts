@@ -1,7 +1,7 @@
 import type { OpenAPIV3 } from 'openapi-types';
-import { Options } from '../../options';
-import { createRef, createResponse } from '../../schemas';
-import { getAuth } from '../route-access';
+import { Options } from '../../../options';
+import { createRef, createResponse } from '../../../schemas';
+import { getAuth } from '../../route-access';
 
 import access from './access-schema';
 

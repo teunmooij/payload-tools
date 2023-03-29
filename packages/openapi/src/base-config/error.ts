@@ -1,7 +1,6 @@
 import type { OpenAPIV3 } from 'openapi-types';
-import { createResponse } from '../schemas/basic-components';
 
-export const errorMessage: OpenAPIV3.SchemaObject = {
+export const error: OpenAPIV3.SchemaObject = {
   title: 'Error response message',
   type: 'object',
   additionalProperties: false,
@@ -22,5 +21,3 @@ export const errorMessage: OpenAPIV3.SchemaObject = {
   },
   required: ['errors'],
 };
-
-export default createResponse('error response', 'errorMessage');
