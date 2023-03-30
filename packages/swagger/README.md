@@ -11,6 +11,17 @@ Swagger plugin for payload cms:
   - Swagger UI
   - LICENSE file, if available
 
+`payload-swagger` uses `payload-openapi`, whcih documents ALL your payload openapi endpoints and includes:
+
+- collection endpoints
+- global endpoints
+- custom endpoints
+- authentication endpoints
+- preferences endpoints
+- fully typed schema definitions for all requests, parameters and responses
+- authentication requirements for all your endpoints
+- extension points to merge your custom openapi definitions into the schema
+
 If you only need the openAPI document, use [payload-openapi](https://www.npmjs.com/package/payload-openapi) instead.
 
 ## Installation
@@ -118,6 +129,10 @@ interface Options {
 ```
 
 ## Version history
+
+### 1.0.0
+
+- Uses `payload-openapi` version 1, whch has a validated schema with full payload endpoint coverage
 
 ### 0.5.x
 
