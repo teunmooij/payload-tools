@@ -2,7 +2,7 @@ import type { OpenAPIV3 } from 'openapi-types';
 import nodePath from 'path';
 import { Endpoint, SanitizedConfig } from 'payload/config';
 import { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
-import { createResponse } from '../schemas';
+import { createResponse } from '../../schemas';
 
 type Config = SanitizedConfig | SanitizedCollectionConfig | SanitizedGlobalConfig;
 type ConfigType = 'payload' | 'global' | 'collection';
@@ -79,8 +79,8 @@ const getPath = (basePath: string, relativePath: string): { path: string; parame
   return { path, parameters };
 };
 
-export const getCustomPaths = (config: Config, type: ConfigType): OpenAPIV3.PathsObject => {
-  if (!config.endpoints?.length) return {};
+export const getCustomPaths = (config: Config, type: ConfigType): Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'> => {
+  if (!config.endpoints?.length) return { paths: {}, components: {} };
 
   const paths: OpenAPIV3.PathsObject = {};
   const basePath = getBasePath(config, type);
@@ -112,5 +112,5 @@ export const getCustomPaths = (config: Config, type: ConfigType): OpenAPIV3.Path
     setOperation(paths[path]!, operation, endpoint.method);
   }
 
-  return paths;
+  return { paths, components: {} };
 };

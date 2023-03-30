@@ -12,5 +12,7 @@ export const getDescription = (collection: SanitizedCollectionConfig | Sanitized
     }
   }
 
-  return (collection as SanitizedCollectionConfig).labels?.plural || collection.slug;
+  const label = (collection as SanitizedCollectionConfig).labels?.plural;
+
+  return (typeof label === 'string' && label) || collection.slug;
 };

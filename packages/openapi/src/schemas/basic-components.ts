@@ -23,3 +23,20 @@ export const createResponse = (description: string, content: string | OpenAPIV3.
   description,
   content: createContent(content),
 });
+
+type ComponentType = 'schemas' | 'responses' | 'requestBodies';
+
+const getPostfix = (type: ComponentType) => {
+  switch (type) {
+    case 'responses':
+      return 'Response';
+    case 'requestBodies':
+      return 'Request';
+    default:
+      return '';
+  }
+};
+
+export const createRef = (entity: string, type: ComponentType = 'schemas') => ({
+  '$ref': `#/components/${type}/${entity}${getPostfix(type)}`,
+});

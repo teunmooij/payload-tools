@@ -1,50 +1,51 @@
 import { SanitizedConfig } from 'payload/config';
 import type { OpenAPIV3 } from 'openapi-types';
 
-import { me } from '../schemas';
-import { createAccessPath } from './access-path';
-import { getAuthPaths } from './auth-paths';
-import { getCollectionPaths } from './collection-paths';
-import { getGlobalPaths } from './global-paths';
+import { createAccessRoute } from './routes/access';
+import { getCollectionRoutes } from './routes/collection';
+import { getGlobalRoutes } from './routes/global';
 import { Options } from '../options';
-import { entityToJSONSchema } from '../utils';
-import { getCustomPaths } from './custom-paths';
-import { createPreferencePaths } from './preference-paths';
-
-const isAuthCollection = (collection: any) => !!collection.auth;
+import { getCustomPaths } from './routes/custom-paths';
+import { createPreferenceRouts } from './routes/preferences';
+import { merge } from '../utils';
+import { getAuthSchemas } from './auth-schemas';
 
 export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Options): Promise<Partial<OpenAPIV3.Document>> => {
-  const authPaths = payloadConfig.collections
-    .filter(collection => options.include.authPaths && collection.auth)
-    .map(collection => getAuthPaths(collection, options));
+  const { paths: preferencePaths, components: preferenceComponents } = createPreferenceRouts(options);
+  const { paths: accessPath, components: accessComponents } = createAccessRoute(options);
 
-  const accessPath = options.include.authPaths ? createAccessPath(options) : {};
-  const preferencePaths = options.include.preferences ? createPreferencePaths(options) : {};
-
-  const collectionPaths = await Promise.all(
-    payloadConfig.collections
-      .filter(collection => !collection.auth || options.include.authCollection)
-      .map(collection => getCollectionPaths(collection, options)),
+  const collectionDefinitions = await Promise.all(
+    payloadConfig.collections.map(collection => getCollectionRoutes(collection, options, payloadConfig)),
   );
-  const globalPaths = await Promise.all(payloadConfig.globals.map(global => getGlobalPaths(global, options)));
+  const globalDefinitions = await Promise.all(
+    payloadConfig.globals.map(global => getGlobalRoutes(global, options, payloadConfig)),
+  );
 
-  const customPaths = options.include.custom ? getCustomPaths(payloadConfig, 'payload') : {};
+  const { paths: customPaths, components: customComponents } = options.include.custom
+    ? getCustomPaths(payloadConfig, 'payload')
+    : { paths: {}, components: {} };
 
-  const schemas = [...payloadConfig.globals, ...payloadConfig.collections].reduce((dict, collection) => {
-    dict[collection.slug] = entityToJSONSchema(payloadConfig, collection) as OpenAPIV3.SchemaObject;
-    if (isAuthCollection(collection)) {
-      dict[`${collection.slug}-me`] = me(collection.slug);
-    }
-    return dict;
-  }, {} as Record<string, OpenAPIV3.SchemaObject>);
+  const paths = Object.assign(
+    {},
+    ...collectionDefinitions.map(({ paths }) => paths),
+    ...globalDefinitions.map(({ paths }) => paths),
+    accessPath,
+    preferencePaths,
+    customPaths,
+  );
 
-  const paths = Object.assign({}, ...authPaths, preferencePaths, accessPath, ...globalPaths, ...collectionPaths, customPaths);
+  const components = merge<OpenAPIV3.ComponentsObject>(
+    getAuthSchemas(payloadConfig, options),
+    preferenceComponents,
+    accessComponents,
+    ...collectionDefinitions.map(({ components }) => components),
+    ...globalDefinitions.map(({ components }) => components),
+    customComponents,
+  );
 
   return {
     servers: [{ url: payloadConfig.routes.api || '/api' }],
     paths,
-    components: {
-      schemas,
-    },
+    components,
   };
 };
