@@ -100,7 +100,7 @@ export const createPreferenceRouts = (options: Options): Pick<Required<OpenAPIV3
         tags: ['preferences'],
         security,
         parameters,
-        requestBody: createRef('preferences', 'requestBodies'),
+        requestBody: createRef('preference', 'requestBodies'),
         responses: {
           '200': createRef('preferenceUpsert', 'responses'),
         },
@@ -112,7 +112,7 @@ export const createPreferenceRouts = (options: Options): Pick<Required<OpenAPIV3
         security,
         parameters,
         responses: {
-          '200': createRef('preferencesDelete', 'responses'),
+          '200': createRef('preferenceDelete', 'responses'),
         },
       },
     },
