@@ -1,18 +1,17 @@
 import { SanitizedConfig } from 'payload/config';
 import type { OpenAPIV3 } from 'openapi-types';
 
-import { entityToJSONSchema } from '../schemas';
 import { createAccessRoute } from './routes/access';
 import { getCollectionRoutes } from './routes/collection';
 import { getGlobalRoutes } from './routes/global';
 import { Options } from '../options';
 import { getCustomPaths } from './routes/custom-paths';
-import { createPreferencePaths } from './preference-paths';
+import { createPreferenceRouts } from './routes/preferences';
 import { merge } from '../utils';
 import { getAuthSchemas } from './auth-schemas';
 
 export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Options): Promise<Partial<OpenAPIV3.Document>> => {
-  const { paths: preferencePaths, components: preferenceComponents } = createPreferencePaths(options);
+  const { paths: preferencePaths, components: preferenceComponents } = createPreferenceRouts(options);
   const { paths: accessPath, components: accessComponents } = createAccessRoute(options);
 
   const collectionDefinitions = await Promise.all(
@@ -28,10 +27,10 @@ export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Op
 
   const paths = Object.assign(
     {},
-    preferencePaths,
-    accessPath,
-    ...globalDefinitions.map(({ paths }) => paths),
     ...collectionDefinitions.map(({ paths }) => paths),
+    ...globalDefinitions.map(({ paths }) => paths),
+    accessPath,
+    preferencePaths,
     customPaths,
   );
 
@@ -39,8 +38,8 @@ export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Op
     getAuthSchemas(payloadConfig, options),
     preferenceComponents,
     accessComponents,
-    ...globalDefinitions.map(({ components }) => components),
     ...collectionDefinitions.map(({ components }) => components),
+    ...globalDefinitions.map(({ components }) => components),
     customComponents,
   );
 

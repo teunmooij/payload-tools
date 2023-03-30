@@ -1,7 +1,7 @@
 import type { OpenAPIV3 } from 'openapi-types';
-import { Options } from '../options';
-import { createRequestBody, createResponse } from '../schemas';
-import { getAuth } from './route-access';
+import { Options } from '../../../options';
+import { createRef, createRequestBody, createResponse } from '../../../schemas';
+import { getAuth } from '../../route-access';
 
 const parameters: OpenAPIV3.ParameterObject[] = [
   {
@@ -77,7 +77,7 @@ const responseBody: OpenAPIV3.SchemaObject = {
   ],
 };
 
-export const createPreferencePaths = (options: Options): Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'> => {
+export const createPreferenceRouts = (options: Options): Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'> => {
   if (!options.include.preferences) return { paths: {}, components: {} };
 
   const security = [getAuth(options.access.apiKey)];
@@ -91,7 +91,7 @@ export const createPreferencePaths = (options: Options): Pick<Required<OpenAPIV3
         security,
         parameters,
         responses: {
-          '200': createResponse('successful operation', responseBody),
+          '200': createRef('preference', 'responses'),
         },
       },
       post: {
@@ -100,9 +100,9 @@ export const createPreferencePaths = (options: Options): Pick<Required<OpenAPIV3
         tags: ['preferences'],
         security,
         parameters,
-        requestBody: createRequestBody(requestContent),
+        requestBody: createRef('preferences', 'requestBodies'),
         responses: {
-          '200': createResponse('successful operation', upsertResponseBody),
+          '200': createRef('preferenceUpsert', 'responses'),
         },
       },
       delete: {
@@ -112,11 +112,23 @@ export const createPreferencePaths = (options: Options): Pick<Required<OpenAPIV3
         security,
         parameters,
         responses: {
-          '200': createResponse('successful operation', deleteResponseBody),
+          '200': createRef('preferencesDelete', 'responses'),
         },
       },
     },
   };
 
-  return { paths, components: {} };
+  return {
+    paths,
+    components: {
+      requestBodies: {
+        preferenceRequest: createRequestBody(requestContent),
+      },
+      responses: {
+        preferenceResponse: createResponse('ok', responseBody),
+        preferenceUpsertResponse: createResponse('ok', upsertResponseBody),
+        preferenceDeleteResponse: createResponse('ok', deleteResponseBody),
+      },
+    },
+  };
 };
