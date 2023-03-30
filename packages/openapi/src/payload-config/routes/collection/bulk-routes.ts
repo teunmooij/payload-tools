@@ -42,14 +42,16 @@ export const getBulkRoutes = async (
   return {
     paths,
     components: {
-      [`${collection.slug}BulkResponse`]: createResponse('ok', {
-        type: 'object',
-        properties: {
-          message: { type: 'string' },
-          errors: { type: 'array', items: { type: 'string' } },
-          docs: { type: 'array', items: createRef(collection.slug) },
-        },
-      }),
+      responses: {
+        [`${collection.slug}BulkResponse`]: createResponse('ok', {
+          type: 'object',
+          properties: {
+            message: { type: 'string' },
+            errors: { type: 'array', items: { type: 'string' } },
+            docs: { type: 'array', items: createRef(collection.slug) },
+          },
+        }),
+      },
     },
   };
 };

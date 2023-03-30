@@ -2,7 +2,7 @@ import type { OpenAPIV3 } from 'openapi-types';
 import nodePath from 'path';
 import { Endpoint, SanitizedConfig } from 'payload/config';
 import { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
-import { createResponse } from '../schemas';
+import { createResponse } from '../../schemas';
 
 type Config = SanitizedConfig | SanitizedCollectionConfig | SanitizedGlobalConfig;
 type ConfigType = 'payload' | 'global' | 'collection';
