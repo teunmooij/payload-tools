@@ -1,4 +1,4 @@
-[![snyk](https://snyk.io/test/github/teunmooij/payload/badge.svg)](https://snyk.io/test/github/teunmooij/payload)
+[![snyk](https://snyk.io/test/github/teunmooij/payload-tools/badge.svg)](https://snyk.io/test/github/teunmooij/payload-tools)
 
 # payload tools and plugins
 

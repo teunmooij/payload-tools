@@ -1,6 +1,6 @@
 {
   "name": "payload-swagger",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Swagger plugin for payload cms",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -45,7 +45,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/teunmooij/payload.git"
+    "url": "git+https://github.com/teunmooij/payload-tools.git"
   },
   "keywords": [
     "swagger",
@@ -57,7 +57,7 @@
   "author": "Teun Mooij",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/teunmooij/payload/issues"
+    "url": "https://github.com/teunmooij/payload-tools/issues"
   },
-  "homepage": "https://github.com/teunmooij/payload/#readme"
+  "homepage": "https://github.com/teunmooij/payload-tools/#readme"
 }

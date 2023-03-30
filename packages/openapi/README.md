@@ -1,4 +1,4 @@
-[![snyk](https://snyk.io/test/github/teunmooij/payload/badge.svg)](https://snyk.io/test/github/teunmooij/payload)
+[![snyk](https://snyk.io/test/github/teunmooij/payload-tools/badge.svg)](https://snyk.io/test/github/teunmooij/payload-tools)
 [![npm version](https://badge.fury.io/js/payload-openapi.svg)](https://badge.fury.io/js/payload-openapi)
 
 # payload-openapi
