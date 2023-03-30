@@ -5,6 +5,17 @@
 
 Generate openapi 3 documentation for your [payload cms](https://payloadcms.com).
 
+`payload-openapi` documents ALL your payload openapi endpoints and includes:
+
+- collection endpoints
+- global endpoints
+- custom endpoints
+- authentication endpoints
+- preferences endpoints
+- fully typed schema definitions for all requests, parameters and responses
+- authentication requirements for all your endpoints
+- extension points to merge your custom openapi definitions into the schema
+
 If you want to publish the document with a swagger UI, use [payload-swagger](https://www.npmjs.com/package/payload-swagger) instead.
 
 ## Installation
@@ -81,6 +92,10 @@ interface Options {
 ```
 
 ## Version history
+
+### 1.0.0
+
+- Validated schema with full payload endpoint coverage
 
 ### 0.6.0
 
