@@ -82,6 +82,10 @@ interface Options {
 
 ## Version history
 
+### 0.6.0
+
+- Reuse request / response declarations
+
 ### 0.5.1
 
 - `where` type

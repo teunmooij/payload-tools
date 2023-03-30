@@ -1,6 +1,6 @@
 {
   "name": "payload-swagger",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Swagger plugin for payload cms",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "payload-openapi": "^0.5.1",
+    "payload-openapi": "^0.6.0",
     "swagger-ui-express": "^4.6.2"
   },
   "peerDependencies": {
