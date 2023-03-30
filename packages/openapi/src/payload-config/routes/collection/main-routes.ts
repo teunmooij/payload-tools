@@ -9,7 +9,7 @@ import {
   createRequestBody,
   createResponse,
   createUpsertConfirmationSchema,
-  entityToJSONSchema,
+  entityToSchema,
 } from '../../../schemas';
 import { getRouteAccess } from '../../route-access';
 import { getDescription } from '../../../utils';
@@ -114,7 +114,7 @@ export const getMainRoutes = async (
 
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
-      [collection.slug]: entityToJSONSchema(payloadConfig, collection),
+      [collection.slug]: await entityToSchema(payloadConfig, collection),
       [`${collection.slug}s`]: createPaginatedDocumentSchema(collection.slug),
       [`${collection.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(collection.slug),
     },

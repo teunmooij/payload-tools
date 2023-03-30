@@ -3,13 +3,7 @@ import { SanitizedGlobalConfig } from 'payload/types';
 import { SanitizedConfig } from 'payload/config';
 import { Options } from '../../../options';
 import { basicParameters } from '../../../base-config';
-import {
-  createRef,
-  createRequestBody,
-  createResponse,
-  createUpsertConfirmationSchema,
-  entityToJSONSchema,
-} from '../../../schemas';
+import { createRef, createRequestBody, createResponse, createUpsertConfirmationSchema, entityToSchema } from '../../../schemas';
 import { getDescription, merge } from '../../../utils';
 import { getCustomPaths } from '../custom-paths';
 import { getRouteAccess } from '../../route-access';
@@ -48,7 +42,7 @@ export const getGlobalRoutes = async (
   };
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
-      [global.slug]: entityToJSONSchema(payloadConfig, global),
+      [global.slug]: await entityToSchema(payloadConfig, global),
       [`${global.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(global.slug),
     },
     requestBodies: {

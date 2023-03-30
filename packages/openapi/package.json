@@ -13,6 +13,7 @@
     "typecheck": "npm run build"
   },
   "dependencies": {
+    "@openapi-contrib/json-schema-to-openapi-schema": "^2.2.5",
     "lodash.mergewith": "^4.6.2"
   },
   "peerDependencies": {
