@@ -16,9 +16,7 @@ export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Op
   const { paths: accessPath, components: accessComponents } = createAccessRoute(options);
 
   const collectionDefinitions = await Promise.all(
-    payloadConfig.collections
-      .filter(collection => !collection.auth || options.include.authCollection)
-      .map(collection => getCollectionRoutes(collection, options)),
+    payloadConfig.collections.map(collection => getCollectionRoutes(collection, options, payloadConfig)),
   );
   const globalDefinitions = await Promise.all(payloadConfig.globals.map(global => getGlobalPaths(global, options)));
 
@@ -26,7 +24,7 @@ export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Op
     ? getCustomPaths(payloadConfig, 'payload')
     : { paths: {}, components: {} };
 
-  const schemas = [...payloadConfig.globals, ...payloadConfig.collections].reduce((dict, collection) => {
+  const schemas = payloadConfig.globals.reduce((dict, collection) => {
     dict[collection.slug] = entityToJSONSchema(payloadConfig, collection) as OpenAPIV3.SchemaObject;
     return dict;
   }, {} as Record<string, OpenAPIV3.SchemaObject>);
