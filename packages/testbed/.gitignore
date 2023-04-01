@@ -29,3 +29,5 @@ build/
 
 ### VisualStudioCode ###
 .vscode/*
+
+doc/
