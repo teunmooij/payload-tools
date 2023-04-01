@@ -1,6 +1,6 @@
 {
   "name": "create-payload-api-docs",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "Create openapi docs for your payload cms",
   "bin": {
     "create-payload-api-docs": "bin/cli.js"
@@ -12,7 +12,7 @@
     "command-line-usage": "^7.0.1",
     "get-tsconfig": "^4.5.0",
     "payload": "^1.6.22",
-    "payload-openapi": "^1.0.1"
+    "payload-openapi": "^1.0.2"
   },
   "scripts": {
     "build": "rimraf dist && tsc --sourceMap false",

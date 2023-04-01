@@ -22,7 +22,10 @@ Swagger plugin for payload cms:
 - authentication requirements for all your endpoints
 - extension points to merge your custom openapi definitions into the schema
 
-If you only need the openAPI document, use [payload-openapi](https://www.npmjs.com/package/payload-openapi) instead.
+Alternatives:
+
+- [payload-openapi](https://www.npmjs.com/package/payload-openapi) if you just want to openapi document
+- [create-payload-api-docs](https://www.npmjs.com/package/create-payload-api-docs) if you want a cli version (eg to build the openapi doc in your build pipeline)
 
 ## Installation
 
@@ -130,31 +133,4 @@ interface Options {
 
 ## Version history
 
-### 1.0.0
-
-- Uses `payload-openapi` version 1, whch has a validated schema with full payload endpoint coverage
-
-### 0.5.x
-
-- bulk endpoints (if payload version >=1.6.24)
-
-### 0.4.x
-
-- all endpoints included
-
-### 0.3.x
-
-- moved openapi document creation into separate `payload-openapi` package
-
-### 0.2.x
-
-- dropped server extension in favor of plugin
-
-### 0.1.x
-
-- Added custom endpoints
-- Refactored `initSwagger` parameters
-
-### 0.0.x
-
-- Initial version
+See [changelog](./CHANGELOG.md)

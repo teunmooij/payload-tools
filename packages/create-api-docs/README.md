@@ -23,3 +23,7 @@ Or use the commandline option. To learn more:
 ```shell
 npx create-payload-api-docs --help
 ```
+
+## Version history
+
+See [changelog](./CHANGELOG.md)
