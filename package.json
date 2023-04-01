@@ -10,7 +10,10 @@
     "testbed": "npm run build && npm run dev -w packages/testbed"
   },
   "workspaces": [
-    "packages/*"
+    "packages/openapi",
+    "packages/swagger",
+    "packages/create-api-docs",
+    "packages/testbed"
   ],
   "lint-staged": {
     "**/*.{js,ts}": "eslint --cache --fix",
