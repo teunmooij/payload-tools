@@ -21,3 +21,9 @@ Swagger plugin for payload cms:
 - exposes openapi document generated with `payload-openapi`
 - includes a swagger ui
 - easy setup as payload plugin
+
+## [create-payload-api-docs](./packages/create-api-docs/README.md)
+
+[![npm version](https://badge.fury.io/js/create-payload-api-docs.svg)](https://badge.fury.io/js/create-payload-api-docs)
+
+CLI for generating openAPI 3 documentation for your payload cms.

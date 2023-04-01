@@ -1,0 +1,29 @@
+{
+  "name": "create-payload-api-docs",
+  "version": "0.1.0",
+  "description": "Create openapi docs for your payload cms",
+  "bin": {
+    "create-payload-api-docs": "bin/cli.js"
+  },
+  "dependencies": {
+    "@swc/register": "^0.1.10",
+    "arg": "^5.0.2",
+    "get-tsconfig": "^4.5.0",
+    "payload-openapi": "^1.0.0"
+  },
+  "peerDependencies": {
+    "payload": "^1.6.22"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc --sourceMap false",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --quiet --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "payloadcms",
+    "openapi"
+  ],
+  "author": "Teun Mooij",
+  "license": "MIT"
+}
