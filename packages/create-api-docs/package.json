@@ -10,7 +10,7 @@
     "command-line-args": "^5.2.1",
     "command-line-usage": "^7.0.1",
     "get-tsconfig": "^4.5.0",
-    "payload-openapi": "^1.0.0"
+    "payload-openapi": "^1.0.1"
   },
   "peerDependencies": {
     "payload": "^1.6.22"
