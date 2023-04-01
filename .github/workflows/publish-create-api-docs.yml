@@ -1,4 +1,4 @@
-name: Build and publish Openapi
+name: Build and publish create-api-docs
 
 on:
   push:

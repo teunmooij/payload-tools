@@ -1,5 +1,5 @@
 {
-  "name": "payload",
+  "name": "payload-tools",
   "private": true,
   "scripts": {
     "build": "npm run build --workspaces --if-present",
