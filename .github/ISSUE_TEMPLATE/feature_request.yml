@@ -1,0 +1,28 @@
+name: Feature request
+description: Propose a feature you'd like to see added
+title: "[Feature request]:"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please answer the questions below
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package name
+      description: For which tool do you want to request a feature?
+      multiple: false
+      options:
+        - payload-openapi
+        - payload-swagger
+        - create-payload-api-docs
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Please describe your request
+    validations:
+      required: true

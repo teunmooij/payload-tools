@@ -1,0 +1,66 @@
+name: Bug report
+description: Create a report to help us improve
+title: "[Bug]: "
+labels: ["bug"]
+assignees:
+  - teunmooij
+body:
+  - type: markdown
+    attributes: 
+      value: |
+        Thanks for taking the time to fill out this bug report! 
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package name
+      description: For which tool do you want to report a bug?
+      multiple: false
+      options:
+        - payload-openapi
+        - payload-swagger
+        - create-payload-api-docs
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What happened?
+      description: Please describe your bug
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect
+      description: Please describe what you expected to happen
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Setps to reproduce
+      description: Please describe as detailed as possible how we can reproduce the problem
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Tool version
+      description: What is the version of the payload tool?
+    validations:
+      required: true
+  - type: input
+    id: payload-version
+    attributes:
+      label: Payload version
+      description: What version of Payload are you running?
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node version
+      description: What version of Node are you using?
+  - type: input
+    id: node-version
+    attributes:
+      label: Node version
+      description: What version of Node are you using?
