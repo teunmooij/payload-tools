@@ -12,11 +12,11 @@ Alternatives:
 
 ## How to use
 
+Run the following command from your payload repository root folder:
+
 ```shell
 npx create-payload-api-docs
 ```
-
-Then follow the instructions in your shell.
 
 Or use the commandline option. To learn more:
 
