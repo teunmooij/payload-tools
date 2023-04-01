@@ -14,6 +14,4 @@ export default async (configPath?: string, outputPath = 'doc/spec.json', options
 
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, JSON.stringify(apiDocs, null, 2), 'utf-8');
-
-  console.log('config', JSON.stringify(apiDocs, null, 2));
 };

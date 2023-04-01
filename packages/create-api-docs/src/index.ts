@@ -1,43 +1,19 @@
-import getArgs from 'arg';
-import path from 'path';
-
 import initTypescript from './typescript';
 import generateDocs from './generate-docs';
+import { getOptions, showHelp } from './options';
 
-const toAbsolutePath = (given: string) => {
-  if (path.isAbsolute(given)) {
-    return given;
-  }
-  return path.join(process.cwd(), given);
-};
+const { help, payloadPath, configPath, outputPath, generatorOptions } = getOptions();
 
-const args = getArgs(
-  {
-    '--payload': String,
-    '--config': String,
-    '--output': String,
-    '--help': Boolean,
-
-    '-c': '--config',
-    '-o': '--output',
-    '-p': '--payload',
-  },
-  { permissive: true },
-);
-
-if (args['--help']) {
-  // print help
+if (help) {
+  showHelp();
 } else {
-  const payloadPath = args['--payload'] && toAbsolutePath(args['--payload']);
-  const configPath = args['--config'] && toAbsolutePath(args['--config']);
-  const outputPath = args['--output'] && toAbsolutePath(args['--output']);
-
   if (payloadPath) {
     process.chdir(payloadPath);
   }
 
   initTypescript();
-  generateDocs(configPath, outputPath).catch(error => {
+  generateDocs(configPath, outputPath, generatorOptions).catch(error => {
     console.error(error);
+    process.exit(1);
   });
 }
