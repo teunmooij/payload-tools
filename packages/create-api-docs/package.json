@@ -1,6 +1,6 @@
 {
   "name": "create-payload-api-docs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create openapi docs for your payload cms",
   "bin": {
     "create-payload-api-docs": "bin/cli.js"
@@ -20,14 +20,23 @@
     "lint:fix": "eslint src/**/*.ts --quiet --fix",
     "typecheck": "tsc --noEmit"
   },
+  "devDependencies": {
+    "@types/command-line-args": "^5.2.0",
+    "@types/command-line-usage": "^5.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teunmooij/payload-tools.git"
+  },
   "keywords": [
+    "payload",
     "payloadcms",
     "openapi"
   ],
   "author": "Teun Mooij",
   "license": "MIT",
-  "devDependencies": {
-    "@types/command-line-args": "^5.2.0",
-    "@types/command-line-usage": "^5.0.2"
-  }
+  "bugs": {
+    "url": "https://github.com/teunmooij/payload-tools/issues"
+  },
+  "homepage": "https://github.com/teunmooij/payload-tools/#readme"
 }
