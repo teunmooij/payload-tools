@@ -1,6 +1,7 @@
 name: Build and publish create-api-docs
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main

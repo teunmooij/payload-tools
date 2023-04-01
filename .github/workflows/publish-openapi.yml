@@ -1,6 +1,7 @@
 name: Build and publish Openapi
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -12,5 +13,5 @@ jobs:
     uses: ./.github/workflows/publish.yml
     with:
       workspace: packages/openapi
-    secrets: 
+    secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
