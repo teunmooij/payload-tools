@@ -1,11 +1,12 @@
 {
   "name": "create-payload-api-docs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Create openapi docs for your payload cms",
   "bin": {
     "create-payload-api-docs": "bin/cli.js"
   },
   "dependencies": {
+    "@swc/core": "^1.3.41",
     "@swc/register": "^0.1.10",
     "command-line-args": "^5.2.1",
     "command-line-usage": "^7.0.1",
