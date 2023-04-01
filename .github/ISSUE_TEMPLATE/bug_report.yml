@@ -6,9 +6,9 @@ assignees:
   - teunmooij
 body:
   - type: markdown
-    attributes: 
+    attributes:
       value: |
-        Thanks for taking the time to fill out this bug report! 
+        Thanks for taking the time to fill out this bug report!
   - type: dropdown
     id: package
     attributes:
@@ -54,11 +54,6 @@ body:
       description: What version of Payload are you running?
     validations:
       required: true
-  - type: input
-    id: node-version
-    attributes:
-      label: Node version
-      description: What version of Node are you using?
   - type: input
     id: node-version
     attributes:
