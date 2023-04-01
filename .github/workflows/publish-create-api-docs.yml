@@ -1,0 +1,16 @@
+name: Build and publish Openapi
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/create-api-docs/**"
+
+jobs:
+  build_and_publish:
+    uses: ./.github/workflows/publish.yml
+    with:
+      workspace: packages/create-api-docs
+    secrets: 
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
