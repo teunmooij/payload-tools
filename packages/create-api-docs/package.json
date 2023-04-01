@@ -1,6 +1,6 @@
 {
   "name": "create-payload-api-docs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create openapi docs for your payload cms",
   "bin": {
     "create-payload-api-docs": "bin/cli.js"

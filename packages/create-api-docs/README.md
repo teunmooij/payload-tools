@@ -7,7 +7,7 @@ CLI for generating openAPI 3 documentation for your payload cms.
 
 Alternatives:
 
-- [payload-openapi](https://www.npmjs.com/package/payload-swagger): to programmatically generate the openapi documentation
+- [payload-openapi](https://www.npmjs.com/package/payload-openapi): to programmatically generate the openapi documentation
 - [payload-swagger](https://www.npmjs.com/package/payload-swagger): easy to use swagger payload plugin
 
 ## How to use
@@ -22,6 +22,12 @@ Or use the commandline option. To learn more:
 
 ```shell
 npx create-payload-api-docs --help
+```
+
+If you intend to use this package in your build pipeline, it is recommended to add it to your repo as a dev dependency, to prevent duplicate dependency downloads.
+
+```shell
+npm i --save-dev create-payload-api-docs
 ```
 
 ## Version history
