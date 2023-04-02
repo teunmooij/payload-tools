@@ -4,7 +4,12 @@
   "description": "Simple role based access control for your Payload cms",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rimraf dist && tsc --sourceMap false",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --quiet --fix",
+    "test": "jest -c jest.config.ts",
+    "test:coverage": "jest -c jest.config.ts --verbose --collectCoverage",
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "payload": "^1.6.22"
