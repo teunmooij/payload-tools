@@ -28,7 +28,7 @@ jobs:
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v3
       - name: build dependencies
-        if: ${{ !inputs.depends_on }}
+        if: ${{ inputs.depends_on }}
         run: npm run build -w ${{ inputs.depends_on }}
       - run: npm run build -w ${{ inputs.workspace }}
       - run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
