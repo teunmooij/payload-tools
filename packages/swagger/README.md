@@ -11,7 +11,7 @@ Swagger plugin for payload cms:
   - Swagger UI
   - LICENSE file, if available
 
-`payload-swagger` uses `payload-openapi`, whcih documents ALL your payload openapi endpoints and includes:
+`payload-swagger` uses `payload-openapi`, which documents ALL your payload openapi endpoints and includes:
 
 - collection endpoints
 - global endpoints
