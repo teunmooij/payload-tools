@@ -1,5 +1,8 @@
+[![author](https://img.shields.io/badge/author-Teun%20Mooij-blue)](https://www.linkedin.com/in/teunmooij/)
 [![snyk](https://snyk.io/test/github/teunmooij/payload-tools/badge.svg)](https://snyk.io/test/github/teunmooij/payload-tools)
-[![npm version](https://badge.fury.io/js/payload-openapi.svg)](https://badge.fury.io/js/payload-openapi)
+[![downloads](https://img.shields.io/npm/dt/payload-openapi?color=blue)](https://www.npmjs.com/package/payload-openapi)
+[![npm version](https://badge.fury.io/js/payload-openapi.svg)](https://www.npmjs.com/package/payload-openapi)
+[![license](https://img.shields.io/npm/l/payload-openapi?color=blue)](https://img.shields.io/npm/l/payload-openapi)
 
 # payload-openapi
 

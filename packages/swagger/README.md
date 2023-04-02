@@ -1,5 +1,8 @@
+[![created by](https://img.shields.io/badge/author-Teun%20Mooij-blue)](https://www.linkedin.com/in/teunmooij/)
 [![snyk](https://snyk.io/test/github/teunmooij/payload-tools/badge.svg)](https://snyk.io/test/github/teunmooij/payload-tools)
-[![npm version](https://badge.fury.io/js/payload-swagger.svg)](https://badge.fury.io/js/payload-swagger)
+[![downloads](https://img.shields.io/npm/dt/payload-swagger?color=blue)](https://www.npmjs.com/package/payload-swagger)
+[![npm version](https://badge.fury.io/js/payload-swagger.svg)](https://www.npmjs.com/package/payload-swagger)
+[![license](https://img.shields.io/npm/l/payload-swagger?color=blue)](https://img.shields.io/npm/l/payload-swagger)
 
 # payload-swagger
 
