@@ -1,4 +1,4 @@
-name: Build and publish create-api-docs
+name: Build and publish rbac
 
 on:
   workflow_dispatch:
@@ -6,13 +6,12 @@ on:
     branches:
       - main
     paths:
-      - "packages/create-api-docs/**"
+      - "packages/rbac/**"
 
 jobs:
   build_and_publish:
     uses: ./.github/workflows/publish.yml
     with:
-      workspace: packages/create-api-docs
-      depends_on: packages/openapi
-    secrets: 
+      workspace: packages/rbac
+    secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
