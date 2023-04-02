@@ -13,7 +13,8 @@
     "packages/openapi",
     "packages/swagger",
     "packages/create-api-docs",
-    "packages/testbed"
+    "packages/testbed",
+    "packages/rbac"
   ],
   "lint-staged": {
     "**/*.{js,ts}": "eslint --cache --fix",
