@@ -3,6 +3,7 @@ import formBuilder from '@payloadcms/plugin-form-builder';
 import nestedDocs from '@payloadcms/plugin-nested-docs';
 import seo from '@payloadcms/plugin-seo';
 import { swagger } from 'payload-swagger';
+import rbac from 'payload-rbac';
 import path from 'path';
 import Categories from './collections/Categories';
 import Media from './collections/Media';
@@ -101,6 +102,9 @@ export default buildConfig({
         preferences: false,
       },
       payloadVersion: '1.6.26', // not needed for most scenario's
+    }),
+    rbac({
+      roles: ['admin', 'reader'],
     }),
   ],
 
