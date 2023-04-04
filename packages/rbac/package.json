@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rimraf dist && tsc --sourceMap false",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --quiet --fix",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --quiet --fix",
     "test": "jest -c jest.config.ts",
     "test:coverage": "jest -c jest.config.ts --verbose --collectCoverage",
     "typecheck": "tsc --noEmit"

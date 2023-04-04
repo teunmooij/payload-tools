@@ -16,8 +16,8 @@
   },
   "scripts": {
     "build": "rimraf dist && tsc --sourceMap false",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --quiet --fix",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --quiet --fix",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
