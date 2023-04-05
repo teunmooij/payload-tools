@@ -105,6 +105,7 @@ export default buildConfig({
     }),
     rbac({
       roles: ['admin', 'reader'],
+      defaultRoles: ['reader'],
     }),
   ],
 

@@ -66,6 +66,7 @@ async function seedData() {
       name: 'Demo User',
       email: 'demo@payloadcms.com',
       password: 'demo',
+      roles: ['admin'],
     },
   });
 
