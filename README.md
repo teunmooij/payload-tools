@@ -6,15 +6,15 @@ This repository will contain multiple tools and plugins for [payload cms](https:
 
 ## [payload-openapi](./packages/openapi/README.md)
 
-[![npm version](https://badge.fury.io/js/payload-openapi.svg)](https://badge.fury.io/js/payload-openapi)
+[![npm version](https://badge.fury.io/js/payload-openapi.svg)](https://www.npmjs.com/package/payload-openapi)
 
 Openapi tool for payload cms:
 
-- generate openAPI 3 documentation from your payload config
+- generate openAPI 3 documentation from your Payload config
 
 ## [payload-swagger](./packages/swagger/README.md)
 
-[![npm version](https://badge.fury.io/js/payload-swagger.svg)](https://badge.fury.io/js/payload-swagger)
+[![npm version](https://badge.fury.io/js/payload-swagger.svg)](https://www.npmjs.com/package/payload-swagger)
 
 Swagger plugin for payload cms:
 
@@ -24,6 +24,16 @@ Swagger plugin for payload cms:
 
 ## [create-payload-api-docs](./packages/create-api-docs/README.md)
 
-[![npm version](https://badge.fury.io/js/create-payload-api-docs.svg)](https://badge.fury.io/js/create-payload-api-docs)
+[![npm version](https://badge.fury.io/js/create-payload-api-docs.svg)](https://www.npmjs.com/package/create-payload-api-docs)
 
-CLI for generating openAPI 3 documentation for your payload cms.
+CLI for generating openAPI 3 documentation for your Payload cms
+
+## [payload-rbac](./packages/rbac/README.md)
+
+[![npm version](https://badge.fury.io/js/payload-rbac.svg)](https://www.npmjs.com/package/payload-rbac)
+
+Easy to use Role based access control for your Payload cms:
+- plugin to extend your auth collection(s) with a `roles` property
+- lots of predefined access control functions
+- tools to combine access control functions to support more complex situations
+- fully compatible with any custom access control functions you might already have
