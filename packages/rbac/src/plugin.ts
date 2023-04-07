@@ -16,18 +16,19 @@ export const plugin =
           `Unable to enable payload-rbac on collection ${collection.slug}: collection already has a 'roles' field!`,
         );
       }
+
+      const rolesField: SelectField = {
+        name: 'roles',
+        type: 'select',
+        hasMany: true,
+        defaultValue: options.defaultRoles,
+        options: options.roles,
+        saveToJWT: true,
+      };
+
       return {
         ...collection,
-        fields: [
-          ...(collection.fields || []),
-          {
-            name: 'roles',
-            type: 'select',
-            hasMany: true,
-            defaultValue: options.defaultRoles,
-            options: options.roles,
-          } satisfies SelectField,
-        ],
+        fields: [...(collection.fields || []), rolesField],
       };
     }),
   });
