@@ -1,5 +1,4 @@
-import type { Where } from 'payload/types';
-import { allowUserWithRole } from '../../src';
+import { Query, allowUserWithRole } from '../../src';
 import { mockRequest } from '../mocks/request-mock';
 import { createUser } from '../mocks/user';
 
@@ -28,7 +27,7 @@ describe('allow user with role tests', () => {
   });
 
   it('does not return the given filter if not logged in', () => {
-    const where: Where = { foo: { equals: 'bar ' } };
+    const where: Query = { foo: { equals: 'bar ' } };
 
     const req = mockRequest();
     const result = allowUserWithRole('admin', where)({ req });
@@ -37,17 +36,37 @@ describe('allow user with role tests', () => {
   });
 
   it('returns the given filter to user with required role', () => {
-    const where: Where = { foo: { equals: 'bar ' } };
+    const where: Query = { foo: { equals: 'bar ' } };
 
     const user = createUser('admin');
     const req = mockRequest(user);
     const result = allowUserWithRole('admin', where)({ req });
 
-    expect(result).toBe(where);
+    expect(result).toEqual(where);
+  });
+
+  it('returns the given active filter to user with required role', () => {
+    const user = createUser('admin');
+    const req = mockRequest(user);
+    const args = { req };
+
+    const where: Query<{ foo: string }> = {
+      foo: {
+        equals: arg => {
+          expect(arg).toBe(args);
+          return args.req.user!.id;
+        },
+      },
+    };
+
+    const result = allowUserWithRole('admin', where)(args);
+
+    expect(result).toEqual({ foo: { equals: '1234' } });
+    expect.assertions(2);
   });
 
   it('does not return the given filter when user does not have required role', () => {
-    const where: Where = { foo: { equals: 'bar ' } };
+    const where: Query = { foo: { equals: 'bar ' } };
 
     const user = createUser('reader');
     const req = mockRequest(user);

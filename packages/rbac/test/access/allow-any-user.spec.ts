@@ -1,5 +1,4 @@
-import type { Where } from 'payload/types';
-import { allowAnyUser } from '../../src';
+import { Query, allowAnyUser } from '../../src';
 import { mockRequest } from '../mocks/request-mock';
 import { createUser } from '../mocks/user';
 
@@ -13,13 +12,33 @@ describe('allow any user tests', () => {
   });
 
   it('returns the given filter if logged in', () => {
-    const where: Where = { foo: { equals: 'bar ' } };
+    const where: Query = { foo: { equals: 'bar ' } };
 
     const user = createUser();
     const req = mockRequest(user);
     const result = allowAnyUser(where)({ req });
 
-    expect(result).toBe(where);
+    expect(result).toEqual(where);
+  });
+
+  it('returns the given active filter if logged in', () => {
+    const user = createUser();
+    const req = mockRequest(user);
+    const args = { req };
+
+    const where: Query<{ foo: string }> = {
+      foo: {
+        equals: arg => {
+          expect(arg).toBe(args);
+          return args.req.user!.id;
+        },
+      },
+    };
+
+    const result = allowAnyUser(where)(args);
+
+    expect(result).toEqual({ foo: { equals: '1234' } });
+    expect.assertions(2);
   });
 
   it('does not allow access if not logged in', () => {
@@ -30,7 +49,7 @@ describe('allow any user tests', () => {
   });
 
   it('does not return the given filter if not logged in', () => {
-    const where: Where = { foo: { equals: 'bar ' } };
+    const where: Query = { foo: { equals: 'bar ' } };
 
     const req = mockRequest();
     const result = allowAnyUser(where)({ req });

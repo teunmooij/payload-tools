@@ -19,7 +19,7 @@ describe('query tests', () => {
   it('creates a query with and/or', () => {
     const query = createQuery<Collection>({
       'bar.0.baz': { equals: 'qux' },
-      or: [{ foo: { equals: 'admin' } }, createQuery({ foo: { equals: ({ req: { user } }) => user!.email } })],
+      or: [{ foo: { equals: 'admin' } }, { foo: { equals: ({ req: { user } }) => user!.email } }],
     });
 
     const where = query._toWhere({ req: { user: { id: 'my-id', email: 'my-name' } } } as any);

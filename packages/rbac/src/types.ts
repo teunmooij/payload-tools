@@ -69,17 +69,23 @@ type ActiveWhereField<Field, TInput> = {
 
 type PathToString<T> = T extends any ? Join<T, '.'> : never;
 
-export type Where<T extends object = any> = {
-  [K in PathToString<ObjectPaths<T>>]?: WhereField<ValueAtPath<T, Split<K, '.'>>>;
+export type Where<TCollection extends object = any> = {
+  [K in PathToString<ObjectPaths<TCollection>>]?: WhereField<ValueAtPath<TCollection, Split<K, '.'>>>;
 } & {
-  or?: Where<T>[];
-  and?: Where<T>[];
+  or?: Where<TCollection>[];
+  and?: Where<TCollection>[];
 };
 
-export type AccessQuery<T extends object = any, TUser extends User = User> = {
-  [K in PathToString<ObjectPaths<T>>]?: ActiveWhereField<ValueAtPath<T, Split<K, '.'>>, AccessArgs<T, TUser>>;
+export type Query<TCollection extends object = any, TUser extends User = User> = {
+  [K in PathToString<ObjectPaths<TCollection>>]?: ActiveWhereField<
+    ValueAtPath<TCollection, Split<K, '.'>>,
+    AccessArgs<TCollection, TUser>
+  >;
 } & {
-  or?: (AccessQuery<T, TUser> | Where<T>)[];
-  and?: (AccessQuery<T, TUser> | Where<T>)[];
-  _toWhere: (args: AccessArgs<T, TUser>) => Where<T>;
+  or?: Query<TCollection, TUser>[];
+  and?: Query<TCollection, TUser>[];
+};
+
+export type AccessQuery<TCollection extends object = any, TUser extends User = User> = Query<TCollection, TUser> & {
+  _toWhere: (args: AccessArgs<TCollection, TUser>) => Where<TCollection>;
 };

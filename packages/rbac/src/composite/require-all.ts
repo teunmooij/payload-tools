@@ -1,8 +1,11 @@
 import type { Access } from 'payload/types';
 import { isFilter, getAccessEvaluationResult } from './helpers';
+import { User } from '../types';
 
 export const requireAll =
-  (...funcs: [Access, Access, ...Access[]]): Access =>
+  <TCollection extends object = any, TUser extends User = User>(
+    ...funcs: [Access<TCollection, TUser>, Access<TCollection, TUser>, ...Access<TCollection, TUser>[]]
+  ): Access<TCollection, TUser> =>
   async args => {
     const results = await getAccessEvaluationResult(funcs, args);
 
