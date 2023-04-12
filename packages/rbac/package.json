@@ -36,6 +36,7 @@
     "rimraf": "^4.4.0",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
+    "ts-powertypes": "0.0.5",
     "typescript": "^5.0.2"
   },
   "repository": {
@@ -53,8 +54,5 @@
   "bugs": {
     "url": "https://github.com/teunmooij/payload-tools/issues"
   },
-  "homepage": "https://github.com/teunmooij/payload-tools/#readme",
-  "dependencies": {
-    "ts-powertypes": "^0.0.5"
-  }
+  "homepage": "https://github.com/teunmooij/payload-tools/#readme"
 }

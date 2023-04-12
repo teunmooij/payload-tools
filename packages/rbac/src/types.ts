@@ -62,6 +62,11 @@ type Operand<Field, O extends Operator> = O extends 'equals'
 type WhereField<Field> = {
   [O in Operator]?: Operand<Field, O>;
 };
+
+type ActiveWhereField<Field, TInput> = {
+  [O in Operator]?: Operand<Field, O> | ((input: TInput) => Operand<Field, O>);
+};
+
 type PathToString<T> = T extends any ? Join<T, '.'> : never;
 
 export type Where<T extends object = any> = {
@@ -69,4 +74,12 @@ export type Where<T extends object = any> = {
 } & {
   or?: Where<T>[];
   and?: Where<T>[];
+};
+
+export type AccessQuery<T extends object = any, TUser extends User = User> = {
+  [K in PathToString<ObjectPaths<T>>]?: ActiveWhereField<ValueAtPath<T, Split<K, '.'>>, AccessArgs<T, TUser>>;
+} & {
+  or?: (AccessQuery<T, TUser> | Where<T>)[];
+  and?: (AccessQuery<T, TUser> | Where<T>)[];
+  _toWhere: (args: AccessArgs<T, TUser>) => Where<T>;
 };
