@@ -53,5 +53,8 @@
   "bugs": {
     "url": "https://github.com/teunmooij/payload-tools/issues"
   },
-  "homepage": "https://github.com/teunmooij/payload-tools/#readme"
+  "homepage": "https://github.com/teunmooij/payload-tools/#readme",
+  "dependencies": {
+    "ts-powertypes": "^0.0.5"
+  }
 }
