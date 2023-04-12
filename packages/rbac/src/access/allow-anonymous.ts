@@ -10,6 +10,10 @@ export const allowAnonymous = <TCollection extends object = any, TUser extends U
   return args => query._toWhere(args);
 };
 
+export const filtered: <TCollection extends object = any, TUser extends User = User>(
+  where: Query<TCollection, TUser>,
+) => Access<TCollection, TUser> = allowAnonymous;
+
 export const allowPublished = <TCollection extends { _status: string } = any, TUser extends User = User>(
   where?: Query<TCollection, TUser>,
 ): Access => {
