@@ -8,6 +8,12 @@
 
 Easy to use Role based access for your [Payload cms](https://payloadcms.com).
 
+Main features:
+
+- plugin to add role system to your users collection(s)
+- ready to use access control functions for many different scenario's
+- powerful filtering options built on top of Payloads query system
+
 ## Installation
 
 With yarn:
@@ -43,7 +49,8 @@ export default buildConfig({
 
 ## Use the access control functions
 
-All access control functions allow you to control who can access your data and allow you to add an optional filter. This documentation assumes that you are familiar with the Payload documentation on access control.
+All access control functions allow you to control who can access your data and allow you to add an optional filter.
+This documentation assumes that you are familiar with the Payload documentation on access control.
 
 ### Allow anonymous
 
@@ -53,7 +60,15 @@ Anyone has access
 import { allowAnonymous } from 'payload-rbac';
 
 const unfilteredAccess = allowAnonymous();
-const filteredAccess = allowAnonymous({ _status: { equals: 'published' } });
+const filteredAccess = allowAnonymous<Page>({ _status: { equals: 'published' } });
+```
+
+You can also use the `filtered` alias, which might make you code more readable if you're using `allowAnonymous` in combiniation with other access control functions.
+
+```ts
+import { filtered } from 'payload-rbac';
+
+const filteredAccess = filtered<Page>({ _status: { equals: 'published' } });
 ```
 
 ### Allow anonymous access to published documents
@@ -64,7 +79,7 @@ Any has access to published documents
 import { allowPublished } from 'payload-rbac';
 
 const allPublishedAccess = allowPublished();
-const filteredAccess = allowPublished({ author: { equals: 'Santa' } });
+const filteredAccess = allowPublished<Page>({ author: { equals: 'Santa' } });
 ```
 
 ### Allow any user
@@ -75,7 +90,7 @@ Any logged in user has access
 import { allowAnyUser } from 'payload-rbac';
 
 const unfilteredAccess = allowAnyUser();
-const filteredAccess = allowAnyUser({ _status: { equals: 'published' } });
+const filteredAccess = allowAnyUser<Post>({ author: { equals: ({ req }) => req.user!.id } });
 ```
 
 ### Allow user with a given role
@@ -86,7 +101,7 @@ Only users with the given role have access
 import { allowUserWithRole } from 'payload-rbac';
 
 const unfilteredAccess = allowUserWithRole('admin');
-const filteredAccess = allowUserWithRole('reader', { _status: { equals: 'published' } });
+const filteredAccess = allowUserWithRole<Media>('reader', { _status: { equals: 'published' } });
 ```
 
 ### Allow access based on environment variable
@@ -97,8 +112,28 @@ Only allow access if the node environment variable with the given key has the gi
 import { allowEnvironmentValues } from 'payload-rbac';
 
 const unfilteredAccess = allowEnvironmentValues('ENV', 'staging');
-const filteredAccess = allowEnvironmentValues('ENV', 'staging', { _status: { equals: 'published' } });
+const filteredAccess = allowEnvironmentValues<Alert>('ENV', 'staging', { _status: { equals: 'published' } });
 ```
+
+## Filters
+
+All `payload-rbac` access functions accept an optional `where` parameter. If a `where` paremeter is provided it is used as a query if access is granted. See (payload documentation)[https://payloadcms.com/docs/queries/overview] for more information queries.
+
+As filter you can use a payload `Where` query, but you can also use functions as operands, that receive the `AccessArgs` as input.
+
+```ts
+import { Access } from 'payload';
+import { filtered } from 'payload-rbac';
+
+const access: Access = filtered<Page>({
+  or: [
+    { _status: { equals: 'published' } }, // normal where
+    { author: { equals: ({ req }) => req.user?.id || '#not-an-author#' } }, // active where
+  ],
+});
+```
+
+To get the most out of the typesystem, it is recommended to use the generic type parameter on the access control function to specify the collection you're using it on (`Page` in the example above). When you specify the collection the typesystem will be able to check that all paths are correct and your operands are of the correct type and it will be able to provide you autocomplete suggestions.
 
 ## Composite access control functions
 
