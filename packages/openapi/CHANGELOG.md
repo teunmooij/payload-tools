@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Added support for multilanguage labels and descriptions in collections and globals.
+
 ## 1.0.0
 
 - Validated schema with full payload endpoint coverage

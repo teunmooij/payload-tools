@@ -3,6 +3,7 @@ import { SanitizedCollectionConfig } from 'payload/types';
 import { basicParameters, findParameters } from '../../../base-config';
 import { Options } from '../../../options';
 import { createRef, createResponse } from '../../../schemas';
+import { getPlural } from '../../../utils';
 import { getRouteAccess } from '../../route-access';
 
 export const getBulkRoutes = async (
@@ -11,7 +12,7 @@ export const getBulkRoutes = async (
 ): Promise<Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'>> => {
   if (!options.supports.bulkOperations) return { paths: {}, components: {} };
 
-  const plural = collection.labels?.plural || collection.slug;
+  const plural = getPlural(collection);
 
   const paths: OpenAPIV3.PathsObject = {
     [`/${collection.slug}`]: {

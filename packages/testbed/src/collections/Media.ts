@@ -12,9 +12,24 @@ const Media: CollectionConfig = {
     update: () => false,
     delete: () => false,
   },
+  labels: {
+    singular: {
+      en: 'Single English media',
+      de: 'Single German media',
+    },
+    plural: {
+      en: 'Multiple English media',
+      de: 'Multiple German media',
+      nl: 'Multiple Dutch media',
+      docs: 'Multiple Docs media',
+    },
+  },
   admin: {
     useAsTitle: 'filename',
-    description: 'Uploads are set to read-only for this demo.',
+    description: {
+      docs: 'Docs description for Media',
+      en: 'Uploads are set to read-only for this demo.',
+    },
     group: 'Content',
   },
 
