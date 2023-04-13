@@ -1,6 +1,6 @@
 {
   "name": "payload-rbac",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple role based access control for your Payload cms",
   "main": "dist/index.js",
   "scripts": {

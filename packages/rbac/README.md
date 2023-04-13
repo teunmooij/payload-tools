@@ -39,8 +39,8 @@ import rbac  from 'payload-rbac';
 export default buildConfig({
   plugins: [
     rbac({
-      collections: ['users'] // collections to enable rbac on, default: all auth collections
-      roles: ['reader', 'maintainer', 'admin'] // roles
+      collections: ['users'], // collections to enable rbac on, default: all auth collections
+      roles: ['reader', 'maintainer', 'admin'], // roles
     }),
   ],
   // The rest of your config goes here
@@ -111,8 +111,8 @@ Only allow access if the node environment variable with the given key has the gi
 ```ts
 import { allowEnvironmentValues } from 'payload-rbac';
 
-const unfilteredAccess = allowEnvironmentValues('ENV', 'staging');
-const filteredAccess = allowEnvironmentValues<Alert>('ENV', 'staging', { _status: { equals: 'published' } });
+const unfilteredAccess = allowEnvironmentValues('SERVICE_ENV', 'staging');
+const filteredAccess = allowEnvironmentValues<Alert>('SERVICE_ENV', 'staging', { _status: { equals: 'published' } });
 ```
 
 ## Filters
@@ -141,7 +141,7 @@ The composite access control functions allow you to easily combine access contro
 
 ### Require one
 
-Allows access if at least one of the given control functions grants access. If one or more of the matching control functions return a query, those queries are combined with and `or` statement.
+Allows access if at least one of the given control functions grants access. If all of the matching control functions return a query, those queries are combined with and `or` statement.
 
 ```ts
 import { allowPublished, allowUserWithRole, requireOne } from 'payload-rbac';
@@ -152,7 +152,7 @@ const requireOne(allowPublished(), allowUserWithRole('editor'));
 
 ### Require all
 
-Allows access if all of the given control functions grants access. If one or more of the control functions return a query, those queries are combined with and `and` statement.
+Allows access if all of the given control functions grants access. If one or more of the access control functions return a query, those queries are combined with and `and` statement.
 
 ```ts
 import { allowPublished, allowAnyUser, requireAll } from 'payload-rbac';

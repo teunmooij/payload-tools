@@ -3,7 +3,23 @@ import { SelectField } from 'payload/types';
 import { Options } from './types';
 
 /**
- * Payload rbac plugin
+ * Payload rbac plugin, which adds roles to your auth collection, that can be used in the access functions
+ * @param options the options for the plugin
+ * @returns the payload-rbac plugin
+ * @example
+ * import { buildConfig } from 'payload/config';
+ * import rbac  from 'payload-rbac';
+ *
+ * export default buildConfig({
+ *   plugins: [
+ *     rbac({
+ *       collections: ['users'],
+ *       roles: ['reader', 'maintainer', 'admin'],
+ *       defaultRoles: ['reader'],
+ *     }),
+ *   ],
+ *   // The rest of your config goes here
+ * });
  */
 export const plugin =
   (options: Options) =>

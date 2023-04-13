@@ -13,9 +13,22 @@ export type Role<TUser extends User> = TUser extends User<infer TRoles, any> ? T
 
 export type Access<TData = any, TUser extends User = User> = PayloadAccess<TData, TUser>;
 
+/**
+ * Payload-rbac plugin options
+ */
 export interface Options {
+  /**
+   * Slugs for the auth enabled collections to which roles should be added.
+   * If not provided, roles will be added to ALL auth enabled collections
+   */
   collections?: string[];
+  /**
+   * The list roles you want to use in your application
+   */
   roles: SelectField['options'];
+  /**
+   * Default roles, if any, to be granted to users on account creation
+   */
   defaultRoles?: string[];
 }
 

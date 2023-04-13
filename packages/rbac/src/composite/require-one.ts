@@ -2,6 +2,17 @@ import { Access } from 'payload/types';
 import { isFilter, getAccessEvaluationResult } from './helpers';
 import { User } from '../types';
 
+/**
+ * Access control function that only grants access if at least one of the underlying access control functions grant access.
+ * If all of the matching control functions return a query, those queries are combined with and `or` statement.
+ * @param funcs the underlying access control functions
+ * @returns the combined filter or `true` if access is granted, else `false`
+ * @example
+ * import { allowPublished, allowUserWithRole, requireOne } from 'payload-rbac';
+ *
+ * // Anyone has access to published documents, but only editors can see draft documents
+ * const requireOne(allowPublished(), allowUserWithRole('editor'));
+ */
 export const requireOne =
   <TCollection extends object = any, TUser extends User = User>(
     ...funcs: [Access<TCollection, TUser>, Access<TCollection, TUser>, ...Access<TCollection, TUser>[]]

@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload/types';
+import { allowAnyUser, allowPublished, requireOne } from 'payload-rbac';
 import { Content } from '../blocks/Content';
 import { Media } from '../blocks/Media';
 import { MediaContent } from '../blocks/MediaContent';
@@ -15,26 +16,10 @@ const Posts: CollectionConfig = {
     group: 'Content',
   },
   access: {
-    read: ({ req: { user } }) => {
-      // users who are authenticated will see all posts
-      if (user) {
-        return true;
-      }
-
-      // query publishDate to control when posts are visible to guests
-      return {
-        and: [
-          {
-            publishDate: {
-              less_than: new Date().toJSON(),
-            },
-            _status: {
-              equals: 'published',
-            },
-          },
-        ],
-      };
-    },
+    read: requireOne(
+      allowAnyUser({ author: { equals: ({ req: { user } }) => user.id } }),
+      allowPublished({ publishDate: { less_than: () => new Date() } }),
+    ),
   },
   // versioning with drafts enabled tells Payload to save documents to a separate collection in the database and allow publishing
   versions: {
