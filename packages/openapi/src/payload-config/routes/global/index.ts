@@ -4,7 +4,7 @@ import { SanitizedConfig } from 'payload/config';
 import { Options } from '../../../options';
 import { basicParameters } from '../../../base-config';
 import { createRef, createRequestBody, createResponse, createUpsertConfirmationSchema, entityToSchema } from '../../../schemas';
-import { getDescription, merge } from '../../../utils';
+import { getDescription, getSingular, merge } from '../../../utils';
 import { getCustomPaths } from '../custom-paths';
 import { getRouteAccess } from '../../route-access';
 
@@ -14,6 +14,7 @@ export const getGlobalRoutes = async (
   payloadConfig: SanitizedConfig,
 ): Promise<Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'>> => {
   const description = getDescription(global);
+  const singleItem = getSingular(global);
 
   const paths: OpenAPIV3.PathsObject = {
     [`/globals/${global.slug}`]: {
@@ -28,8 +29,8 @@ export const getGlobalRoutes = async (
         },
       },
       post: {
-        summary: `Updates the ${global.slug}`,
-        description: `Updates the ${global.slug}`,
+        summary: `Updates the ${singleItem}`,
+        description: `Updates the ${singleItem}`,
         tags: [`global ${global.slug}`],
         security: await getRouteAccess(global, 'update', options.access),
         parameters: basicParameters,

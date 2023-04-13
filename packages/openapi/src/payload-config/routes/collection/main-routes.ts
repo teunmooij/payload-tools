@@ -12,7 +12,7 @@ import {
   entityToSchema,
 } from '../../../schemas';
 import { getRouteAccess } from '../../route-access';
-import { getDescription } from '../../../utils';
+import { getDescription, getSingular } from '../../../utils';
 
 export const getMainRoutes = async (
   collection: SanitizedCollectionConfig,
@@ -20,7 +20,7 @@ export const getMainRoutes = async (
   payloadConfig: SanitizedConfig,
 ): Promise<Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'>> => {
   const description = getDescription(collection);
-  const singleItem = collection.labels?.singular || collection.slug;
+  const singleItem = getSingular(collection);
 
   const paths: OpenAPIV3.PathsObject = {
     [`/${collection.slug}`]: {
