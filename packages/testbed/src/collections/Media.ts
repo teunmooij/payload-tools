@@ -26,7 +26,10 @@ const Media: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'filename',
-    description: 'Uploads are set to read-only for this demo.',
+    description: {
+      docs: 'Docs description for Media',
+      en: 'Uploads are set to read-only for this demo.',
+    },
     group: 'Content',
   },
 

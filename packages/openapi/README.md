@@ -97,6 +97,37 @@ interface Options {
 }
 ```
 
+## Descriptions
+
+Endpoint descriptions and summaries are generated from the `description` and `label`/`labels.{singular/plural}` fields of your globals and collections. If a multilanguage (`Record<string, string>) value is found, the order of priority for picking the language is as follows:
+
+- docs
+- en
+- first value found that is a string
+
+This makes it possible to set a custom description for the docs:
+
+```ts
+import { CollectionConfig } from 'payload/types';
+
+const Media: CollectionConfig = {
+  slug: 'media',
+  admin: {
+    description: {
+      docs: 'Description used in openapi docs',
+      en: 'Description used in the admin panel',
+    },
+  },
+  labels: {
+    singular: 'Single value used everywhere',
+    plural: {
+      docs: 'Plural value used in docs',
+      en: 'Plural value used in admin panel',
+    },
+  },
+};
+```
+
 ## Version history
 
 See [changelog](./CHANGELOG.md)
