@@ -1,8 +1,10 @@
-import type { Where } from 'payload/types';
-import { Access, Role, User } from '../types';
+import { Access, Query, Role, User } from '../types';
+import { createQuery } from '../query';
 
-export const allowUserWithRole =
-  <TUser extends User = User, TData = any>(role: Role<TUser>, where?: Where): Access<TData, TUser> =>
-  ({ req: { user } }) => {
-    return Boolean(user?.roles.includes(role)) && (!where || where);
-  };
+export const allowUserWithRole = <TCollection extends object = any, TUser extends User = User>(
+  role: Role<TUser>,
+  where?: Query<TCollection, TUser>,
+): Access<TCollection, TUser> => {
+  const query = where && createQuery(where);
+  return args => Boolean(args.req.user?.roles.includes(role)) && (!query || query._toWhere(args));
+};

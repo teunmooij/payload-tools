@@ -1,6 +1,8 @@
 export { plugin as default } from './plugin';
 
-export { allowAnonymous, allowPublished, allowAnyUser, allowUserWithRole, allowEnvironmentValues } from './access';
+export { allowAnonymous, allowPublished, allowAnyUser, allowUserWithRole, allowEnvironmentValues, filtered } from './access';
 export { requireAll, requireOne } from './composite';
 
-export { User, Role, Access } from './types';
+export { createQuery } from './query';
+
+export { User, Role, Access, Query, Where } from './types';

@@ -30,14 +30,14 @@ describe('require all tests', () => {
 
   it('combines the given where clauses', async () => {
     const environmentAccess = allowEnvironmentValues('TEST_VAR', 'foo', { foo: { equals: 'bar' } });
-    const userAccess = allowAnyUser({ bar: { equals: 'baz' } });
+    const userAccess = allowAnyUser<{ bar: string }>({ bar: { equals: ({ req }) => req.user!.id } });
 
     const user = createUser();
     const req = mockRequest(user);
 
     const result = await requireAll(environmentAccess, userAccess)({ req });
 
-    const expected: Where = { and: [{ foo: { equals: 'bar' } }, { bar: { equals: 'baz' } }] };
+    const expected: Where = { and: [{ foo: { equals: 'bar' } }, { bar: { equals: '1234' } }] };
     expect(result).toEqual(expected);
   });
 
