@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Added `blockAll` access control function
+
 ## 1.0.1
 
 - Added jsdoc documentation

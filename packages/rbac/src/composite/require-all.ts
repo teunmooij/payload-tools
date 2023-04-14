@@ -1,6 +1,6 @@
-import type { Access } from 'payload/types';
-import { isFilter, getAccessEvaluationResult } from './helpers';
-import { User } from '../types';
+import type { Access as PayloadAccess } from 'payload/types';
+import { isFilter, getAccessEvaluationResult, hasMetadata } from './helpers';
+import { Access, User } from '../types';
 
 /**
  * Access control function that only grants access if ALL the underlying access control functions grant access.
@@ -13,11 +13,10 @@ import { User } from '../types';
  * // User needs to login to see the published documents (and cannot see draft documents)
  * const requireAll(allowPublished(), allowAnyUser());
  */
-export const requireAll =
-  <TCollection extends object = any, TUser extends User = User>(
-    ...funcs: [Access<TCollection, TUser>, Access<TCollection, TUser>, ...Access<TCollection, TUser>[]]
-  ): Access<TCollection, TUser> =>
-  async args => {
+export const requireAll = <TCollection extends object = any, TUser extends User = User>(
+  ...funcs: [PayloadAccess<TCollection, TUser>, PayloadAccess<TCollection, TUser>, ...PayloadAccess<TCollection, TUser>[]]
+): Access<TCollection, TUser> => {
+  const access: Access<TCollection, TUser> = async args => {
     const results = await getAccessEvaluationResult(funcs, args);
 
     if (results.some(result => !result)) return false;
@@ -25,3 +24,10 @@ export const requireAll =
     const filters = results.filter(isFilter);
     return !filters.length || (filters.length === 1 ? filters[0] : { and: filters });
   };
+
+  if (funcs.filter(hasMetadata).some(func => func.metadata?.blockAll)) {
+    access.metadata = { blockAll: true };
+  }
+
+  return access;
+};

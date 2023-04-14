@@ -34,7 +34,7 @@ Add the plugin to your payload config to extend your auth collection:
 
 ```typescript
 import { buildConfig } from 'payload/config';
-import rbac  from 'payload-rbac';
+import rbac from 'payload-rbac';
 
 export default buildConfig({
   plugins: [
@@ -113,6 +113,16 @@ import { allowEnvironmentValues } from 'payload-rbac';
 
 const unfilteredAccess = allowEnvironmentValues('SERVICE_ENV', 'staging');
 const filteredAccess = allowEnvironmentValues<Alert>('SERVICE_ENV', 'staging', { _status: { equals: 'published' } });
+```
+
+### Block all requests
+
+Blocks all requests. If used with [payload-openapi](https://www.npmjs.com/package/payload-openapi) or [payload-swagger](https://www.npmjs.com/package/payload-swagger), endpoints with this access control function are excluded from documentation.
+
+```ts
+import { blockAll } from 'payload-rbac';
+
+const access = blockAll();
 ```
 
 ## Filters

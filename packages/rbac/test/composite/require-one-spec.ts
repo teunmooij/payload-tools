@@ -1,5 +1,5 @@
 import type { Where } from 'payload/types';
-import { requireOne, allowAnyUser, allowEnvironmentValues } from '../../src';
+import { requireOne, allowAnyUser, allowEnvironmentValues, blockAll } from '../../src';
 import { mockRequest } from '../mocks/request-mock';
 import { createUser } from '../mocks/user';
 
@@ -63,5 +63,11 @@ describe('require one tests', () => {
 
     const expected: Where = { bar: { equals: 'baz' } };
     expect(result).toEqual(expected);
+  });
+
+  it('has no metadata to indicate it blocks all requests if at least one function is a blockAll function', () => {
+    const access = requireOne(allowAnyUser(), blockAll());
+
+    expect(access.metadata).toBeUndefined();
   });
 });
