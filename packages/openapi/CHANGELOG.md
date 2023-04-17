@@ -1,3 +1,7 @@
+## 1.0.5
+
+- Skip routes that have [payload-rbac](https://www.npmjs.com/package/payload-rbac) 'blockAll' access
+
 ## 1.0.4
 
 - Added support for multilanguage labels and descriptions in collections and globals.
