@@ -14,6 +14,7 @@
     "packages/swagger",
     "packages/create-api-docs",
     "packages/testbed",
+    "packages/query",
     "packages/rbac"
   ],
   "lint-staged": {

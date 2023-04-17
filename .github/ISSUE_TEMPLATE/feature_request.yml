@@ -17,6 +17,8 @@ body:
         - payload-openapi
         - payload-swagger
         - create-payload-api-docs
+        - payload-rbac
+        - payload-query
     validations:
       required: true
   - type: textarea
