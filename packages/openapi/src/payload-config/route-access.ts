@@ -25,7 +25,7 @@ const isRouteAvailable = (
   return !access?.metadata?.blockAll;
 };
 
-export const includeIfAvailable = <T, K extends string>(
+export const includeIfAvailable = <T>(
   collection: SanitizedCollectionConfig | SanitizedGlobalConfig,
   operation: keyof SanitizedCollectionConfig['access'] | (keyof SanitizedCollectionConfig['access'])[],
   doc: T,
