@@ -17,6 +17,24 @@ export const getAuth = (includeApiKeyAuth: boolean) => ({
   ...(includeApiKeyAuth ? { apiKeyAuth: [] } : {}),
 });
 
+const isRouteAvailable = (
+  collection: SanitizedCollectionConfig | SanitizedGlobalConfig,
+  operation: keyof SanitizedCollectionConfig['access'],
+) => {
+  const access = (collection.access as any)[operation];
+  return !access?.metadata?.blockAll;
+};
+
+export const includeIfAvailable = <T, K extends string>(
+  collection: SanitizedCollectionConfig | SanitizedGlobalConfig,
+  operation: keyof SanitizedCollectionConfig['access'] | (keyof SanitizedCollectionConfig['access'])[],
+  doc: T,
+) => {
+  const operations = Array.isArray(operation) ? operation : [operation];
+  const isAvailable = operations.some(op => isRouteAvailable(collection, op));
+  return isAvailable ? doc : {};
+};
+
 export const getRouteAccess = async (
   collection: SanitizedCollectionConfig | SanitizedGlobalConfig,
   operation: keyof SanitizedCollectionConfig['access'],

@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload/types';
 import path from 'path';
+import { blockAll } from 'payload-rbac';
 
 const Media: CollectionConfig = {
   slug: 'media',
@@ -8,9 +9,9 @@ const Media: CollectionConfig = {
     read: () => true,
 
     // access is limited for demo purposes, remove to restore upload capability
-    create: () => false,
-    update: () => false,
-    delete: () => false,
+    create: blockAll(),
+    update: blockAll(),
+    delete: blockAll(),
   },
   labels: {
     singular: {

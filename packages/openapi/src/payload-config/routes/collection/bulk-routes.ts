@@ -4,7 +4,7 @@ import { basicParameters, findParameters } from '../../../base-config';
 import { Options } from '../../../options';
 import { createRef, createResponse } from '../../../schemas';
 import { getPlural } from '../../../utils';
-import { getRouteAccess } from '../../route-access';
+import { getRouteAccess, includeIfAvailable } from '../../route-access';
 
 export const getBulkRoutes = async (
   collection: SanitizedCollectionConfig,
@@ -16,33 +16,37 @@ export const getBulkRoutes = async (
 
   const paths: OpenAPIV3.PathsObject = {
     [`/${collection.slug}`]: {
-      patch: {
-        summary: `Update multiple ${plural}`,
-        description: `Update all ${plural} matching the where query`,
-        tags: [collection.slug],
-        security: await getRouteAccess(collection, 'delete', options.access),
-        parameters: [...findParameters.map(param => ({ ...param, required: param.name === 'where' })), ...basicParameters],
-        requestBody: createRef(collection.slug, 'requestBodies'),
-        responses: {
-          '200': createRef(`${collection.slug}Bulk`, 'responses'),
+      ...includeIfAvailable(collection, 'update', {
+        patch: {
+          summary: `Update multiple ${plural}`,
+          description: `Update all ${plural} matching the where query`,
+          tags: [collection.slug],
+          security: await getRouteAccess(collection, 'update', options.access),
+          parameters: [...findParameters.map(param => ({ ...param, required: param.name === 'where' })), ...basicParameters],
+          requestBody: createRef(collection.slug, 'requestBodies'),
+          responses: {
+            '200': createRef(`${collection.slug}Bulk`, 'responses'),
+          },
         },
-      },
-      delete: {
-        summary: `Delete multiple ${plural}`,
-        description: `Delete all ${plural} matching the where query`,
-        tags: [collection.slug],
-        security: await getRouteAccess(collection, 'delete', options.access),
-        parameters: [...findParameters.map(param => ({ ...param, required: param.name === 'where' })), ...basicParameters],
-        responses: {
-          '200': createRef(`${collection.slug}Bulk`, 'responses'),
+      }),
+      ...includeIfAvailable(collection, 'delete', {
+        delete: {
+          summary: `Delete multiple ${plural}`,
+          description: `Delete all ${plural} matching the where query`,
+          tags: [collection.slug],
+          security: await getRouteAccess(collection, 'delete', options.access),
+          parameters: [...findParameters.map(param => ({ ...param, required: param.name === 'where' })), ...basicParameters],
+          responses: {
+            '200': createRef(`${collection.slug}Bulk`, 'responses'),
+          },
         },
-      },
+      }),
     },
   };
 
   return {
     paths,
-    components: {
+    components: includeIfAvailable(collection, ['delete', 'update'], {
       responses: {
         [`${collection.slug}BulkResponse`]: createResponse('ok', {
           type: 'object',
@@ -53,6 +57,6 @@ export const getBulkRoutes = async (
           },
         }),
       },
-    },
+    }),
   };
 };
