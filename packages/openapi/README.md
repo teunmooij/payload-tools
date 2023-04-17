@@ -125,7 +125,27 @@ const Media: CollectionConfig = {
       en: 'Plural value used in admin panel',
     },
   },
+  // ... Rest of collection config
 };
+```
+
+## Excluding unused endpoints
+
+In Payload `collections` and `globals` have a standard set of available endpoints. In some situations you might not want to use some of these endpoints. In those situations you probably have used an access method that looks something like this: `() => false;`. This blocks all traffic, but the endpoint is still part of the openapi documentation.
+
+To also remove the endpoint from the openapi documentation, you can use [payload-rbac](https://www.npmjs.com/package/payload-rbac):
+
+```ts
+import { CollectionConfig } from 'payload/types';
+import { blockAll } from 'payload-rbac';
+
+const Media: CollectionConfig: {
+  slug: 'media',
+  access: {
+    delete: blockAll(), // Use block all to exclude endpoint from docs
+  },
+  // ... Rest of collection config
+}
 ```
 
 ## Version history

@@ -1,5 +1,5 @@
 import type { Where } from 'payload/types';
-import { requireAll, allowAnyUser, allowEnvironmentValues } from '../../src';
+import { requireAll, allowAnyUser, allowEnvironmentValues, blockAll } from '../../src';
 import { mockRequest } from '../mocks/request-mock';
 import { createUser } from '../mocks/user';
 
@@ -52,5 +52,11 @@ describe('require all tests', () => {
 
     const expected: Where = { foo: { equals: 'bar' } };
     expect(result).toEqual(expected);
+  });
+
+  it('has metadata to indicate it blocks all requests if at least one function is a blockAll function', () => {
+    const access = requireAll(allowAnyUser(), blockAll());
+
+    expect(access.metadata).toEqual({ blockAll: true });
   });
 });

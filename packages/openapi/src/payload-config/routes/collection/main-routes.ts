@@ -11,7 +11,7 @@ import {
   createUpsertConfirmationSchema,
   entityToSchema,
 } from '../../../schemas';
-import { getRouteAccess } from '../../route-access';
+import { getRouteAccess, includeIfAvailable } from '../../route-access';
 import { getDescription, getSingular } from '../../../utils';
 
 export const getMainRoutes = async (
@@ -24,107 +24,123 @@ export const getMainRoutes = async (
 
   const paths: OpenAPIV3.PathsObject = {
     [`/${collection.slug}`]: {
-      get: {
-        summary: description,
-        description,
-        tags: [collection.slug],
-        security: await getRouteAccess(collection, 'read', options.access),
-        parameters: [...basicParameters, ...findParameters],
-        responses: {
-          '200': createRef(`${collection.slug}s`, 'responses'),
+      ...includeIfAvailable(collection, 'read', {
+        get: {
+          summary: description,
+          description,
+          tags: [collection.slug],
+          security: await getRouteAccess(collection, 'read', options.access),
+          parameters: [...basicParameters, ...findParameters],
+          responses: {
+            '200': createRef(`${collection.slug}s`, 'responses'),
+          },
         },
-      },
-      post: {
-        summary: `Create a new ${singleItem}`,
-        description: `Create a new ${singleItem}`,
-        tags: [collection.slug],
-        security: await getRouteAccess(collection, 'create', options.access),
-        parameters: basicParameters,
-        requestBody: createRef(collection.slug, 'requestBodies'),
-        responses: {
-          '200': createRef(`${collection.slug}UpsertConfirmation`, 'responses'),
+      }),
+      ...includeIfAvailable(collection, 'create', {
+        post: {
+          summary: `Create a new ${singleItem}`,
+          description: `Create a new ${singleItem}`,
+          tags: [collection.slug],
+          security: await getRouteAccess(collection, 'create', options.access),
+          parameters: basicParameters,
+          requestBody: createRef(collection.slug, 'requestBodies'),
+          responses: {
+            '200': createRef(`${collection.slug}UpsertConfirmation`, 'responses'),
+          },
         },
-      },
+      }),
     },
     [`/${collection.slug}/{id}`]: {
-      get: {
-        summary: `Get a single ${singleItem} by its id`,
-        description: `Get a single ${singleItem} by its id`,
-        tags: [collection.slug],
-        security: await getRouteAccess(collection, 'read', options.access),
-        parameters: [
-          {
-            name: 'id',
-            in: 'path',
-            description: `id of the ${singleItem}`,
-            required: true,
-            schema: { type: 'string' },
+      ...includeIfAvailable(collection, 'read', {
+        get: {
+          summary: `Get a single ${singleItem} by its id`,
+          description: `Get a single ${singleItem} by its id`,
+          tags: [collection.slug],
+          security: await getRouteAccess(collection, 'read', options.access),
+          parameters: [
+            {
+              name: 'id',
+              in: 'path',
+              description: `id of the ${singleItem}`,
+              required: true,
+              schema: { type: 'string' },
+            },
+            ...basicParameters,
+            ...findParameters,
+          ],
+          responses: {
+            '200': createRef(collection.slug, 'responses'),
+            '404': createRef('NotFoundError', 'responses'),
           },
-          ...basicParameters,
-          ...findParameters,
-        ],
-        responses: {
-          '200': createRef(collection.slug, 'responses'),
-          '404': createRef('NotFoundError', 'responses'),
         },
-      },
-      patch: {
-        summary: `Updates a ${singleItem}`,
-        description: `Updates a ${singleItem}`,
-        tags: [collection.slug],
-        security: await getRouteAccess(collection, 'update', options.access),
-        parameters: [
-          {
-            name: 'id',
-            in: 'path',
-            description: `id of the ${singleItem}`,
-            required: true,
-            schema: { type: 'string' },
+      }),
+      ...includeIfAvailable(collection, 'update', {
+        patch: {
+          summary: `Updates a ${singleItem}`,
+          description: `Updates a ${singleItem}`,
+          tags: [collection.slug],
+          security: await getRouteAccess(collection, 'update', options.access),
+          parameters: [
+            {
+              name: 'id',
+              in: 'path',
+              description: `id of the ${singleItem}`,
+              required: true,
+              schema: { type: 'string' },
+            },
+            ...basicParameters,
+          ],
+          requestBody: createRef(collection.slug, 'requestBodies'),
+          responses: {
+            '200': createRef(`${collection.slug}UpsertConfirmation`, 'responses'),
+            '404': createRef('NotFoundError', 'responses'),
           },
-          ...basicParameters,
-        ],
-        requestBody: createRef(collection.slug, 'requestBodies'),
-        responses: {
-          '200': createRef(`${collection.slug}UpsertConfirmation`, 'responses'),
-          '404': createRef('NotFoundError', 'responses'),
         },
-      },
-      delete: {
-        summary: `Deletes an existing ${singleItem}`,
-        description: `Deletes an existing ${singleItem}`,
-        tags: [collection.slug],
-        security: await getRouteAccess(collection, 'delete', options.access),
-        parameters: [
-          {
-            name: 'id',
-            in: 'path',
-            description: `id of the ${singleItem}`,
-            required: true,
-            schema: { type: 'string' },
+      }),
+      ...includeIfAvailable(collection, 'delete', {
+        delete: {
+          summary: `Deletes an existing ${singleItem}`,
+          description: `Deletes an existing ${singleItem}`,
+          tags: [collection.slug],
+          security: await getRouteAccess(collection, 'delete', options.access),
+          parameters: [
+            {
+              name: 'id',
+              in: 'path',
+              description: `id of the ${singleItem}`,
+              required: true,
+              schema: { type: 'string' },
+            },
+            ...basicParameters,
+          ],
+          responses: {
+            '200': createRef(`${collection.slug}UpsertConfirmation`, 'responses'),
+            '404': createRef('NotFoundError', 'responses'),
           },
-          ...basicParameters,
-        ],
-        responses: {
-          '200': createRef(`${collection.slug}UpsertConfirmation`, 'responses'),
-          '404': createRef('NotFoundError', 'responses'),
         },
-      },
+      }),
     },
   };
 
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
       [collection.slug]: await entityToSchema(payloadConfig, collection),
-      [`${collection.slug}s`]: createPaginatedDocumentSchema(collection.slug),
-      [`${collection.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(collection.slug),
+      ...includeIfAvailable(collection, 'read', { [`${collection.slug}s`]: createPaginatedDocumentSchema(collection.slug) }),
+      ...includeIfAvailable(collection, ['create', 'update', 'delete'], {
+        [`${collection.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(collection.slug),
+      }),
     },
     requestBodies: {
-      [`${collection.slug}Request`]: createRequestBody(collection.slug),
+      ...includeIfAvailable(collection, ['create', 'update'], {
+        [`${collection.slug}Request`]: createRequestBody(collection.slug),
+      }),
     },
     responses: {
-      [`${collection.slug}Response`]: createResponse('ok', collection.slug),
-      [`${collection.slug}sResponse`]: createResponse('ok', `${collection.slug}s`),
-      [`${collection.slug}UpsertConfirmationResponse`]: createResponse('ok', `${collection.slug}UpsertConfirmation`),
+      ...includeIfAvailable(collection, 'read', { [`${collection.slug}Response`]: createResponse('ok', collection.slug) }),
+      ...includeIfAvailable(collection, 'read', { [`${collection.slug}sResponse`]: createResponse('ok', `${collection.slug}s`) }),
+      ...includeIfAvailable(collection, ['create', 'update', 'delete'], {
+        [`${collection.slug}UpsertConfirmationResponse`]: createResponse('ok', `${collection.slug}UpsertConfirmation`),
+      }),
     },
   };
 

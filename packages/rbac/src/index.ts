@@ -7,6 +7,7 @@ export {
   allowUser,
   allowUserWithRole,
   allowEnvironmentValues,
+  blockAll,
   filtered,
 } from './access';
 export { requireAll, requireOne } from './composite';

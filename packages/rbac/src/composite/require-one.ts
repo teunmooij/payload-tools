@@ -1,6 +1,6 @@
-import { Access } from 'payload/types';
+import { Access as PayloadAccess } from 'payload/types';
 import { isFilter, getAccessEvaluationResult } from './helpers';
-import { User } from '../types';
+import { Access, User } from '../types';
 
 /**
  * Access control function that only grants access if at least one of the underlying access control functions grant access.
@@ -15,7 +15,7 @@ import { User } from '../types';
  */
 export const requireOne =
   <TCollection extends object = any, TUser extends User = User>(
-    ...funcs: [Access<TCollection, TUser>, Access<TCollection, TUser>, ...Access<TCollection, TUser>[]]
+    ...funcs: [PayloadAccess<TCollection, TUser>, PayloadAccess<TCollection, TUser>, ...PayloadAccess<TCollection, TUser>[]]
   ): Access<TCollection, TUser> =>
   async args => {
     const results = await getAccessEvaluationResult(funcs, args);

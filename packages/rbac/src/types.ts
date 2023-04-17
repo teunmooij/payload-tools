@@ -11,7 +11,9 @@ export type User<TRoles extends string = string, TRest extends object = {}> = No
 
 export type Role<TUser extends User> = TUser extends User<infer TRoles, any> ? TRoles : never;
 
-export type Access<TData = any, TUser extends User = User> = PayloadAccess<TData, TUser>;
+export type Access<TData = any, TUser extends User = User> = PayloadAccess<TData, TUser> & {
+  metadata?: Partial<Record<string, any>>;
+};
 
 /**
  * Payload-rbac plugin options
