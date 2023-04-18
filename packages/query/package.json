@@ -1,6 +1,6 @@
 {
   "name": "payload-query",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Payload typesafe query utility",
   "main": "dist/index.js",
   "scripts": {
@@ -10,6 +10,9 @@
     "test": "jest -c jest.config.ts",
     "test:coverage": "jest -c jest.config.ts --verbose --collectCoverage",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ts-powertools": "0.0.3"
   },
   "peerDependencies": {
     "payload": "^1.6.22"

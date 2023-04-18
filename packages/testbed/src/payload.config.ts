@@ -2,8 +2,9 @@ import { buildConfig } from 'payload/config';
 import formBuilder from '@payloadcms/plugin-form-builder';
 import nestedDocs from '@payloadcms/plugin-nested-docs';
 import seo from '@payloadcms/plugin-seo';
-import { swagger } from 'payload-swagger';
+import { selectPlugin } from 'payload-query';
 import rbac from 'payload-rbac';
+import { swagger } from 'payload-swagger';
 import path from 'path';
 import Categories from './collections/Categories';
 import Media from './collections/Media';
@@ -107,6 +108,7 @@ export default buildConfig({
       roles: ['admin', 'reader'],
       defaultRoles: ['reader'],
     }),
+    selectPlugin(),
   ],
 
   // optional customization of routes

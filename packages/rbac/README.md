@@ -127,7 +127,7 @@ const access = blockAll();
 
 ## Filters
 
-All `payload-rbac` access functions accept an optional `where` parameter. If a `where` paremeter is provided it is used as a query if access is granted. See (payload documentation)[https://payloadcms.com/docs/queries/overview] for more information queries.
+All `payload-rbac` access functions accept an optional `where` parameter. If a `where` paremeter is provided it is used as a query if access is granted. See [payload documentation](https://payloadcms.com/docs/queries/overview) for more information queries.
 
 As filter you can use a payload `Where` query, but you can also use functions as operands, that receive the `AccessArgs` as input.
 

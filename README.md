@@ -33,7 +33,18 @@ CLI for generating openAPI 3 documentation for your Payload cms
 [![npm version](https://badge.fury.io/js/payload-rbac.svg)](https://www.npmjs.com/package/payload-rbac)
 
 Easy to use Role based access control for your Payload cms:
+
 - plugin to extend your auth collection(s) with a `roles` property
 - lots of predefined access control functions
 - tools to combine access control functions to support more complex situations
 - fully compatible with any custom access control functions you might already have
+
+## [payload-query](./packages/query/README.md)
+
+[![npm version](https://badge.fury.io/js/payload-query.svg)](https://www.npmjs.com/package/payload-query)
+
+Query utility for your [Payload cms](https://payloadcms.com):
+
+- create type safe queries
+- predefine queries to be constructed with data passed in later (e.g. request data)
+- select output fields on REST and Internal API.
