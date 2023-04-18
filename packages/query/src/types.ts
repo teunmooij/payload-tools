@@ -51,6 +51,16 @@ type ActiveWhereField<Field, TInput> = {
 
 type PathToString<T> = T extends any ? Join<T, '.'> : never;
 
+/**
+ * Strong typed version of Payload's `Where`
+ * @template TCollection type of the collection on which this filter will be used
+ * @example
+ * {
+ *   color: {
+ *     equals: 'mint',
+ *   },
+ * }
+ */
 export type Filter<TCollection extends object = Record<string, unknown>> = {
   [K in PathToString<ObjectPaths<TCollection>>]?: WhereField<ValueAtPath<TCollection, Split<K, '.'>>>;
 } & {
@@ -58,6 +68,27 @@ export type Filter<TCollection extends object = Record<string, unknown>> = {
   and?: Filter<TCollection>[];
 };
 
+/**
+ * Strong typed version of Payload's `Where`, with option to use functions as operands.
+ * Use `toFilter` to turn a `Query` into a `Filter`.
+ * @template TCollection type of the collection on which this filter will be used
+ * @template TData type of data that will be passed into the function operands
+ * @example
+ * {
+ *   and: [
+ *     {
+ *       color: {
+ *         equals: 'mint',
+ *       },
+ *     },
+ *     {
+ *       author: {
+ *         equals: user => user.id,
+ *       },
+ *     },
+ *   ],
+ * }
+ */
 export type Query<TCollection extends object = Record<string, unknown>, TData = unknown> = {
   [K in PathToString<ObjectPaths<TCollection>>]?: ActiveWhereField<ValueAtPath<TCollection, Split<K, '.'>>, TData>;
 } & {

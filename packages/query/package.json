@@ -1,6 +1,6 @@
 {
   "name": "payload-query",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Payload typesafe query utility",
   "main": "dist/index.js",
   "scripts": {

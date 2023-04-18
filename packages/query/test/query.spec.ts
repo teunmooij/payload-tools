@@ -30,4 +30,19 @@ describe('query tests', () => {
       or: [{ foo: { equals: 'admin' } }, { foo: { equals: 'my-name' } }],
     });
   });
+
+  it('is curried', () => {
+    const query: Query<Collection, Data> = {
+      foo: { equals: ({ req: { user } }) => user.id },
+      'bar.0.baz': { equals: 'qux' },
+    };
+
+    const preDefined = toFilter(query);
+    const where = preDefined({ req: { user: { id: 'my-id', email: 'my-name' } } });
+
+    expect(where).toEqual({
+      foo: { equals: 'my-id' },
+      'bar.0.baz': { equals: 'qux' },
+    });
+  });
 });

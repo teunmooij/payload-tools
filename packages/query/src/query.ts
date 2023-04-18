@@ -1,8 +1,19 @@
 import { Query, Filter } from './types';
 
+/**
+ * Creates a filter from a query
+ * @param query the query to create the filter from
+ * @returns a function into which data can be passed to create the filter
+ */
 export function toFilter<TCollection extends object, TData>(
   query: Query<TCollection, TData>,
 ): (data: TData) => Filter<TCollection>;
+/**
+ * Creates a filter from a query
+ * @param query the query to create the filter from
+ * @param data the data to pass into the function operands
+ * @returns the filter
+ */
 export function toFilter<TCollection extends object, TData>(query: Query<TCollection, TData>, data: TData): Filter<TCollection>;
 export function toFilter<TCollection extends object, TData>(
   ...args: [Query<TCollection, TData>, TData] | [Query<TCollection, TData>]
