@@ -28,6 +28,15 @@ describe('select tests', () => {
     expect(result).toEqual({ name: 'foo' });
   });
 
+  it('returns all but excluded fields when no fields are explicitely included', () => {
+    const fields = { id: false };
+    const document = { id: 123, name: 'foo', bar: 'baz' };
+
+    const result = select(fields, document);
+
+    expect(result).toEqual({ name: 'foo', bar: 'baz' });
+  });
+
   it('is curried', () => {
     const fields = { name: true };
     const document = { id: 123, name: 'foo', bar: 'baz' };

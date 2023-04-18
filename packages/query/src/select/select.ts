@@ -1,4 +1,4 @@
-import { objectEntries } from 'ts-powertools';
+import { objectEntries, objectValues } from 'ts-powertools';
 import { Select } from './types';
 
 type TypeWithID = {
@@ -9,6 +9,8 @@ const toBoolean = (value: any) =>
   typeof value === 'boolean' ? value : typeof value === 'string' && !['0', 'false'].includes(value?.toLowerCase() || '0');
 
 export const selectInternal = <T extends TypeWithID>(fields: Partial<Record<keyof T, any>>, doc: T): Partial<T> => {
+  const omitOnly = objectValues(fields).every(field => !field);
+
   return objectEntries(fields).reduce(
     (result, [key, value]) => {
       if (toBoolean(value)) {
@@ -19,7 +21,7 @@ export const selectInternal = <T extends TypeWithID>(fields: Partial<Record<keyo
 
       return result;
     },
-    { id: doc.id } as Partial<T>,
+    omitOnly ? { ...doc } : ({ id: doc.id } as Partial<T>),
   );
 };
 

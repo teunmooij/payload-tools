@@ -146,9 +146,13 @@ const select: Select<Post> = {
   color: true,
   id: false,
 };
+
+// Exclude the id field, include everything else
+const select2: Select<Post> = { id: false };
 ```
 
 By default the `id` field is selected and all others are not. To select a field, add it to the selection, with a value of `true`, to omit the id, include it with a value of `false`. Nested fields are not yet supported and are either all selected or not at all.
+If the `select` only contains fields with a value of `false`, all fields that are not part of the `select` will be included.
 
 ### Select - REST api
 
