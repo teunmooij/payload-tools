@@ -1,6 +1,6 @@
 {
   "name": "payload-query",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Payload typesafe query utility",
   "main": "dist/index.js",
   "scripts": {
@@ -49,8 +49,12 @@
   "keywords": [
     "payload",
     "payloadcms",
-    "rbac",
-    "access"
+    "query",
+    "filter",
+    "select",
+    "project",
+    "plugin",
+    "payload-plugin"
   ],
   "author": "Teun Mooij",
   "license": "MIT",
