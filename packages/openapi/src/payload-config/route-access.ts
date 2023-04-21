@@ -17,7 +17,7 @@ export const getAuth = (includeApiKeyAuth: boolean) => ({
   ...(includeApiKeyAuth ? { apiKeyAuth: [] } : {}),
 });
 
-const isRouteAvailable = (
+export const isRouteAvailable = (
   collection: SanitizedCollectionConfig | SanitizedGlobalConfig,
   operation: keyof SanitizedCollectionConfig['access'],
 ) => {

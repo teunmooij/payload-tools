@@ -7,6 +7,7 @@ import { createRef, createRequestBody, createResponse, createUpsertConfirmationS
 import { getDescription, getSingular, merge } from '../../../utils';
 import { getCustomPaths } from '../custom-paths';
 import { getRouteAccess } from '../../route-access';
+import { createVersionRoutes } from '../version-paths';
 
 export const getGlobalRoutes = async (
   global: SanitizedGlobalConfig,
@@ -55,7 +56,8 @@ export const getGlobalRoutes = async (
     },
   };
 
+  const versionRoutes = await createVersionRoutes(global, options, payloadConfig);
   const customRoutes = getCustomPaths(global, 'global');
 
-  return merge({ paths, components }, customRoutes);
+  return merge({ paths, components }, versionRoutes, customRoutes);
 };
