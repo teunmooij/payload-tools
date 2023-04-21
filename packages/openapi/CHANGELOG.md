@@ -1,3 +1,7 @@
+## 1.1.0
+
+- Added version endpoints
+
 ## 1.0.5
 
 - Skip routes that have [payload-rbac](https://www.npmjs.com/package/payload-rbac) 'blockAll' access
