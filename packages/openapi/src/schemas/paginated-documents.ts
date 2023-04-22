@@ -1,7 +1,8 @@
 import type { OpenAPIV3 } from 'openapi-types';
 
-export const createPaginatedDocumentSchema = (slug: string): OpenAPIV3.SchemaObject => ({
+export const createPaginatedDocumentSchema = (slug: string, title: string): OpenAPIV3.SchemaObject => ({
   type: 'object',
+  title,
   properties: {
     docs: {
       type: 'array',

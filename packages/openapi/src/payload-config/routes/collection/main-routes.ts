@@ -12,7 +12,7 @@ import {
   entityToSchema,
 } from '../../../schemas';
 import { getRouteAccess, includeIfAvailable } from '../../route-access';
-import { getDescription, getSingular } from '../../../utils';
+import { getDescription, getSingular, getPlural } from '../../../utils';
 
 export const getMainRoutes = async (
   collection: SanitizedCollectionConfig,
@@ -125,7 +125,9 @@ export const getMainRoutes = async (
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
       [collection.slug]: await entityToSchema(payloadConfig, collection),
-      ...includeIfAvailable(collection, 'read', { [`${collection.slug}s`]: createPaginatedDocumentSchema(collection.slug) }),
+      ...includeIfAvailable(collection, 'read', {
+        [`${collection.slug}s`]: createPaginatedDocumentSchema(collection.slug, getPlural(collection)),
+      }),
       ...includeIfAvailable(collection, ['create', 'update', 'delete'], {
         [`${collection.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(collection.slug),
       }),

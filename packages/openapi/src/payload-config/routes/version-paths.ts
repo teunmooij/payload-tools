@@ -112,7 +112,7 @@ export const createVersionRoutes = async (
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
       [`${config.slug}Version`]: versionedSchema,
-      [`${config.slug}Versions`]: createPaginatedDocumentSchema(`${config.slug}Version`),
+      [`${config.slug}Versions`]: createPaginatedDocumentSchema(`${config.slug}Version`, `${plural} - version`),
     },
     responses: {
       [`${config.slug}VersionResponse`]: createResponse('ok', `${config.slug}Version`),
