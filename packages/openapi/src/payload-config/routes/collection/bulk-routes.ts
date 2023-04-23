@@ -3,7 +3,7 @@ import { SanitizedCollectionConfig } from 'payload/types';
 import { basicParameters, findParameters } from '../../../base-config';
 import { Options } from '../../../options';
 import { createRef, createResponse } from '../../../schemas';
-import { getPlural } from '../../../utils';
+import { getPlural, getSingularSchemaName } from '../../../utils';
 import { getRouteAccess, includeIfAvailable } from '../../route-access';
 
 export const getBulkRoutes = async (
@@ -13,6 +13,7 @@ export const getBulkRoutes = async (
   if (!options.supports.bulkOperations) return { paths: {}, components: {} };
 
   const plural = getPlural(collection);
+  const schemaName = getSingularSchemaName(collection);
 
   const paths: OpenAPIV3.PathsObject = {
     [`/${collection.slug}`]: {
@@ -23,9 +24,9 @@ export const getBulkRoutes = async (
           tags: [collection.slug],
           security: await getRouteAccess(collection, 'update', options.access),
           parameters: [...findParameters.map(param => ({ ...param, required: param.name === 'where' })), ...basicParameters],
-          requestBody: createRef(collection.slug, 'requestBodies'),
+          requestBody: createRef(schemaName, 'requestBodies'),
           responses: {
-            '200': createRef(`${collection.slug}Bulk`, 'responses'),
+            '200': createRef(`${schemaName}Bulk`, 'responses'),
           },
         },
       }),
@@ -37,7 +38,7 @@ export const getBulkRoutes = async (
           security: await getRouteAccess(collection, 'delete', options.access),
           parameters: [...findParameters.map(param => ({ ...param, required: param.name === 'where' })), ...basicParameters],
           responses: {
-            '200': createRef(`${collection.slug}Bulk`, 'responses'),
+            '200': createRef(`${schemaName}Bulk`, 'responses'),
           },
         },
       }),
@@ -48,12 +49,12 @@ export const getBulkRoutes = async (
     paths,
     components: includeIfAvailable(collection, ['delete', 'update'], {
       responses: {
-        [`${collection.slug}BulkResponse`]: createResponse('ok', {
+        [`${schemaName}BulkResponse`]: createResponse('ok', {
           type: 'object',
           properties: {
             message: { type: 'string' },
             errors: { type: 'array', items: { type: 'string' } },
-            docs: { type: 'array', items: createRef(collection.slug) },
+            docs: { type: 'array', items: createRef(schemaName) },
           },
         }),
       },

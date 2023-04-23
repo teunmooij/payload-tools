@@ -4,7 +4,7 @@ import { SanitizedConfig } from 'payload/config';
 import { Options } from '../../../options';
 import { basicParameters } from '../../../base-config';
 import { createRef, createRequestBody, createResponse, createUpsertConfirmationSchema, entityToSchema } from '../../../schemas';
-import { getSingular, merge } from '../../../utils';
+import { getSingular, getSingularSchemaName, merge } from '../../../utils';
 import { getCustomPaths } from '../custom-paths';
 import { getRouteAccess } from '../../route-access';
 import { createVersionRoutes } from '../version-paths';
@@ -15,6 +15,7 @@ export const getGlobalRoutes = async (
   payloadConfig: SanitizedConfig,
 ): Promise<Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'>> => {
   const singleItem = getSingular(global);
+  const schemaName = getSingularSchemaName(global);
 
   const paths: OpenAPIV3.PathsObject = {
     [`/globals/${global.slug}`]: {
@@ -25,7 +26,7 @@ export const getGlobalRoutes = async (
         security: await getRouteAccess(global, 'read', options.access),
         parameters: basicParameters,
         responses: {
-          '200': createRef(global.slug, 'responses'),
+          '200': createRef(schemaName, 'responses'),
         },
       },
       post: {
@@ -34,24 +35,24 @@ export const getGlobalRoutes = async (
         tags: [`global ${global.slug}`],
         security: await getRouteAccess(global, 'update', options.access),
         parameters: basicParameters,
-        requestBody: createRef(global.slug, 'requestBodies'),
+        requestBody: createRef(schemaName, 'requestBodies'),
         responses: {
-          '200': createRef(`${global.slug}UpsertConfirmation`, 'responses'),
+          '200': createRef(`${schemaName}UpsertConfirmation`, 'responses'),
         },
       },
     },
   };
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
-      [global.slug]: await entityToSchema(payloadConfig, global),
-      [`${global.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(global.slug, singleItem),
+      [schemaName]: await entityToSchema(payloadConfig, global),
+      [`${schemaName}UpsertConfirmation`]: createUpsertConfirmationSchema(schemaName, singleItem),
     },
     requestBodies: {
-      [`${global.slug}Request`]: createRequestBody(global.slug),
+      [`${schemaName}Request`]: createRequestBody(schemaName),
     },
     responses: {
-      [`${global.slug}Response`]: createResponse('ok', global.slug),
-      [`${global.slug}UpsertConfirmationResponse`]: createResponse('ok', `${global.slug}UpsertConfirmation`),
+      [`${schemaName}Response`]: createResponse('ok', schemaName),
+      [`${schemaName}UpsertConfirmationResponse`]: createResponse('ok', `${schemaName}UpsertConfirmation`),
     },
   };
 

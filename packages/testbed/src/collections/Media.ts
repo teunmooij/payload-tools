@@ -17,12 +17,14 @@ const Media: CollectionConfig = {
     singular: {
       en: 'Single English media',
       de: 'Single German media',
+      openapi: 'medium',
     },
     plural: {
       en: 'Multiple English media',
       de: 'Multiple German media',
       nl: 'Multiple Dutch media',
       docs: 'Multiple Docs media',
+      openapi: 'media',
     },
   },
   admin: {

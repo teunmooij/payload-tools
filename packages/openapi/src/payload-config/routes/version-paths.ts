@@ -4,7 +4,7 @@ import { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types'
 import { basicParameters, findParameters } from '../../base-config';
 import { Options } from '../../options';
 import { createPaginatedDocumentSchema, createRef, createResponse, entityToSchema } from '../../schemas';
-import { getPlural, getSingular } from '../../utils';
+import { getPlural, getSingular, getSingularSchemaName } from '../../utils';
 import { getRouteAccess, isRouteAvailable } from '../route-access';
 
 const getRootPath = (slug: string, payloadConfig: SanitizedConfig) => {
@@ -50,6 +50,7 @@ export const createVersionRoutes = async (
 
   const singular = getSingular(config);
   const plural = getPlural(config);
+  const schemaName = getSingularSchemaName(config);
 
   const paths: OpenAPIV3.PathsObject = {
     [rootPath]: {
@@ -60,7 +61,7 @@ export const createVersionRoutes = async (
         security,
         parameters: [...basicParameters, ...findParameters],
         responses: {
-          '200': createRef(`${config.slug}Versions`, 'responses'),
+          '200': createRef(`${schemaName}Versions`, 'responses'),
         },
       },
     },
@@ -82,7 +83,7 @@ export const createVersionRoutes = async (
           ...findParameters,
         ],
         responses: {
-          '200': createRef(`${config.slug}Version`, 'responses'),
+          '200': createRef(`${schemaName}Version`, 'responses'),
           '404': createRef('NotFoundError', 'responses'),
         },
       },
@@ -102,7 +103,7 @@ export const createVersionRoutes = async (
           ...basicParameters,
         ],
         responses: {
-          '200': createRef(`${config.slug}UpsertConfirmation`, 'responses'),
+          '200': createRef(`${schemaName}UpsertConfirmation`, 'responses'),
           '404': createRef('NotFoundError', 'responses'),
         },
       },
@@ -111,12 +112,12 @@ export const createVersionRoutes = async (
 
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
-      [`${config.slug}Version`]: versionedSchema,
-      [`${config.slug}Versions`]: createPaginatedDocumentSchema(`${config.slug}Version`, `${singular} versions`),
+      [`${schemaName}Version`]: versionedSchema,
+      [`${schemaName}Versions`]: createPaginatedDocumentSchema(`${schemaName}Version`, `${singular} versions`),
     },
     responses: {
-      [`${config.slug}VersionResponse`]: createResponse('ok', `${config.slug}Version`),
-      [`${config.slug}VersionsResponse`]: createResponse('ok', `${config.slug}Versions`),
+      [`${schemaName}VersionResponse`]: createResponse('ok', `${schemaName}Version`),
+      [`${schemaName}VersionsResponse`]: createResponse('ok', `${schemaName}Versions`),
     },
   };
 

@@ -2,6 +2,7 @@ import type { OpenAPIV3 } from 'openapi-types';
 import { SanitizedCollectionConfig } from 'payload/types';
 import type { Options } from '../../../../options';
 import { createRef } from '../../../../schemas';
+import { getSingularSchemaName } from '../../../../utils';
 
 export const getPasswordRecoveryPaths = (collection: SanitizedCollectionConfig, options: Options): OpenAPIV3.PathsObject => {
   if (!options.include.passwordRecovery) return {};
@@ -25,7 +26,7 @@ export const getPasswordRecoveryPaths = (collection: SanitizedCollectionConfig, 
         tags: ['auth'],
         requestBody: createRef('passwordReset', 'requestBodies'),
         responses: {
-          '200': createRef(`${collection.slug}PasswordResetResponse`, 'responses'),
+          '200': createRef(`${getSingularSchemaName(collection)}PasswordResetResponse`, 'responses'),
         },
       },
     },

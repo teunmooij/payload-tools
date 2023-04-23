@@ -12,7 +12,7 @@ import {
   entityToSchema,
 } from '../../../schemas';
 import { getRouteAccess, includeIfAvailable } from '../../route-access';
-import { getSingular, getPlural } from '../../../utils';
+import { getSingular, getPlural, getSingularSchemaName, getPluralSchemaName } from '../../../utils';
 
 export const getMainRoutes = async (
   collection: SanitizedCollectionConfig,
@@ -21,6 +21,8 @@ export const getMainRoutes = async (
 ): Promise<Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'>> => {
   const singleItem = getSingular(collection);
   const plural = getPlural(collection);
+  const schemaName = getSingularSchemaName(collection);
+  const pluralSchemaName = getPluralSchemaName(collection);
 
   const paths: OpenAPIV3.PathsObject = {
     [`/${collection.slug}`]: {
@@ -32,7 +34,7 @@ export const getMainRoutes = async (
           security: await getRouteAccess(collection, 'read', options.access),
           parameters: [...basicParameters, ...findParameters],
           responses: {
-            '200': createRef(`${collection.slug}s`, 'responses'),
+            '200': createRef(pluralSchemaName, 'responses'),
           },
         },
       }),
@@ -43,9 +45,9 @@ export const getMainRoutes = async (
           tags: [collection.slug],
           security: await getRouteAccess(collection, 'create', options.access),
           parameters: basicParameters,
-          requestBody: createRef(collection.slug, 'requestBodies'),
+          requestBody: createRef(schemaName, 'requestBodies'),
           responses: {
-            '200': createRef(`${collection.slug}UpsertConfirmation`, 'responses'),
+            '200': createRef(`${schemaName}UpsertConfirmation`, 'responses'),
           },
         },
       }),
@@ -69,7 +71,7 @@ export const getMainRoutes = async (
             ...findParameters,
           ],
           responses: {
-            '200': createRef(collection.slug, 'responses'),
+            '200': createRef(schemaName, 'responses'),
             '404': createRef('NotFoundError', 'responses'),
           },
         },
@@ -90,9 +92,9 @@ export const getMainRoutes = async (
             },
             ...basicParameters,
           ],
-          requestBody: createRef(collection.slug, 'requestBodies'),
+          requestBody: createRef(schemaName, 'requestBodies'),
           responses: {
-            '200': createRef(`${collection.slug}UpsertConfirmation`, 'responses'),
+            '200': createRef(`${schemaName}UpsertConfirmation`, 'responses'),
             '404': createRef('NotFoundError', 'responses'),
           },
         },
@@ -114,7 +116,7 @@ export const getMainRoutes = async (
             ...basicParameters,
           ],
           responses: {
-            '200': createRef(`${collection.slug}UpsertConfirmation`, 'responses'),
+            '200': createRef(`${schemaName}UpsertConfirmation`, 'responses'),
             '404': createRef('NotFoundError', 'responses'),
           },
         },
@@ -124,24 +126,24 @@ export const getMainRoutes = async (
 
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
-      [collection.slug]: await entityToSchema(payloadConfig, collection),
+      [schemaName]: await entityToSchema(payloadConfig, collection),
       ...includeIfAvailable(collection, 'read', {
-        [`${collection.slug}s`]: createPaginatedDocumentSchema(collection.slug, plural),
+        [pluralSchemaName]: createPaginatedDocumentSchema(schemaName, plural),
       }),
       ...includeIfAvailable(collection, ['create', 'update', 'delete'], {
-        [`${collection.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(collection.slug, singleItem),
+        [`${schemaName}UpsertConfirmation`]: createUpsertConfirmationSchema(schemaName, singleItem),
       }),
     },
     requestBodies: {
       ...includeIfAvailable(collection, ['create', 'update'], {
-        [`${collection.slug}Request`]: createRequestBody(collection.slug),
+        [`${schemaName}Request`]: createRequestBody(schemaName),
       }),
     },
     responses: {
-      ...includeIfAvailable(collection, 'read', { [`${collection.slug}Response`]: createResponse('ok', collection.slug) }),
-      ...includeIfAvailable(collection, 'read', { [`${collection.slug}sResponse`]: createResponse('ok', `${collection.slug}s`) }),
+      ...includeIfAvailable(collection, 'read', { [`${schemaName}Response`]: createResponse('ok', schemaName) }),
+      ...includeIfAvailable(collection, 'read', { [`${pluralSchemaName}Response`]: createResponse('ok', pluralSchemaName) }),
       ...includeIfAvailable(collection, ['create', 'update', 'delete'], {
-        [`${collection.slug}UpsertConfirmationResponse`]: createResponse('ok', `${collection.slug}UpsertConfirmation`),
+        [`${schemaName}UpsertConfirmationResponse`]: createResponse('ok', `${schemaName}UpsertConfirmation`),
       }),
     },
   };
