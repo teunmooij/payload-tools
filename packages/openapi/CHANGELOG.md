@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Allow overriding of schema names by setting `openapi` labels.
+
 ## 1.1.0
 
 - Added version endpoints
