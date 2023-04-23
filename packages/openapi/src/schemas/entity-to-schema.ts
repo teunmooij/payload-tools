@@ -3,10 +3,17 @@ import type { SanitizedConfig } from 'payload/config';
 import type { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
 import { entityToJSONSchema as payloadEntityToJSONSchema } from 'payload/utilities';
 import convert from '@openapi-contrib/json-schema-to-openapi-schema';
+import { getDescription, getSingularSchemaName } from '../utils';
 
-const cleanReferences = (schema: OpenAPIV3.SchemaObject): OpenAPIV3.SchemaObject => {
+const cleanReferences = (schema: OpenAPIV3.SchemaObject, config: SanitizedConfig): OpenAPIV3.SchemaObject => {
   const asString = JSON.stringify(schema);
-  return JSON.parse(asString.replace(/#\/definitions\//g, '#/components/schemas/'));
+  return JSON.parse(
+    asString.replace(/#\/definitions\/([^"]+)/g, (_, slug) => {
+      const collection = config.collections.find(col => col.slug === slug) || config.globals.find(gl => gl.slug === slug);
+      const name = collection ? getSingularSchemaName(collection) : slug;
+      return `#/components/schemas/${name}`;
+    }),
+  );
 };
 
 const isReferenceObject = (schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject): schema is OpenAPIV3.ReferenceObject =>
@@ -43,5 +50,8 @@ export const entityToSchema = async (
   const jsonschema = payloadEntityToJSONSchema(config, incomingEntity);
   const rawSchema = await convert(jsonschema);
 
-  return cleanReferences(stripEmptyRequired(rawSchema));
+  return {
+    description: getDescription(incomingEntity),
+    ...cleanReferences(stripEmptyRequired(rawSchema), config),
+  };
 };

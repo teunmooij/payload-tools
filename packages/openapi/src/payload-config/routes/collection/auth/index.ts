@@ -10,6 +10,7 @@ import me from './me';
 import { getEmailVerificationPaths } from './email-paths';
 import { getUnlockPaths } from './unlock-paths';
 import { getPasswordRecoveryPaths } from './recovery-paths';
+import { getSingularSchemaName } from '../../../../utils';
 
 export const getAuthRoutes = (
   collection: SanitizedCollectionConfig,
@@ -17,25 +18,27 @@ export const getAuthRoutes = (
 ): Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'> => {
   if (!collection.auth || !options.include.authPaths) return { paths: {}, components: {} };
 
+  const schemaName = getSingularSchemaName(collection);
+
   const schemas: Record<string, OpenAPIV3.SchemaObject> = {
-    [`${collection.slug}Me`]: me(collection.slug),
+    [`${schemaName}Me`]: me(schemaName),
   };
   const responses: Record<string, OpenAPIV3.ResponseObject> = {
-    [`${collection.slug}MeResponse`]: createResponse('ok', `${collection.slug}Me`),
+    [`${schemaName}MeResponse`]: createResponse('ok', `${schemaName}Me`),
   };
 
   if (options.include.passwordRecovery) {
-    schemas[`${collection.slug}PasswordReset`] = {
+    schemas[`${schemaName}PasswordReset`] = {
       type: 'object',
       properties: {
         message: { type: 'string' },
         token: { type: 'string' },
-        user: createRef(collection.slug),
+        user: createRef(schemaName),
       },
       required: ['message', 'token', 'user'],
     };
 
-    responses[`${collection.slug}PasswordResetResponse`] = createResponse('ok', `${collection.slug}PasswordReset`);
+    responses[`${schemaName}PasswordResetResponse`] = createResponse('ok', `${schemaName}PasswordReset`);
   }
 
   return {

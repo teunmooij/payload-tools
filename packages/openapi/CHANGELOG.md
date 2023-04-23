@@ -1,3 +1,8 @@
+## 1.1.1
+
+- Improved naming, titles and descriptions of components and paths.
+- Allow overriding of schema names by setting `openapi` labels.
+
 ## 1.1.0
 
 - Added version endpoints

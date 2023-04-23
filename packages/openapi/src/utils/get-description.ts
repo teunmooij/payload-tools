@@ -1,7 +1,5 @@
 import { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
-
-const hasCollectionLabel = (collection: any, kind: 'singular' | 'plural'): collection is SanitizedCollectionConfig =>
-  Boolean(collection.labels?.[kind]);
+import { getLabels } from './get-label';
 
 const getText = (labels: string | Record<string, string> | undefined): string | undefined => {
   if (typeof labels === 'string' || !labels) return labels;
@@ -10,13 +8,13 @@ const getText = (labels: string | Record<string, string> | undefined): string | 
 };
 
 export const getSingular = (collection: SanitizedCollectionConfig | SanitizedGlobalConfig): string => {
-  const labels = hasCollectionLabel(collection, 'singular') ? collection.labels.singular : collection.label;
+  const labels = getLabels(collection, 'singular');
 
   return getText(labels) || collection.slug;
 };
 
 export const getPlural = (collection: SanitizedCollectionConfig | SanitizedGlobalConfig): string => {
-  const labels = hasCollectionLabel(collection, 'plural') ? collection.labels.plural : collection.label;
+  const labels = getLabels(collection, 'plural');
 
   return getText(labels) || collection.slug;
 };

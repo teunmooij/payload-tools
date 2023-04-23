@@ -15,6 +15,10 @@ const Posts: CollectionConfig = {
     defaultColumns: ['title', 'category', 'publishDate', 'tags', 'status'],
     group: 'Content',
   },
+  labels: {
+    singular: { openapi: 'post' },
+    plural: { openapi: 'posts' },
+  },
   access: {
     read: requireOne(
       allowAnyUser({ author: { equals: ({ req: { user } }) => user.id } }),

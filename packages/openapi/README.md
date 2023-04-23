@@ -97,9 +97,26 @@ interface Options {
 }
 ```
 
+## Schema names
+
+By default the schema name is derived from the global / collection `slug`. If the collection has a value for `label.{singular/plural}.openapi` or the global a value for `label.openapi`, that value is used instead.
+
+```ts
+import { CollectionConfig } from 'payload/types';
+
+const Media: CollectionConfig = {
+  slug: 'posts',
+  labels: {
+    singular: { openapi: 'post' },
+    plural: { openapi: 'posts' },
+  },
+  // ... Rest of collection config
+};
+```
+
 ## Descriptions
 
-Endpoint descriptions and summaries are generated from the `description` and `label`/`labels.{singular/plural}` fields of your globals and collections. If a multilanguage (`Record<string, string>) value is found, the order of priority for picking the language is as follows:
+Endpoint descriptions and summaries are generated from the `description` and `label`/`labels.{singular/plural}` fields of your globals and collections. If a multilanguage (`Record<string, string>`) value is found, the order of priority for picking the language is as follows:
 
 - docs
 - en
