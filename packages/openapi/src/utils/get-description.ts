@@ -35,5 +35,5 @@ export const getDescription = (collection: SanitizedCollectionConfig | Sanitized
     }
   }
 
-  return getPlural(collection);
+  return undefined;
 };

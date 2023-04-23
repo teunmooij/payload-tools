@@ -4,7 +4,7 @@ import { getLabels } from './get-label';
 const getText = (collection: SanitizedCollectionConfig | SanitizedGlobalConfig, kind: 'singular' | 'plural'): string => {
   const labels = getLabels(collection, kind);
   if (typeof labels === 'object' && labels.openapi) return labels.openapi;
-  return kind === 'singular' ? collection.slug : `${collection.slug}s`;
+  return kind === 'singular' ? collection.slug : `${getText(collection, 'singular')}s`;
 };
 
 export const getSingularSchemaName = (collection: SanitizedCollectionConfig | SanitizedGlobalConfig): string =>

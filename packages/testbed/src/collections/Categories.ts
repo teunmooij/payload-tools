@@ -8,6 +8,10 @@ const Categories: CollectionConfig = {
     defaultColumns: ['name', 'id', 'archived'],
     group: 'Content',
   },
+  labels: {
+    singular: { openapi: 'category' },
+    plural: { openapi: 'categories' },
+  },
   access: {
     read: () => true,
   },
