@@ -12,22 +12,22 @@ import {
   entityToSchema,
 } from '../../../schemas';
 import { getRouteAccess, includeIfAvailable } from '../../route-access';
-import { getDescription, getSingular, getPlural } from '../../../utils';
+import { getSingular, getPlural } from '../../../utils';
 
 export const getMainRoutes = async (
   collection: SanitizedCollectionConfig,
   options: Options,
   payloadConfig: SanitizedConfig,
 ): Promise<Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'>> => {
-  const description = getDescription(collection);
   const singleItem = getSingular(collection);
+  const plural = getPlural(collection);
 
   const paths: OpenAPIV3.PathsObject = {
     [`/${collection.slug}`]: {
       ...includeIfAvailable(collection, 'read', {
         get: {
-          summary: description,
-          description,
+          summary: `Find paginated ${plural}`,
+          description: `Find paginated ${plural}`,
           tags: [collection.slug],
           security: await getRouteAccess(collection, 'read', options.access),
           parameters: [...basicParameters, ...findParameters],
@@ -126,10 +126,10 @@ export const getMainRoutes = async (
     schemas: {
       [collection.slug]: await entityToSchema(payloadConfig, collection),
       ...includeIfAvailable(collection, 'read', {
-        [`${collection.slug}s`]: createPaginatedDocumentSchema(collection.slug, getPlural(collection)),
+        [`${collection.slug}s`]: createPaginatedDocumentSchema(collection.slug, plural),
       }),
       ...includeIfAvailable(collection, ['create', 'update', 'delete'], {
-        [`${collection.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(collection.slug),
+        [`${collection.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(collection.slug, singleItem),
       }),
     },
     requestBodies: {

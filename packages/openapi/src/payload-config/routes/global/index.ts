@@ -4,7 +4,7 @@ import { SanitizedConfig } from 'payload/config';
 import { Options } from '../../../options';
 import { basicParameters } from '../../../base-config';
 import { createRef, createRequestBody, createResponse, createUpsertConfirmationSchema, entityToSchema } from '../../../schemas';
-import { getDescription, getSingular, merge } from '../../../utils';
+import { getSingular, merge } from '../../../utils';
 import { getCustomPaths } from '../custom-paths';
 import { getRouteAccess } from '../../route-access';
 import { createVersionRoutes } from '../version-paths';
@@ -14,14 +14,13 @@ export const getGlobalRoutes = async (
   options: Options,
   payloadConfig: SanitizedConfig,
 ): Promise<Pick<Required<OpenAPIV3.Document>, 'paths' | 'components'>> => {
-  const description = getDescription(global);
   const singleItem = getSingular(global);
 
   const paths: OpenAPIV3.PathsObject = {
     [`/globals/${global.slug}`]: {
       get: {
-        summary: description,
-        description,
+        summary: `Get the ${singleItem}`,
+        description: `Get the ${singleItem}`,
         tags: [`global ${global.slug}`],
         security: await getRouteAccess(global, 'read', options.access),
         parameters: basicParameters,
@@ -45,7 +44,7 @@ export const getGlobalRoutes = async (
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
       [global.slug]: await entityToSchema(payloadConfig, global),
-      [`${global.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(global.slug),
+      [`${global.slug}UpsertConfirmation`]: createUpsertConfirmationSchema(global.slug, singleItem),
     },
     requestBodies: {
       [`${global.slug}Request`]: createRequestBody(global.slug),

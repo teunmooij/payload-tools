@@ -30,7 +30,7 @@ export const createVersionRoutes = async (
   const { id, createdAt, updatedAt, ...version } = schema.properties!;
 
   const versionedSchema: OpenAPIV3.SchemaObject = {
-    title: `${schema.title} - version`,
+    title: `${schema.title} version`,
     type: 'object',
     additionalProperties: false,
     properties: {
@@ -112,7 +112,7 @@ export const createVersionRoutes = async (
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
       [`${config.slug}Version`]: versionedSchema,
-      [`${config.slug}Versions`]: createPaginatedDocumentSchema(`${config.slug}Version`, `${plural} - version`),
+      [`${config.slug}Versions`]: createPaginatedDocumentSchema(`${config.slug}Version`, `${singular} versions`),
     },
     responses: {
       [`${config.slug}VersionResponse`]: createResponse('ok', `${config.slug}Version`),

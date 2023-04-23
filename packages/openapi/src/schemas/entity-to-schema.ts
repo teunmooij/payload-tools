@@ -3,6 +3,7 @@ import type { SanitizedConfig } from 'payload/config';
 import type { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
 import { entityToJSONSchema as payloadEntityToJSONSchema } from 'payload/utilities';
 import convert from '@openapi-contrib/json-schema-to-openapi-schema';
+import { getDescription } from '../utils';
 
 const cleanReferences = (schema: OpenAPIV3.SchemaObject): OpenAPIV3.SchemaObject => {
   const asString = JSON.stringify(schema);
@@ -43,5 +44,8 @@ export const entityToSchema = async (
   const jsonschema = payloadEntityToJSONSchema(config, incomingEntity);
   const rawSchema = await convert(jsonschema);
 
-  return cleanReferences(stripEmptyRequired(rawSchema));
+  return {
+    description: getDescription(incomingEntity),
+    ...cleanReferences(stripEmptyRequired(rawSchema)),
+  };
 };
