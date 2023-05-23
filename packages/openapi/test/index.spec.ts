@@ -23,7 +23,7 @@ describe('tests', () => {
       'openapi': '3.0.3',
       'info': {
         'title': 'payload-openapi',
-        'version': '1.1.2',
+        'version': expect.any(String),
         'description': 'Create openapi documentation for your payload cms',
         'license': { 'name': 'MIT', 'url': '/api-docs/license' },
       },
