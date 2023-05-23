@@ -2,11 +2,11 @@ name: Build and publish Openapi
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "packages/openapi/**"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "packages/openapi/**"
 
 jobs:
   build_and_publish:

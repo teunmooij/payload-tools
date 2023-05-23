@@ -2,11 +2,11 @@ name: Build and publish rbac
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "packages/rbac/**"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "packages/rbac/**"
 
 jobs:
   build_and_publish:

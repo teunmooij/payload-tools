@@ -2,18 +2,7 @@ name: Build and publish Swagger
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "packages/swagger/**"
-      # if payload-openapi is also updated, we need to wait for that build to complete
-  #     - "!packages/openapi/**"
-  # workflow_run:
-  #   workflows:
-  #     - "Build and publish Openapi"
-  #   types:
-  #     - completed
+  # push:
   #   branches:
   #     - main
   #   paths:

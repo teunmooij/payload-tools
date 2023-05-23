@@ -2,11 +2,11 @@ name: Build and publish query
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "packages/query/**"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "packages/query/**"
 
 jobs:
   build_and_publish:
