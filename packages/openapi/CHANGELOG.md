@@ -1,3 +1,7 @@
+## 1.1.3
+
+- Fixed bug [#62](https://github.com/teunmooij/payload-tools/issues/62): custom route with different method overwrote existing payload route on same path. Now the routes are properly merged.
+
 ## 1.1.1
 
 - Improved naming, titles and descriptions of components and paths.
