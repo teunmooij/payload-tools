@@ -25,7 +25,7 @@ export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Op
     ? getCustomPaths(payloadConfig, 'payload')
     : { paths: {}, components: {} };
 
-  const paths = Object.assign(
+  const paths = merge<OpenAPIV3.PathsObject>(
     {},
     ...collectionDefinitions.map(({ paths }) => paths),
     ...globalDefinitions.map(({ paths }) => paths),

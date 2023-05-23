@@ -134,6 +134,13 @@ export default buildConfig({
       },
       root: true,
     },
+    {
+      path: '/_preferences/:key',
+      method: 'options',
+      handler: (req, res) => {
+        res.sendStatus(204);
+      },
+    },
   ],
 
   typescript: {
