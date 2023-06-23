@@ -28,7 +28,7 @@ export const getDescription = (collection: SanitizedCollectionConfig | Sanitized
   }
   if (typeof description === 'function') {
     try {
-      const value = description();
+      const value = (description as any)();
       if (typeof value === 'string') return value;
     } catch {
       // ignore

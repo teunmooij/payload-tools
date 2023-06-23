@@ -47,7 +47,7 @@ export const entityToSchema = async (
   config: SanitizedConfig,
   incomingEntity: SanitizedCollectionConfig | SanitizedGlobalConfig,
 ): Promise<OpenAPIV3.SchemaObject> => {
-  const jsonschema = payloadEntityToJSONSchema(config, incomingEntity);
+  const jsonschema = payloadEntityToJSONSchema(config, incomingEntity, new Map());
   const rawSchema = await convert(jsonschema);
 
   return {
