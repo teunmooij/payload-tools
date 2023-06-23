@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "@openapi-contrib/json-schema-to-openapi-schema": "^2.2.5",
-    "lodash.mergewith": "^4.6.2"
+    "lodash.mergewith": "^4.6.2",
+    "ts-powertools": "^0.0.4"
   },
   "peerDependencies": {
     "payload": "^1.6.22"
