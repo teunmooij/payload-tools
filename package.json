@@ -7,7 +7,8 @@
     "lint": "npm run lint --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test:coverage": "npm run test:coverage --workspaces --if-present",
-    "testbed": "npm run build && npm run dev -w packages/testbed"
+    "testbed": "npm run build && npm run dev -w packages/testbed",
+    "set-payload-version": "./scripts/set-payload-version.sh"
   },
   "workspaces": [
     "packages/openapi",
