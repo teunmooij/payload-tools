@@ -1,3 +1,7 @@
+## 1.2.0
+
+- Support for payload version >= 1.9, including the added named field interfaces
+
 ## 1.1.3
 
 - Fixed bug [#62](https://github.com/teunmooij/payload-tools/issues/62): custom route with different method overwrote existing payload route on same path. Now the routes are properly merged.

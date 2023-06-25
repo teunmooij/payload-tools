@@ -124,15 +124,18 @@ export const getMainRoutes = async (
     },
   };
 
+  const { schema, fieldDefinitions } = await entityToSchema(payloadConfig, collection);
+
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
-      [schemaName]: await entityToSchema(payloadConfig, collection),
+      [schemaName]: schema,
       ...includeIfAvailable(collection, 'read', {
         [pluralSchemaName]: createPaginatedDocumentSchema(schemaName, plural),
       }),
       ...includeIfAvailable(collection, ['create', 'update', 'delete'], {
         [`${schemaName}UpsertConfirmation`]: createUpsertConfirmationSchema(schemaName, singleItem),
       }),
+      ...fieldDefinitions,
     },
     requestBodies: {
       ...includeIfAvailable(collection, ['create', 'update'], {

@@ -1,3 +1,7 @@
+## 1.2.0
+
+- Alligned versioning with payload-openapi
+
 ## 1.0.0
 
 - Uses `payload-openapi` version 1, whch has a validated schema with full payload endpoint coverage

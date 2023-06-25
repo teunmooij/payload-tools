@@ -1,3 +1,7 @@
+## 1.2.0
+
+- Alligned versioning with payload-openapi
+
 ## 1.0.1
 
 - Updated readme
