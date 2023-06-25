@@ -42,10 +42,14 @@ export const getGlobalRoutes = async (
       },
     },
   };
+
+  const { schema, fieldDefinitions } = await entityToSchema(payloadConfig, global);
+
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
-      [schemaName]: await entityToSchema(payloadConfig, global),
+      [schemaName]: schema,
       [`${schemaName}UpsertConfirmation`]: createUpsertConfirmationSchema(schemaName, singleItem),
+      ...fieldDefinitions,
     },
     requestBodies: {
       [`${schemaName}Request`]: createRequestBody(schemaName),

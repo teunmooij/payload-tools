@@ -3,6 +3,7 @@ import type { SanitizedConfig } from 'payload/config';
 import type { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
 import { entityToJSONSchema as payloadEntityToJSONSchema } from 'payload/utilities';
 import convert from '@openapi-contrib/json-schema-to-openapi-schema';
+import { reduceAsync } from 'ts-powertools';
 import { getDescription, getSingularSchemaName } from '../utils';
 
 const cleanReferences = (schema: OpenAPIV3.SchemaObject, config: SanitizedConfig): OpenAPIV3.SchemaObject => {
@@ -46,12 +47,25 @@ const stripEmptyRequired = (schema: OpenAPIV3.SchemaObject): OpenAPIV3.SchemaObj
 export const entityToSchema = async (
   config: SanitizedConfig,
   incomingEntity: SanitizedCollectionConfig | SanitizedGlobalConfig,
-): Promise<OpenAPIV3.SchemaObject> => {
-  const jsonschema = payloadEntityToJSONSchema(config, incomingEntity, new Map());
+): Promise<{ schema: OpenAPIV3.SchemaObject; fieldDefinitions: Record<string, OpenAPIV3.SchemaObject> }> => {
+  const fieldDefinitionsMap = new Map();
+  const jsonschema = payloadEntityToJSONSchema(config, incomingEntity, fieldDefinitionsMap);
   const rawSchema = await convert(jsonschema);
+  const fieldDefinitions = await reduceAsync(
+    Array.from(fieldDefinitionsMap.entries()),
+    async ([, definition]) => cleanReferences(stripEmptyRequired(await convert(definition)), config),
+    (acc, curr, [key]) => {
+      acc[key] = curr;
+      return acc;
+    },
+    {} as Record<string, OpenAPIV3.SchemaObject>,
+  );
 
   return {
-    description: getDescription(incomingEntity),
-    ...cleanReferences(stripEmptyRequired(rawSchema), config),
+    schema: {
+      description: getDescription(incomingEntity),
+      ...cleanReferences(stripEmptyRequired(rawSchema), config),
+    },
+    fieldDefinitions,
   };
 };
