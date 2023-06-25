@@ -13,6 +13,7 @@ describe('basic tests', () => {
     process.env.PAYLOAD_CONFIG_PATH = path.join(__dirname, 'named-interfaces.config.ts');
     const config = await loadConfig();
     apiDocs = await createDocument(config);
+    apiDocs.info.version = '1.1.3';
   });
 
   it('creates a valid openapi document', async () => {
