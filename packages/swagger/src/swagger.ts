@@ -13,8 +13,6 @@ export const loadSwagger = async (
     return;
   }
 
-  const document = await createDocument(config, options);
-
   const {
     routes: {
       swagger: swaggerRoute = '/api-docs',
@@ -24,11 +22,30 @@ export const loadSwagger = async (
     ui: uiOptions,
   } = options;
 
-  express.use(specsRoute, (req, res) => res.json(document));
-  if (document.info.license?.url) {
-    express.get(licenseRoute, serveFile('LICENSE'));
-  }
+  try {
+    const document = await createDocument(config, options);
+    express.use(specsRoute, (req, res) => res.json(document));
 
-  express.use(swaggerRoute, swaggerUi.serve, swaggerUi.setup(undefined, { ...uiOptions, swaggerUrl: specsRoute }));
-  logger.info(`Swagger URL: ${swaggerRoute}`);
+    if (document.info.license?.url) {
+      express.get(licenseRoute, serveFile('LICENSE'));
+    }
+  } catch (error) {
+    if (options.throwOnError) {
+      throw error;
+    }
+
+    logger.error(error, 'Unable to load swagger');
+    express.use(specsRoute, (req, res) =>
+      res.json({
+        openapi: '3.0.3',
+        info: {
+          title: 'Unable to load openapi document',
+          description: 'An error occurred while generating the openapi document. Please check the server logs for more details.',
+        },
+      }),
+    );
+  } finally {
+    express.use(swaggerRoute, swaggerUi.serve, swaggerUi.setup(undefined, { ...uiOptions, swaggerUrl: specsRoute }));
+    logger.info(`Swagger URL: ${swaggerRoute}`);
+  }
 };

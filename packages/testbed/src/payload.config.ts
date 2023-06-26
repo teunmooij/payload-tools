@@ -103,6 +103,7 @@ export default buildConfig({
         preferences: false,
       },
       payloadVersion: '1.6.26', // not needed for most scenario's
+      throwOnError: false,
     }),
     rbac({
       roles: ['admin', 'reader'],

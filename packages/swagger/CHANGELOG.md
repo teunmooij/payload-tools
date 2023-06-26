@@ -1,3 +1,7 @@
+## 1.2.1
+
+- Adds fallback document if openapi document generation fails
+
 ## 1.2.0
 
 - Alligned versioning with payload-openapi

@@ -27,6 +27,13 @@ interface SwaggerOptions {
    * Swagger ui options (see swagger-ui documentation)
    */
   ui?: Omit<SwaggerUiOptions, 'swaggerUrl' | 'swaggerUrls'>;
+
+  /**
+   * Throw on error
+   * @default false
+   * @description If set to true, the plugin will throw the error if any error occurs while generating the openapi document, causing Payload to fail to start.
+   */
+  throwOnError?: boolean;
 }
 
 /**
