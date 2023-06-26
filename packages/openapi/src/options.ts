@@ -1,5 +1,5 @@
 import { SanitizedConfig } from 'payload/config';
-import path from 'path';
+import { Version, getPayloadVersion, supports, toVersion } from './utils';
 
 /**
  * Payload openapi options
@@ -28,12 +28,6 @@ export interface RawOptions {
   payloadVersion?: string;
 }
 
-interface Version {
-  major: number;
-  minor: number;
-  patch: number;
-}
-
 export interface Options {
   payloadVersion?: Version;
   access: {
@@ -53,40 +47,9 @@ export interface Options {
   };
 }
 
-const toVersion = (versionString: string | undefined): Version | undefined => {
-  if (!versionString) return undefined;
-
-  const parts = versionString.split('.');
-
-  return {
-    major: Number(parts[0]),
-    minor: Number(parts[1]),
-    patch: Number(parts[2]),
-  };
-};
-
-const supports = (initialVersion: Version | undefined, currentVersion: Version | undefined) => {
-  if (!initialVersion || !currentVersion) return true;
-
-  return (
-    currentVersion.major > initialVersion.major ||
-    (currentVersion.major === initialVersion.major &&
-      (currentVersion.minor > initialVersion.minor ||
-        (currentVersion.minor === initialVersion.minor && currentVersion.patch >= initialVersion.patch)))
-  );
-};
-
-const getPayloadVersion = async (): Promise<string | undefined> => {
-  try {
-    const pkg = await import(path.join(process.cwd(), 'node_modules/payload/package.json'));
-    return pkg.version;
-  } catch (e) {
-    return undefined;
-  }
-};
-
 export const parseOptions = async (options: RawOptions = {}, payloadConfig: SanitizedConfig): Promise<Options> => {
-  const payloadVersion = toVersion(options.payloadVersion || (await getPayloadVersion()));
+  const payloadVersion = options.payloadVersion ? toVersion(options.payloadVersion) : await getPayloadVersion();
+
   return {
     payloadVersion,
     access: {
