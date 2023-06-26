@@ -1,3 +1,7 @@
+## 1.2.1
+
+- Added `unsupported Payload version` schema to be generated if user attempt to create a schema with a Payload version that has known schema generation issues
+
 ## 1.2.0
 
 - Support for payload version >= 1.9, including the added named field interfaces

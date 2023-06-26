@@ -7,7 +7,7 @@ import { SanitizedConfig } from 'payload/config';
 import { analyzePayload } from './payload-config';
 
 import createBaseConfig from './base-config';
-import { merge } from './utils';
+import { getUnsupportedSchema, isSupported, merge } from './utils';
 import { parseOptions, RawOptions as Options } from './options';
 
 interface PackageInfo {
@@ -35,6 +35,10 @@ const readJsonFile = async <T = any>(relativePath: string): Promise<Partial<T>> 
  */
 export const createDocument = async (payloadConfig: SanitizedConfig, options: Options = {}): Promise<OpenAPIV3.Document> => {
   const parsedOptions = await parseOptions(options, payloadConfig);
+
+  if (!isSupported()) {
+    return getUnsupportedSchema(parsedOptions);
+  }
 
   const { name, version, description, license, openapi = {} } = await readJsonFile<PackageInfo>('package.json');
   const hasLicenseFile = license && fs.existsSync(path.join(process.cwd(), 'LICENSE'));
