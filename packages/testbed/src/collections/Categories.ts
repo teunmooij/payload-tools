@@ -1,7 +1,8 @@
 import { CollectionConfig } from 'payload/types';
 import CategorySummary from '../components/CategorySummary';
+import { defineCollection } from 'payload-swagger';
 
-const Categories: CollectionConfig = {
+const Categories: CollectionConfig = defineCollection({
   slug: 'categories',
   admin: {
     useAsTitle: 'name',
@@ -42,14 +43,10 @@ const Categories: CollectionConfig = {
       },
     },
   ],
-  custom: {
-    openapi: {
-      example: {
-        name: 'Example Category',
-        archived: false,
-      },
-    },
+  example: {
+    name: 'Example Category',
+    archived: false,
   },
-};
+});
 
 export default Categories;

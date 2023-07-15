@@ -251,9 +251,22 @@ To exclude a custom endpoint from the documentation, set the `custom.openapi` pr
 
 ## Adding examples
 
-Examples can be added on collections and globals.
+Examples can be added on collections and globals using the `defineCollection` or `defineGlobal` helper:
 
-This can be either a single example:
+```ts
+import { defineCollection } from 'payload-openapi';
+
+const Categories = defineCollection({
+  slug: 'categories',
+  example: {
+    name: 'Example Category',
+    archived: false,
+  },
+  // ... Rest of collection config
+});
+```
+
+Or by setting the `custom.openapi` property:
 
 ```ts
 import { CollectionConfig } from 'payload/types';
@@ -272,35 +285,31 @@ const Categories: CollectionConfig = {
 };
 ```
 
-Or multiple examples
+It's also possible to set multiple examples:
 
 ```ts
-import { CollectionConfig } from 'payload/types';
+import { defineCollection } from 'payload-openapi';
 
-const Categories: CollectionConfig = {
+const Categories = defineCollection({
   slug: 'categories',
-  custom: {
-    openapi: {
-      examples: {
-        active: {
-          value: {
-            name: 'Active Category',
-            archived: false,
-          },
-          summary: 'Example of an active category',
-        },
-        archive: {
-          value: {
-            name: 'Archived Category',
-            archived: true,
-          },
-          summary: 'Example of an archived category',
-        },
+  examples: {
+    active: {
+      value: {
+        name: 'Active Category',
+        archived: false,
       },
+      summary: 'Example of an active category',
+    },
+    archive: {
+      value: {
+        name: 'Archived Category',
+        archived: true,
+      },
+      summary: 'Example of an archived category',
     },
   },
   // ... Rest of collection config
-};
+});
 ```
 
 Openapi supports examples at lots of different levels. To add examples add other levels, you can define theme in a separate partial openapi document, as described [here](#extend-the-openapi-document).

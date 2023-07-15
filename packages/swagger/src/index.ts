@@ -5,4 +5,4 @@ export type { Options } from './types';
 export { swagger };
 export default swagger;
 
-export { defineEndpoint, EndpointDocumentation, Example } from './openapi';
+export { defineCollection, defineEndpoint, defineGlobal, EndpointDocumentation, Example } from './openapi';
