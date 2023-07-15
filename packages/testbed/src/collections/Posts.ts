@@ -101,7 +101,7 @@ const Posts: CollectionConfig = {
         },
       },
       handler: async (req, res) => {
-        const { docs } = await req.payload.find<any>({
+        const { docs } = await req.payload.find({
           collection: 'categories',
           where: { name: { equals: req.params.category } },
         });
@@ -110,7 +110,7 @@ const Posts: CollectionConfig = {
         }
 
         const { limit, page, sort } = req.query;
-        const posts = await req.payload.find<any>({
+        const posts = await req.payload.find({
           collection: 'posts',
           where: { category: { equals: (docs[0] as any).id } },
           limit: limit && Number(limit),

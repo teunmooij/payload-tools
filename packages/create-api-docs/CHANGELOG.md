@@ -1,3 +1,7 @@
+## 1.4.0
+
+- Ensure payload-openapi version >=1.4.0 is used
+
 ## 1.2.0
 
 - Alligned versioning with payload-openapi

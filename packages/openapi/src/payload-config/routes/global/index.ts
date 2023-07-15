@@ -44,10 +44,11 @@ export const getGlobalRoutes = async (
   };
 
   const { schema, fieldDefinitions } = await entityToSchema(payloadConfig, global);
+  const { example, examples } = global.custom?.openapi || {};
 
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
-      [schemaName]: schema,
+      [schemaName]: { ...schema, ...{ example, examples } },
       [`${schemaName}UpsertConfirmation`]: createUpsertConfirmationSchema(schemaName, singleItem),
       ...fieldDefinitions,
     },
