@@ -1,3 +1,7 @@
+## 1.3.1
+
+- Fix issue with import of `defineEndpoint` in webpack
+
 ## 1.3.0
 
 - Support for custom endpoint documentation of payload-openapi
