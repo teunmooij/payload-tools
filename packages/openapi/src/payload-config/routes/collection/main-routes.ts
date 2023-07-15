@@ -125,10 +125,11 @@ export const getMainRoutes = async (
   };
 
   const { schema, fieldDefinitions } = await entityToSchema(payloadConfig, collection);
+  const { example, examples } = collection.custom?.openapi || {};
 
   const components: OpenAPIV3.ComponentsObject = {
     schemas: {
-      [schemaName]: schema,
+      [schemaName]: { ...schema, ...{ example, examples } },
       ...includeIfAvailable(collection, 'read', {
         [pluralSchemaName]: createPaginatedDocumentSchema(schemaName, plural),
       }),

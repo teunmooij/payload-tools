@@ -1,7 +1,7 @@
 import { Endpoint } from 'payload/config';
 
 import type { EndpointDocumentation } from 'payload-openapi';
-export type { EndpointDocumentation } from 'payload-openapi';
+export type { EndpointDocumentation, Example } from 'payload-openapi';
 
 type DocumentedEndpoint = Endpoint & EndpointDocumentation;
 

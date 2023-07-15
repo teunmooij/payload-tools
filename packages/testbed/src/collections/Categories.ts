@@ -42,6 +42,14 @@ const Categories: CollectionConfig = {
       },
     },
   ],
+  custom: {
+    openapi: {
+      example: {
+        name: 'Example Category',
+        archived: false,
+      },
+    },
+  },
 };
 
 export default Categories;

@@ -1,3 +1,7 @@
+## 1.4.0
+
+- Support for examples of collections and globals
+
 ## 1.3.0
 
 - Added detailed documentation of custom endpoints, including summary, description, success and alternative response schemas and query parameters.

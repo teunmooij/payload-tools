@@ -222,6 +222,62 @@ Response schemas can be defined as openapi schema objects or as string, referenc
 
 To exclude a custom endpoint from the documentation, set the `custom.openapi` property to `false`.
 
+## Adding examples
+
+Examples can be added on collections and globals.
+
+This can be either a single example:
+
+```ts
+import { CollectionConfig } from 'payload/types';
+
+const Categories: CollectionConfig = {
+  slug: 'categories',
+  custom: {
+    openapi: {
+      example: {
+        name: 'Example Category',
+        archived: false,
+      },
+    },
+  },
+  // ... Rest of collection config
+};
+```
+
+Or multiple examples
+
+```ts
+import { CollectionConfig } from 'payload/types';
+
+const Categories: CollectionConfig = {
+  slug: 'categories',
+  custom: {
+    openapi: {
+      examples: {
+        active: {
+          value: {
+            name: 'Active Category',
+            archived: false,
+          },
+          summary: 'Example of an active category',
+        },
+        archive: {
+          value: {
+            name: 'Archived Category',
+            archived: true,
+          },
+          summary: 'Example of an archived category',
+        },
+      },
+    },
+  },
+  // ... Rest of collection config
+};
+```
+
+Openapi supports examples at lots of different levels. To add examples add other levels, you can define theme in a separate partial openapi document, as described [here](#extend-the-openapi-document).
+
 ## Excluding unused endpoints
 
 In Payload `collections` and `globals` have a standard set of available endpoints. In some situations you might not want to use some of these endpoints. In those situations you probably have used an access method that looks something like this: `() => false;`. This blocks all traffic, but the endpoint is still part of the openapi documentation.

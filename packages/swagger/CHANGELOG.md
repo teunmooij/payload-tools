@@ -1,3 +1,7 @@
+## 1.4.0
+
+- Support for examples of collections and globals
+
 ## 1.3.1
 
 - Fix issue with import of `defineEndpoint` in webpack
