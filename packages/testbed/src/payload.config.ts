@@ -4,7 +4,7 @@ import nestedDocs from '@payloadcms/plugin-nested-docs';
 import seo from '@payloadcms/plugin-seo';
 import { selectPlugin } from 'payload-query';
 import rbac from 'payload-rbac';
-import { swagger } from 'payload-swagger';
+import { swagger, defineEndpoint } from 'payload-swagger';
 import path from 'path';
 import Categories from './collections/Categories';
 import Media from './collections/Media';
@@ -126,7 +126,7 @@ export default buildConfig({
   },
 
   endpoints: [
-    {
+    defineEndpoint({
       path: '/echo/:value',
       method: 'get',
       handler: (req, res) => {
@@ -134,7 +134,10 @@ export default buildConfig({
         res.json(value);
       },
       root: true,
-    },
+      summary: 'echo',
+      description: 'echoes the value',
+      responseSchema: { type: 'string' },
+    }),
     {
       path: '/_preferences/:key',
       method: 'options',

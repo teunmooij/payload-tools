@@ -3,6 +3,7 @@ import nodePath from 'path';
 import { Endpoint, SanitizedConfig } from 'payload/config';
 import { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
 import { createResponse } from '../../schemas';
+import { getEndpointDocumentation } from '../../config-extensions';
 
 type Config = SanitizedConfig | SanitizedCollectionConfig | SanitizedGlobalConfig;
 type ConfigType = 'payload' | 'global' | 'collection';
@@ -87,21 +88,41 @@ export const getCustomPaths = (config: Config, type: ConfigType): Pick<Required<
   const tags = getTags(config, type);
 
   for (const endpoint of config.endpoints.filter(endpoint => isRelevant(endpoint, type))) {
-    const { path, parameters } = getPath(basePath, endpoint.path);
+    const { path, parameters = [] } = getPath(basePath, endpoint.path);
+    const {
+      summary,
+      description = 'custom operation',
+      responseSchema = { type: 'object' },
+      errorResponseSchemas = {},
+      queryParamters = [],
+    } = getEndpointDocumentation(endpoint) || {};
     if (!paths[path]) paths[path] = {};
 
-    // determine summary, description, response
-    const responseSchema: OpenAPIV3.SchemaObject | string = {
-      type: 'object',
-    };
-
     const operation: OpenAPIV3.OperationObject = {
-      summary: 'custom operation',
-      description: 'custom operation',
+      summary: summary || description,
+      description,
       tags,
-      parameters,
+      parameters: [
+        ...parameters,
+        ...queryParamters.map(({ name, description, required, schema }) => ({
+          name,
+          description: description || name,
+          in: 'query',
+          required,
+          schema:
+            typeof schema === 'string'
+              ? {
+                  '$ref': `#/components/schemas/${schema}`,
+                }
+              : schema,
+        })),
+      ],
       responses: {
         '200': createResponse('succesful operation', responseSchema),
+        ...Object.entries(errorResponseSchemas).reduce((responses, [code, schema]) => {
+          responses[code] = createResponse(`${code} response`, schema);
+          return responses;
+        }, {} as OpenAPIV3.ResponsesObject),
       },
     };
 

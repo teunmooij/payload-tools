@@ -4,6 +4,7 @@ import { Content } from '../blocks/Content';
 import { Media } from '../blocks/Media';
 import { MediaContent } from '../blocks/MediaContent';
 import { MediaSlider } from '../blocks/MediaSlider';
+import { defineEndpoint } from 'payload-swagger';
 
 const Posts: CollectionConfig = {
   // the slug is used for naming the collection in the database and the APIs that are open. For example: api/posts/${id}
@@ -76,9 +77,32 @@ const Posts: CollectionConfig = {
     },
   ],
   endpoints: [
-    {
+    defineEndpoint({
       path: '/category/:category',
       method: 'get',
+      summary: 'posts by category',
+      description: 'get posts by category',
+      responseSchema: 'posts',
+      errorResponseSchemas: {
+        404: 'error',
+      },
+      queryParamters: [
+        {
+          name: 'limit',
+          description: 'limit the number of posts returned',
+          schema: { type: 'number' },
+        },
+        {
+          name: 'page',
+          description: 'the page number to return',
+          schema: { type: 'number' },
+        },
+        {
+          name: 'sort',
+          description: 'the field to sort by',
+          schema: { type: 'string' },
+        },
+      ],
       handler: async (req, res) => {
         const { docs } = await req.payload.find<any>({
           collection: 'categories',
@@ -98,7 +122,7 @@ const Posts: CollectionConfig = {
         });
         res.json(posts);
       },
-    },
+    }),
   ],
 };
 

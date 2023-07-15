@@ -25,6 +25,7 @@ export const swagger =
             alias: {
               ...webpackConfig.resolve?.alias,
               [path.resolve(__dirname, './swagger')]: path.resolve(__dirname, 'utils/dummy-module'),
+              [path.resolve(__dirname, './openapi')]: path.resolve(__dirname, 'utils/dummy-module'),
             },
           },
         } as any;
