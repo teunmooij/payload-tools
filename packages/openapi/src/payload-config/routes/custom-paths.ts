@@ -4,6 +4,7 @@ import { Endpoint, SanitizedConfig } from 'payload/config';
 import { SanitizedCollectionConfig, SanitizedGlobalConfig } from 'payload/types';
 import { createResponse } from '../../schemas';
 import { getEndpointDocumentation } from '../../config-extensions';
+import { objectEntries } from 'ts-powertools';
 
 type Config = SanitizedConfig | SanitizedCollectionConfig | SanitizedGlobalConfig;
 type ConfigType = 'payload' | 'global' | 'collection';
@@ -88,13 +89,15 @@ export const getCustomPaths = (config: Config, type: ConfigType): Pick<Required<
   const tags = getTags(config, type);
 
   for (const endpoint of config.endpoints.filter(endpoint => isRelevant(endpoint, type))) {
+    if (endpoint.custom?.openapi === false) continue;
+
     const { path, parameters = [] } = getPath(basePath, endpoint.path);
     const {
       summary,
       description = 'custom operation',
       responseSchema = { type: 'object' },
       errorResponseSchemas = {},
-      queryParamters = [],
+      queryParameters = {},
     } = getEndpointDocumentation(endpoint) || {};
     if (!paths[path]) paths[path] = {};
 
@@ -104,7 +107,7 @@ export const getCustomPaths = (config: Config, type: ConfigType): Pick<Required<
       tags,
       parameters: [
         ...parameters,
-        ...queryParamters.map(({ name, description, required, schema }) => ({
+        ...objectEntries(queryParameters).map(([name, { description, required, schema }]) => ({
           name,
           description: description || name,
           in: 'query',

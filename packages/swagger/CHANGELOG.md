@@ -1,3 +1,7 @@
+## 1.3.0
+
+- Support for custom endpoint documentation of payload-openapi
+
 ## 1.2.1
 
 - Adds fallback document if openapi document generation fails

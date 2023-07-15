@@ -1,3 +1,7 @@
+## 1.3.0
+
+- Added detailed documentation of custom endpoints, including summary, description, success and alternative response schemas and query parameters.
+
 ## 1.2.1
 
 - Added `unsupported Payload version` schema to be generated if user attempt to create a schema with a Payload version that has known schema generation issues

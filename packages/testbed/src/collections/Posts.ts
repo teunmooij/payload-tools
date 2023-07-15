@@ -86,23 +86,20 @@ const Posts: CollectionConfig = {
       errorResponseSchemas: {
         404: 'error',
       },
-      queryParamters: [
-        {
-          name: 'limit',
+      queryParameters: {
+        limit: {
           description: 'limit the number of posts returned',
           schema: { type: 'number' },
         },
-        {
-          name: 'page',
+        page: {
           description: 'the page number to return',
           schema: { type: 'number' },
         },
-        {
-          name: 'sort',
+        sort: {
           description: 'the field to sort by',
           schema: { type: 'string' },
         },
-      ],
+      },
       handler: async (req, res) => {
         const { docs } = await req.payload.find<any>({
           collection: 'categories',

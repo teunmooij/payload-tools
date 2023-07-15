@@ -24,6 +24,14 @@ const config: Config = {
             res.json(value);
           },
         }),
+        {
+          path: '/hidden',
+          method: 'get',
+          handler: () => {
+            /* do nothing */
+          },
+          custom: { openapi: false },
+        },
       ],
     },
   ],

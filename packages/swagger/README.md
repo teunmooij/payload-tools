@@ -173,6 +173,82 @@ const Media: CollectionConfig = {
 };
 ```
 
+## Documentation of custom endpoints
+
+Custom endpoints on all levels can be fully documented, either by using the `defineEndpoint` helper:
+
+```ts
+import { CollectionConfig } from 'payload/types';
+import { defineEndpoint } from 'payload-swagger';
+
+const Post: CollectionConfig = {
+  slug: 'posts',
+  endpoints: [
+    defineEndpoint({
+      summary: 'media by category',
+      description: 'gets the media of the given category',
+      path: '/category/:category',
+      method: 'get',
+      responseSchema: 'posts',
+      errorResponseSchemas: {
+        404: 'error',
+      },
+      queryParameters: {
+        limit: { schema: { type: 'number' } },
+        page: { schema: { type: 'number' } },
+        sort: { scema: { type: 'string' } },
+      },
+      handler: (req, res) => {
+        // ... handler implementation
+      },
+    }),
+  ],
+  // ... Rest of collection config
+};
+```
+
+or by setting the `custom.openapi` property:
+
+```ts
+import { CollectionConfig } from 'payload/types';
+import type { EndpointDocumentation } from 'payload-swagger';
+
+const documentation: EndpointDocumentation = {
+  summary: 'media by category',
+  description: 'gets the media of the given category',
+  responseSchema: 'posts',
+  errorResponseSchemas: {
+    404: { type: 'object', properties: { message: { type: 'string' } }, required: ['message'] },
+  },
+  queryParameters: {
+    limit: { schema: { type: 'number' } },
+    page: { schema: { type: 'number' } },
+    sort: { scema: { type: 'string' } },
+  },
+};
+
+const Post: CollectionConfig = {
+  slug: 'posts',
+  endpoints: [
+    {
+      path: '/category/:category',
+      method: 'get',
+      handler: (req, res) => {
+        // ... handler implementation
+      },
+      custom: {
+        openapi: documentation,
+      },
+    },
+  ],
+  // ... Rest of collection config
+};
+```
+
+Response schemas can be defined as openapi schema objects or as string, referencing any of the schemas defined in the schema section of the openapi document.
+
+To exclude a custom endpoint from the documentation, set the `custom.openapi` property to `false`.
+
 ## Excluding unused endpoints
 
 In Payload `collections` and `globals` have a standard set of available endpoints. In some situations you might not want to use some of these endpoints. In those situations you probably have used an access method that looks something like this: `() => false;`. This blocks all traffic, but the endpoint is still part of the openapi documentation.
