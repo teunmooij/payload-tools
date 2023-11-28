@@ -1,8 +1,0 @@
-blank_issues_enabled: false
-contact_links:
-  - name: Tool ideas
-    url: https://github.com/teunmooij/payload-tools/discussions
-    about: Suggest a new tool or plugin
-  - name: Question about Payload tools
-    url: https://github.com/teunmooij/payload-tools/discussions
-    about: Please ask Payload tools-related questions in our GitHub Discussions
