@@ -96,6 +96,7 @@ export const getCustomPaths = (config: Config, type: ConfigType): Pick<Required<
       summary,
       description = 'custom operation',
       responseSchema = { type: 'object' },
+      requestBody,
       errorResponseSchemas = {},
       queryParameters = {},
     } = getEndpointDocumentation(endpoint) || {};
@@ -120,6 +121,19 @@ export const getCustomPaths = (config: Config, type: ConfigType): Pick<Required<
               : schema,
         })),
       ],
+      requestBody: requestBody
+        ? typeof requestBody === 'string'
+          ? {
+              '$ref': `#/components/schemas/${requestBody}`,
+            }
+          : {
+              content: {
+                'application/json': {
+                  schema: requestBody,
+                },
+              },
+            }
+        : undefined,
       responses: {
         '200': createResponse('succesful operation', responseSchema),
         ...Object.entries(errorResponseSchemas).reduce((responses, [code, schema]) => {

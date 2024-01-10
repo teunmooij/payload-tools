@@ -5,6 +5,7 @@ export interface EndpointDocumentation {
   summary?: string;
   description: string;
   responseSchema: OpenAPIV3.SchemaObject | string;
+  requestBody?: OpenAPIV3.SchemaObject | string;
   errorResponseSchemas?: Record<number, OpenAPIV3.SchemaObject | string>;
   queryParameters?: Record<
     string,
@@ -19,7 +20,7 @@ export interface EndpointDocumentation {
 type DocumentedEndpoint = Endpoint & EndpointDocumentation;
 
 export function defineEndpoint(endpoint: DocumentedEndpoint): Endpoint {
-  const { summary, description, responseSchema, errorResponseSchemas, queryParameters, custom, ...rest } = endpoint;
+  const { summary, description, responseSchema, errorResponseSchemas, queryParameters, requestBody, custom, ...rest } = endpoint;
   return {
     ...rest,
     custom: {
@@ -27,6 +28,7 @@ export function defineEndpoint(endpoint: DocumentedEndpoint): Endpoint {
       openapi: {
         summary,
         description,
+        requestBody,
         responseSchema,
         errorResponseSchemas,
         queryParameters,
