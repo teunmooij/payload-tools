@@ -14,8 +14,12 @@ export const analyzePayload = async (payloadConfig: SanitizedConfig, options: Op
   const { paths: preferencePaths, components: preferenceComponents } = createPreferenceRouts(options);
   const { paths: accessPath, components: accessComponents } = createAccessRoute(options);
 
+  const includedCollections = payloadConfig.collections.filter(
+      collection => !options.include?.others.includes(collection.slug),
+  )
+
   const collectionDefinitions = await Promise.all(
-    payloadConfig.collections.map(collection => getCollectionRoutes(collection, options, payloadConfig)),
+    includedCollections.map(collection => getCollectionRoutes(collection, options, payloadConfig)),
   );
   const globalDefinitions = await Promise.all(
     payloadConfig.globals.map(global => getGlobalRoutes(global, options, payloadConfig)),

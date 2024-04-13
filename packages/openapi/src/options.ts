@@ -20,6 +20,7 @@ export interface RawOptions {
     passwordRecovery?: boolean;
     preferences?: boolean;
     custom?: boolean;
+    others?: string[]
   };
   /**
    * Payload version is automatically determined.
@@ -41,6 +42,7 @@ export interface Options {
     passwordRecovery: boolean;
     preferences: boolean;
     custom: boolean;
+    others: string[]
   };
   supports: {
     bulkOperations: boolean;
@@ -65,6 +67,7 @@ export const parseOptions = async (options: RawOptions = {}, payloadConfig: Sani
       passwordRecovery: options.exclude?.passwordRecovery === false,
       preferences: options.exclude?.preferences === false,
       custom: !options.exclude?.custom,
+      others: options.exclude?.others || [],
     },
     supports: {
       bulkOperations: supports(toVersion('1.6.24'), payloadVersion),
