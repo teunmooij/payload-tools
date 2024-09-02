@@ -24,6 +24,11 @@ interface SwaggerOptions {
   };
 
   /**
+   * Require authentication via Payload API to access the specs
+   */
+  auth?: boolean;
+
+  /**
    * Swagger ui options (see swagger-ui documentation)
    */
   ui?: Omit<SwaggerUiOptions, 'swaggerUrl' | 'swaggerUrls'>;

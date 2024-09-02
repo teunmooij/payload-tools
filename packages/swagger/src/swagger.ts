@@ -5,7 +5,7 @@ import { Options } from './types';
 import { serveFile } from './utils/serve-file';
 
 export const loadSwagger = async (
-  { express, config, logger }: Pick<Payload, 'express' | 'config' | 'logger'>,
+  { express, config, logger, authenticate }: Pick<Payload, 'express' | 'config' | 'logger' | 'authenticate'>,
   options: Options = {},
 ) => {
   if (!express) {
@@ -21,6 +21,15 @@ export const loadSwagger = async (
     } = {},
     ui: uiOptions,
   } = options;
+
+  if (options.auth) {
+    express.use(specsRoute, authenticate, (req, res, next) => {
+      if ('user' in req && req.user) {
+        return next();
+      }
+      res.status(401).json({ message: 'Authentication required' });
+    });
+  }
 
   try {
     const document = await createDocument(config, options);
