@@ -6,7 +6,7 @@
 
 # payload-query
 
-Easy to use query utility for your [Payload cms](https://payloadcms.com).
+Easy to use query utility for your Mzinga Core or [Payload cms](https://payloadcms.com).
 
 Main features:
 

@@ -6,7 +6,7 @@
 
 # payload-rbac
 
-Easy to use Role based access for your [Payload cms](https://payloadcms.com).
+Easy to use Role based access for your Mzinga Core or [Payload cms](https://payloadcms.com).
 
 Main features:
 

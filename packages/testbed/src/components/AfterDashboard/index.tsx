@@ -27,7 +27,7 @@ const AfterDashboard: React.FC = () => {
       <h4>Talk with us</h4>
       <p>
         We're here to help! You can{' '}
-        <a href="mailto:info@payloadcms.com?subject=Payload Demo" target="_blank">
+        <a href="mailto:info@mzinga.io?subject=Payload Demo" target="_blank">
           email us
         </a>{' '}
         with any questions.
