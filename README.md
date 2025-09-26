@@ -2,7 +2,7 @@
 
 # payload tools and plugins
 
-This repository will contain multiple tools and plugins for [payload cms](https://payloadcms.com):
+This repository will contain multiple tools and plugins originally developed for [payload cms](https://payloadcms.com):
 
 ## [payload-openapi](./packages/openapi/README.md)
 

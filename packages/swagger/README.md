@@ -6,7 +6,7 @@
 
 # payload-swagger
 
-Swagger plugin for payload cms:
+Swagger plugin for mzinga core or payload cms:
 
 - generate openAPI 3 documentation from your payload config
 - adds routes for:

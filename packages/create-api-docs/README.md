@@ -6,7 +6,7 @@
 
 # create-payload-api-docs
 
-CLI for generating openAPI 3 documentation for your payload cms.
+CLI for generating openAPI 3 documentation for your mzinga core or payload cms.
 
 Alternatives:
 

@@ -64,7 +64,7 @@ async function seedData() {
     collection: 'users',
     data: {
       name: 'Demo User',
-      email: 'demo@payloadcms.com',
+      email: 'demo@mzinga.io',
       password: 'demo',
       roles: ['admin'],
     },

@@ -6,7 +6,7 @@
 
 # payload-openapi
 
-Generate openapi 3 documentation for your [payload cms](https://payloadcms.com).
+Generate openapi 3 documentation for your Mzinga Core or [payload cms](https://payloadcms.com).
 
 `payload-openapi` documents ALL your payload openapi endpoints and includes:
 
